@@ -42,7 +42,7 @@ export class GroupComponent implements OnInit {
 
   getGroup(){
     this.loading = true
-    this.app.productService.retrieveAllOrganisationGroups()
+    this.app.productService.superadminRetrieveAllGroups()
     .subscribe({
       next: res => {
         this.loading = false

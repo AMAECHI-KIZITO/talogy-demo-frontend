@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -917,6 +917,24 @@ export class DataProductV2Service {
 
     retrieveGroupReports(groupid: string): Observable<any>{
       return this.http.get<any>(this.baseUrlv2+`/api/v1/organization/group/${groupid}/reports/`)
+      .pipe(
+        catchError(err => this.errorHandler(err))
+      )
+    }
+
+    //SUPERADMIN GROUP ENDPOINTS
+    superadminRetrieveAllGroups(): Observable<any>{
+      return this.http.get<any>(this.baseUrlv2+`/api/v1/superadmin/groups/groups`)
+      .pipe(
+        catchError(err => this.errorHandler(err))
+      )
+    }
+
+    superadminCreateGroup(obj: createGroup): Observable<any>{
+      let params = new HttpParams()
+        .set('groupName', obj.groupName || '')
+        .set('groupDescription', obj.groupDescription || '')
+      return this.http.get<any>(this.baseUrlv2+`/api/v1/superadmin/groups/create-group/`, {params})
       .pipe(
         catchError(err => this.errorHandler(err))
       )
