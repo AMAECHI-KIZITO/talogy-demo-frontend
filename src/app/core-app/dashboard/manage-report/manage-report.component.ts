@@ -70,13 +70,13 @@ export class ManageReportComponent implements OnInit {
     this.app.productService.getPowerbiToken(payload)
     .subscribe({
       next: (res) => {
-        if(res){
+        if(res && res['status'] === true){
           this.loading = false
-          this.listToken = res
+          this.listToken = res['data']
           let temp : IReportEmbedConfiguration =
            {
             type: 'report',
-            embedUrl: this.listToken.reportConfig[0].embedUrl,
+            embedUrl: this.listToken.embedUrl,
             tokenType: models.TokenType.Embed,
             accessToken: this.listToken.accessToken,
             settings: {

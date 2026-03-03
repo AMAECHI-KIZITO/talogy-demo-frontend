@@ -197,9 +197,7 @@ export class DataProductV2Service {
       )
   }
   getPowerbiToken(payload: powerbiToken): Observable<any> {
-    let load = this.encrypt.encrypt(JSON.stringify(payload))
-    let tempObj = {payload: load}
-    return this.http.post<powerbiToken>(this.baseUrlv2 + `/api/v1/orchestrators/?type=powerbiembedinfo`, tempObj)
+    return this.http.post<powerbiToken>(`https://talogy-demo-backend.gentlewater-88122a32.uaenorth.azurecontainerapps.io/api/v1/reports/generate-embed-token/`, payload)
       .pipe(
         catchError(err => this.errorHandler(err))
       )
