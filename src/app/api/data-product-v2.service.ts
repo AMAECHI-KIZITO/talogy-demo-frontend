@@ -493,7 +493,10 @@ export class DataProductV2Service {
     embedReport(payload: embedReport): Observable<any>{
       let load = this.encrypt.encrypt(JSON.stringify(payload))
       let tempObj = {payload: load};
-      return this.http.post<embedReport>(this.baseUrlv2 + `/api/v1/superadmin/reports/embed`, tempObj)
+      return this.http.post<embedReport>(this.baseUrlv2 + `/api/v1/superadmin/reports/embed/`, tempObj)
+        .pipe(
+          catchError(err => this.errorHandler(err))
+        )
     }
 
     //Pause connector 
@@ -612,6 +615,20 @@ export class DataProductV2Service {
 
     listSuperadminUsers(): Observable<any> {
       return this.http.get<any>(this.baseUrlv2 + '/api/v1/superadmin/list-users/')
+        .pipe(
+          catchError(err => this.errorHandler(err))
+        )
+    }
+
+    getAdminAuditTrail(): Observable<any> {
+      return this.http.get<any>(this.baseUrlv2 + '/api/v1/superadmin/admin-audit-trail/')
+        .pipe(
+          catchError(err => this.errorHandler(err))
+        )
+    }
+
+    getUsersAuditTrail(): Observable<any> {
+      return this.http.get<any>(this.baseUrlv2 + '/api/v1/superadmin/users-audit-trail/')
         .pipe(
           catchError(err => this.errorHandler(err))
         )

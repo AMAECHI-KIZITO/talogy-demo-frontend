@@ -11,6 +11,8 @@ import { SettingsAdminComponent } from './settings-admin/settings-admin.componen
 import { AnalyticsComponent } from './analytics/analytics.component';
 import { ReportWorkflowComponent } from './report-workflow/report-workflow.component';
 import { UserManagementComponent } from './user-management/user-management.component';
+import { AdminAuditTrailComponent } from './admin-audit-trail/admin-audit-trail.component';
+import { UserAuditTrailComponent } from './user-audit-trail/user-audit-trail.component';
 
 const routes: Routes = [
   {
@@ -25,6 +27,16 @@ const routes: Routes = [
       {
         path: 'user-management',
         component: UserManagementComponent,
+        canActivate: [MaslGuard]
+      },
+      {
+        path: 'admin-audit-trail',
+        component: AdminAuditTrailComponent,
+        canActivate: [MaslGuard]
+      },
+      {
+        path: 'user-audit-trail',
+        component: UserAuditTrailComponent,
         canActivate: [MaslGuard]
       },
       {

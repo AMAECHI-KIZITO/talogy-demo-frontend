@@ -6,6 +6,8 @@ import { AccountManagementComponent } from './account-management/account-managem
 import { AdminPanelComponent } from './admin-panel.component';
 import { UserManagementComponent } from './user-management/user-management.component';
 import { InviteUserComponent } from './user-management/invite-user/invite-user.component';
+import { AdminAuditTrailComponent } from './admin-audit-trail/admin-audit-trail.component';
+import { UserAuditTrailComponent } from './user-audit-trail/user-audit-trail.component';
 import { SharedModule } from '../shared/shared.module';
 import { ConnectorManagementComponent } from './connector-management/connector-management.component';
 import { ReportManagementComponent } from './report-management/report-management.component';
@@ -41,6 +43,8 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
     AdminPanelComponent,
     UserManagementComponent,
     InviteUserComponent,
+    AdminAuditTrailComponent,
+    UserAuditTrailComponent,
     AccountManagementComponent,
     ConnectorManagementComponent,
     ReportManagementComponent,
