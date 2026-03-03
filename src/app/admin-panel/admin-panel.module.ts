@@ -36,6 +36,9 @@ import { DetailsComponent } from './analytics/details/details.component';
 import { ReportWorkflowComponent } from './report-workflow/report-workflow.component';
 import { ViewReportComponent } from './report-workflow/view-report/view-report.component';
 import { ClipboardModule } from '@angular/cdk/clipboard';
+import { GroupManagementComponent } from './group-management/group-management.component';
+import { ViewGroupMembersComponent } from './group-management/view-group-members/view-group-members.component';
+import { ManageGroupAccessComponent } from './group-management/manage-group-access/manage-group-access.component';
 
 
 @NgModule({
@@ -69,7 +72,10 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
     AnalyticsComponent,
     DetailsComponent,
     ReportWorkflowComponent,
-    ViewReportComponent
+    ViewReportComponent,
+    GroupManagementComponent,
+    ViewGroupMembersComponent,
+    ManageGroupAccessComponent
   ],
   imports: [
     CommonModule,

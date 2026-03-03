@@ -940,6 +940,22 @@ export class DataProductV2Service {
       )
     }
 
+    superadminGetGroupMembers(groupId: string): Observable<any>{
+      return this.http.get<any>(this.baseUrlv2+`/api/v1/superadmin/groups/${groupId}/members`)
+      .pipe(
+        catchError(err => this.errorHandler(err))
+      )
+    }
+
+    superadminManageGroupMembership(payload: any): Observable<any>{
+      let load = this.encrypt.encrypt(JSON.stringify(payload))
+      let tempObj = {payload: load}
+      return this.http.post<any>(this.baseUrlv2+`/api/v1/superadmin/groups/manage-group-membership/`, tempObj)
+      .pipe(
+        catchError(err => this.errorHandler(err))
+      )
+    }
+
     ///Datae Super Admin Analytics Start
 
     getActiveUsers(period: string): Observable<any>{

@@ -1,0 +1,85 @@
+@import '../../../../assets/scss/mixin.scss';
+
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.top-head {
+    color: var(--n-grey-70, #4F566B);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: -0.21px;
+}
+
+.body-wrap {
+    display: flex;
+    padding: 20px;
+    flex-direction: column;
+    gap: 20px;
+    align-self: stretch;
+    border-radius: 10px;
+    border: 1px solid var(--n-grey-30, #D9DCE1);
+    background: #FFF;
+    min-height: 75vh;
+}
+
+input {
+    width: 100%;
+    border: none;
+    background-color: transparent;
+
+    &:focus-visible {
+        outline: none !important;
+    }
+}
+
+.admin-table-search {
+    display: flex;
+    padding: 7px 15px;
+    align-items: center;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    width: 100%;
+}
+
+tr.mat-header-row {
+    height: 45px !important;
+    background: var(--n-grey-10, #F7FAFC) !important;
+}
+
+tr.mat-row {
+    height: fit-content !important;
+}
+
+td.mat-cell {
+    border-bottom-color: rgb(0 0 0 / 4%) !important;
+}
+
+.mat-header-cell {
+    color: var(--text-color) !important;
+    text-transform: capitalize;
+    font-family: Proxima Nova !important;
+    font-weight: 600 !important;
+}
+
+.mat-cell {
+    color: var(--text-color) !important;
+    font-family: Proxima Nova !important;
+    font-size: 12px !important;
+}
+
+.table {
+    border-radius: 10px !important;
+    border: none !important;
+}

@@ -13,6 +13,7 @@ import { ReportWorkflowComponent } from './report-workflow/report-workflow.compo
 import { UserManagementComponent } from './user-management/user-management.component';
 import { AdminAuditTrailComponent } from './admin-audit-trail/admin-audit-trail.component';
 import { UserAuditTrailComponent } from './user-audit-trail/user-audit-trail.component';
+import { GroupManagementComponent } from './group-management/group-management.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,11 @@ const routes: Routes = [
       {
         path: 'user-management',
         component: UserManagementComponent,
+        canActivate: [MaslGuard]
+      },
+      {
+        path: 'group-management',
+        component: GroupManagementComponent,
         canActivate: [MaslGuard]
       },
       {
