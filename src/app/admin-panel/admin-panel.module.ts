@@ -26,6 +26,9 @@ import { ReportConfigComponent } from './settings-admin/report-config/report-con
 import { AddReportTemplateComponent } from './settings-admin/report-config/add-report-template/add-report-template.component';
 
 import { EmbedReportComponent } from './report-management/embed-report/embed-report.component';
+import { ManageUserAccessComponent } from './report-management/manage-user-access/manage-user-access.component';
+import { InviteExternalUserComponent } from './report-management/invite-external-user/invite-external-user.component';
+import { ManageGroupReportAccessComponent } from './report-management/manage-group-report-access/manage-group-report-access.component';
 import { ReportTemplateAccessComponent } from './account-management/report-template-access/report-template-access.component';
 import { ManageModeComponent } from './account-management/manage-mode/manage-mode.component';
 import { DestinationSetupComponent } from './account-management/destination-setup/destination-setup.component';
@@ -65,6 +68,9 @@ import { ManageGroupAccessComponent } from './group-management/manage-group-acce
     ReportConfigComponent,
     AddReportTemplateComponent,
     EmbedReportComponent,
+    ManageUserAccessComponent,
+    InviteExternalUserComponent,
+    ManageGroupReportAccessComponent,
     ReportTemplateAccessComponent,
     ManageModeComponent,
     DestinationSetupComponent,

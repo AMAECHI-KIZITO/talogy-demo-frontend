@@ -940,6 +940,58 @@ export class DataProductV2Service {
       )
     }
 
+    superadminRevokeUserReportAccess(reportId: string, payload: any): Observable<any>{
+      let load = this.encrypt.encrypt(JSON.stringify(payload))
+      let tempObj = {payload: load}
+      return this.http.patch<any>(this.baseUrlv2+`/api/v1/superadmin/reports/${reportId}/users/revoke/`, tempObj)
+      .pipe(
+        catchError(err => this.errorHandler(err))
+      )
+    }
+
+    superadminGrantUserReportAccess(reportId: string, payload: any): Observable<any>{
+      let load = this.encrypt.encrypt(JSON.stringify(payload))
+      let tempObj = {payload: load}
+      return this.http.patch<any>(this.baseUrlv2+`/api/v1/superadmin/reports/${reportId}/users/grant/`, tempObj)
+      .pipe(
+        catchError(err => this.errorHandler(err))
+      )
+    }
+
+    superadminInviteExternalUserToReport(payload: any): Observable<any>{
+      let load = this.encrypt.encrypt(JSON.stringify(payload))
+      let tempObj = {payload: load}
+      return this.http.post<any>(this.baseUrlv2+`/api/v1/superadmin/user-invite/`, tempObj)
+      .pipe(
+        catchError(err => this.errorHandler(err))
+      )
+    }
+
+    superadminGetReportGroupAccess(reportId: string): Observable<any>{
+      return this.http.get<any>(this.baseUrlv2+`/api/v1/superadmin/reports/${reportId}/group-members/`)
+      .pipe(
+        catchError(err => this.errorHandler(err))
+      )
+    }
+
+    superadminRevokeGroupReportAccess(reportId: string, payload: any): Observable<any>{
+      let load = this.encrypt.encrypt(JSON.stringify(payload))
+      let tempObj = {payload: load}
+      return this.http.patch<any>(this.baseUrlv2+`/api/v1/superadmin/reports/${reportId}/groups/revoke/`, tempObj)
+      .pipe(
+        catchError(err => this.errorHandler(err))
+      )
+    }
+
+    superadminGrantGroupReportAccess(reportId: string, payload: any): Observable<any>{
+      let load = this.encrypt.encrypt(JSON.stringify(payload))
+      let tempObj = {payload: load}
+      return this.http.patch<any>(this.baseUrlv2+`/api/v1/superadmin/reports/${reportId}/groups/grant/`, tempObj)
+      .pipe(
+        catchError(err => this.errorHandler(err))
+      )
+    }
+
     superadminGetGroupMembers(groupId: string): Observable<any>{
       return this.http.get<any>(this.baseUrlv2+`/api/v1/superadmin/groups/${groupId}/members`)
       .pipe(

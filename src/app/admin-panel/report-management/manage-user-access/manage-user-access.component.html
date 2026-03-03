@@ -1,0 +1,80 @@
+<div class="root">
+    <div class="body">
+        <div class="top-wrapper">
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+                <span class="popup-header">Manage User Access</span>
+                <span style="font-size: 12px; color: var(--text-color);">
+                    Report: <strong>{{report.reportname}}</strong>
+                </span>
+            </div>
+            <i class="ph-duotone ph-x cancel" (click)="close()"></i>
+        </div>
+
+        <!-- Current Access List -->
+        <div class="section">
+            <div class="section-title">Users with Access</div>
+
+            <div class="empty-hint" *ngIf="accessList.length === 0">
+                No users currently have access to this report.
+            </div>
+
+            <div class="user-row" *ngFor="let access of accessList">
+                <div class="user-info">
+                    <div class="avatar">{{(access.userId?.useremail || 'U')[0].toUpperCase()}}</div>
+                    <div class="user-details">
+                        <span class="user-email">{{access.userId?.useremail || '—'}}</span>
+                        <span class="user-expiry" *ngIf="access.expiresAt">
+                            Expires: {{access.expiresAt | date:'mediumDate'}}
+                        </span>
+                    </div>
+                </div>
+                <button mat-icon-button color="warn" [disabled]="revokingUserId === (access.userId?._id || access.userId)"
+                    (click)="revokeAccess(access)" matTooltip="Revoke access">
+                    <i class="ph-bold ph-trash" style="font-size: 16px;"
+                        *ngIf="revokingUserId !== (access.userId?._id || access.userId)"></i>
+                    <app-button-loader
+                        *ngIf="revokingUserId === (access.userId?._id || access.userId)"></app-button-loader>
+                </button>
+            </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <!-- Add User Section -->
+        <div class="section">
+            <div class="section-title">Add User to Report</div>
+
+            <div class="search-wrap">
+                <div class="admin-table-search">
+                    <i class="ph ph-magnifying-glass search-icon"></i>
+                    <input type="text" placeholder="Search by email..." [(ngModel)]="searchEmail"
+                        (ngModelChange)="onSearchChange()" style="font-size: 13px;">
+                    <app-loader *ngIf="loadingUsers" style="transform: scale(0.45); margin-left: auto;"></app-loader>
+                </div>
+                <div class="dropdown-results" *ngIf="filteredUsers.length > 0">
+                    <div class="dropdown-item" *ngFor="let user of filteredUsers" (click)="selectUser(user)">
+                        <i class="ph ph-user-circle" style="font-size: 16px;"></i>
+                        <span>{{user.useremail || user.email}}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="selected-user-card" *ngIf="selectedUser">
+                <div class="user-info" style="flex: 1;">
+                    <div class="avatar">{{(selectedUser.useremail || 'U')[0].toUpperCase()}}</div>
+                    <span class="user-email">{{selectedUser.useremail || selectedUser.email}}</span>
+                </div>
+                <div class="duration-row">
+                    <label class="field-label">Duration (days)</label>
+                    <mat-form-field appearance="outline" style="font-size: 12px; width: 120px;" class="custom-form-field">
+                        <input matInput type="number" [(ngModel)]="durationInDays" min="1" placeholder="e.g. 7">
+                    </mat-form-field>
+                </div>
+                <button mat-flat-button color="primary" (click)="grantAccess()" [disabled]="grantLoading">
+                    <span *ngIf="!grantLoading">Grant Access</span>
+                    <app-button-loader *ngIf="grantLoading"></app-button-loader>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
