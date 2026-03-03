@@ -1,0 +1,57 @@
+.loader-8 .line{
+    width: 4px;
+    margin: 0 14px;
+    position: absolute;
+    border-radius: 5px;
+    bottom: 0;
+    background: -webkit-gradient(linear, left top, left bottom, from(#5fdbc0), to(#24b495));
+    background: -webkit-linear-gradient(top, #5fdbc0, #24b495);
+    background: -o-linear-gradient(top, #5fdbc0, #24b495);
+    background: linear-gradient(to bottom, #5fdbc0, #24b495);
+}
+
+.loader-button {
+    position: relative;
+    width: 60px;
+    height: 20px;
+    border-radius: 50%;
+    // margin: 75px;
+    display: inline-block;
+    // vertical-align: middle;
+}
+
+.loader-8 .line1 {
+    left: 2;
+    -webkit-animation: line-grow-button 0.5s ease alternate infinite;
+    animation: line-grow-button 0.5s ease alternate infinite;
+}
+
+.loader-8 .line2 {
+    left: 7px;
+    -webkit-animation: line-grow-button 0.5s 0.2s ease alternate infinite;
+    animation: line-grow-button 0.5s 0.2s ease alternate infinite;
+}
+
+.loader-8 .line3 {
+    left: 15px;
+    -webkit-animation: line-grow-button 0.5s 0.4s ease alternate infinite;
+    animation: line-grow-button 0.5s 0.4s ease alternate infinite;
+}
+
+@-webkit-keyframes line-grow-button {
+    0% {
+        height: 0;
+    }
+    100% {
+        height: 50%;
+    }
+}
+
+@keyframes line-grow-button {
+    0% {
+        height: 0;
+    }
+    100% {
+        height: 50%;
+    }
+}

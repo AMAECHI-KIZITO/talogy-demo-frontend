@@ -1,0 +1,11 @@
+<div class="root-wrap">
+    <div class="left-wrap">
+        <div class="menu-wrap" *ngFor="let item of itemList" [routerLink] = item.route routerLinkActive="active-list-item">
+            <i [class]=item.icon class="menu-icon"></i>
+            <span class="menu-name">{{item.name}}</span>
+        </div>
+    </div>
+    <div class="right-wrap">
+        <router-outlet></router-outlet>
+    </div>
+</div>

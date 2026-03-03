@@ -1,0 +1,86 @@
+<div class="root-wrap">
+    <div class="top-head">
+        <div class="getting-started">Getting Started Has Never Been Easier</div>
+        <div class="flow-wrap">
+            <div class="create-home">
+                <div class="head-wrap">
+                    <span class="head-num">1</span>
+                    <span class="head-text">Create a Connector</span>
+                    <span class="head-info">
+                        Simply choose a Data Source from our catalogue of wide-ranging sources such as Databases, APIs, and Cloud Services to effortlessly set up a connection.
+                    </span>
+                </div>
+                <img src="../../../assets/newbrandimg/createconnector.svg" alt="" class="head-img">
+                <div class="create-wrap" (click)="gotoConnector()">
+                    <span>Create a Connector</span>
+                    <i class="ph ph-arrow-right"></i>
+                </div>
+            </div>
+            <div class="create-home">
+                <div class="head-wrap">
+                    <span class="head-num">2</span>
+                    <span class="head-text">Create Report</span>
+                    <span class="head-info" style="width: 300px;">
+                        Select from a list of Connectors you have created to generate pre-built Data Dashboards and Reports that best suit your needs.
+                    </span>
+                </div>
+                <img src="../../../assets/newbrandimg/createreport.svg" alt="" class="head-img">
+                <div class="create-wrap" (click)="gotoReport()">
+                    <span>Create a Report</span>
+                    <i class="ph ph-arrow-right"></i>
+                </div>
+            </div>
+            <div class="create-home">
+                <div class="head-wrap">
+                    <span class="head-num">3</span>
+                    <span class="head-text">View your Report</span>
+                    <span class="head-info">
+                        Access your Embedded Analytics workspace and gain instant insights into your data. Explore interactive visualizations that help you understand trends and patterns at a glance.
+                    </span>
+                </div>
+                <img src="../../../assets/newbrandimg/viewreport.svg" alt="" class="head-img">
+                <div class="create-wrap" (click)="viewReport()">
+                    <span>Go to Reports</span>
+                    <i class="ph ph-arrow-right"></i>
+                </div>
+            </div>
+        </div>
+        
+       
+    </div>
+    <div class="bottom-head">
+        <div class="card-wrap1" (click)="goToDemo()">
+            <div class="info-wrap">
+                <span class="demo-text">Template Reports</span>
+                <span class="demo-info">Unlock vital insights faster with our pre-built reports tailored for your business without the hassle of starting from scratch.</span>
+            </div>
+            <div class="demo-button">
+                <span>Check out our template reports</span>
+                <i class="ph ph-arrow-right"></i>
+            </div>
+            
+        </div>
+        <a class="card-wrap2" (click)="trackContact()" style="text-decoration: none; color: white;" href="https://datae.ae/contact-us/" target="_blank">
+            <div class="info-wrap">
+                <span class="demo-text">Contact Us</span>
+                <span class="demo-info">Have any Questions or need Personalized Support? Reach out to us anytime – we’re here to assist you!</span>
+            </div>
+            <div class="demo-button">
+                <span>Contact the team today</span>
+                <i class="ph ph-arrow-right"></i>
+            </div>
+            
+        </a>
+        <a class="card-wrap3" (click)="trackWebsite()" style="text-decoration: none; color: white;" href="https://datae.ae/" target="_blank">
+            <div class="info-wrap">
+                <span class="demo-text">Datae Website</span>
+                <span class="demo-info">Explore our website to see what we’re up to. Stay informed about the latest updates, tutorials, and success stories showcasing how Datae is empowering businesses like yours.</span>
+            </div>
+            <div class="demo-button">
+                <span>Go to Datae Website</span>
+                <i class="ph ph-arrow-right"></i>
+            </div>
+            
+        </a>
+    </div>
+</div>

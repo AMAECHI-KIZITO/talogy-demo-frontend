@@ -1,0 +1,62 @@
+<div class="root">
+    <div *ngIf="formLoading"
+        style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 20px auto; height: 30vh;">
+        <app-loader></app-loader>
+        <div style="font-size: 14px; margin-top: 10px; font-weight: 500; color: var(--primary-color);">
+            Please wait a moment...
+        </div>
+        <!-- <div style="font-size: 15px; margin-top: 20px; font-weight: 600; color: var(--primary-color);">
+            We are preparing your report to be sent to your email...
+        </div> -->
+    </div>
+
+    <div class="body authorize-body" *ngIf="showSuccess">
+        <img src="assets/newbrandimg/ph_check-circle-duotone.svg" alt="" class="auth-logo">
+        <div class="auth-message">
+            <div class="auth-head">Sharing Completed.</div>
+            <span class="auth-info">
+                You have successfully shared this report with <b>{{form.get('email')?.value}}</b>.
+            </span>
+            <div class="mt-2 flex-center">
+                <button mat-flat-button class="flat" (click)="close()">Close</button> &nbsp; &nbsp;
+            </div>
+        </div>
+    </div>
+
+    <div class="body authorize-body" *ngIf="showFailure">
+        <img src="assets/newbrandimg/ph_error-duotone.svg" alt="" class="auth-logo">
+        <div class="auth-message">
+            <div class="auth-head" style="color: crimson;">Sharing failed.</div>
+            <span class="auth-info">
+                Error Sharing report with <b>{{form.get('email')?.value}}</b>. Please retry...
+            </span>
+            <div class="mt-2 flex-center">
+                <button mat-flat-button class="flat" (click)="close()">Close</button> &nbsp; &nbsp;
+            </div>
+        </div>
+    </div>
+
+    <div class="body" *ngIf="!showSuccess && !showFailure && !formLoading">
+        <div class="top-wrapper">
+            <div class="popup-wrap">
+                <span class="popup-header">Share Report</span>
+            </div>
+            <i class="ph-duotone ph-x cancel" (click)="close()"></i>
+        </div>
+
+        <form class="form-wrapper form" [formGroup]="form">
+            <div>Receivers Email</div>
+            <mat-form-field appearance="outline" style="margin-bottom: 10px;">
+                <input type="email" formControlName="email" matInput>
+            </mat-form-field>
+
+            <div class="submit-wrap">
+                <button mat-flat-button style="width: 100%;" color="primary" [disabled]="form.invalid || formLoading"
+                    (click)="share()">
+                    <span class="btn-text" *ngIf="!formLoading">Submit</span>
+                    <app-button-loader *ngIf="formLoading"></app-button-loader>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,34 @@
+.fullscreen {
+    width: 100%;
+    height: 100vh;
+
+    .view-top {
+        background: #0457bc26 !important;
+        padding: 10px;
+        display: flex;
+        justify-content: flex-end;
+        position: relative;
+    }
+
+    .full-body {
+        background-color: white;
+        padding: 20px;
+    }
+}
+
+.cover{
+    height: 90vh;
+    width: 100%;
+}
+
+.time{
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #0B396D;
+    position: absolute;
+    left: 2%;
+    top: 35%;
+}

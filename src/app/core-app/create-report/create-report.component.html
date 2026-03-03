@@ -1,0 +1,40 @@
+<div class="root-wrap">
+    <div class="header-wrapper">
+        <div class="text-wrapper">
+            <span class="data-source">Create and manage report from single or multiple connector</span>
+            <span class="semi-text">Easy implementation in just a few clicks, Complete end-to-end automation</span>
+        </div>
+
+        <!-- <div>
+            <div class="table-search">
+                <div matPrefix class="search-icon">
+                    <i class="ph ph-magnifying-glass"></i>
+                </div>
+                <input type="text" matInput placeholder="Search" autofocus [(ngModel)]="searchKey"
+                (keyup)="applyFilters()" style="font-size: small;">
+            </div>
+        </div> -->
+
+    </div>
+    <div class="report-wrapper custom-scroll-bar">
+        <div *ngFor="let item of finalTemplate" class="create" (click)="onItemClick(item)">
+            <!-- <div [class]="item.instyle" (click)="onItemClick(item)">
+                <div class="head-set">
+                    <span class="name-set">{{item.name}}</span>
+                </div>
+            </div> -->
+            <div class="create-name">{{item.name}}</div>
+            <img [src]="item.image" alt="" class="image-logo">
+            <div class="create-btn">Create Report</div>
+        </div>
+
+        <div class="demo-set" (click)="requestDemo()">
+            <div class="inner-set">
+                <i class="ph ph-plus" style="font-size: 35px; color: white;"></i>
+            </div>
+            <span class="request-report">Request Report</span>
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,16 @@
+<div class="body">
+    <div>
+        <div style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
+            <img src="/assets/newbrandimg/ph_question-duotone.svg" alt="" style="width: 15%; margin-bottom: 10px;">
+            <div class="info">Are you sure you want to delete this connector?</div>
+        </div>
+        
+        <div style="display: flex; flex-direction: column; justify-content: center; margin-top: 20px; align-items: center;">
+            <button mat-flat-button color="warn" (click)="connect()" [disabled] = "loading" style="width: 50%;">
+                <span *ngIf="!loading" class="btn-text">Yes, Delete</span>
+                <app-button-loader *ngIf="loading"></app-button-loader>
+            </button>
+            <button mat-button style="color: var(--header-color); width: 50%; margin-top: 10px;" (click)="close()">Cancel</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,80 @@
+@import '../../../assets/scss/mixin.scss';
+
+.root {
+    margin: 0;
+}
+
+.flex {
+    display: flex;
+    // background-color: aliceblue;
+    // padding: 0.6rem;
+    // padding-bottom: 0;
+    // border-bottom: 1px solid #eee;
+    padding: 0;
+}
+
+.icon {
+    height: 20px;
+    width: 20px;
+    font-size: 20px;
+
+}
+
+.breadcrumb {
+    display: flex;
+    align-items: center;
+
+    // margin-left: 5px;
+    &_link {
+
+        color: #353D42;
+        font-size: 25px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        letter-spacing: -0.5px;
+        text-decoration: none;
+        text-transform: capitalize;
+
+
+
+        @include for-phone-only {
+            font-size: 14px;
+            margin-left: 0px;
+        }
+
+        @include for-smaller-phone-only {
+            font-size: 12px;
+            margin: 0px;
+        }
+    }
+
+}
+
+.bC {
+    display: flex;
+    flex-direction: column;
+}
+.home{
+    margin-top: 5px;
+    color: #86A1B1;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-decoration: none;
+    text-transform: capitalize;
+}
+.small {
+    margin-top: 5px;
+    color: #353D42;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-decoration: none;
+    text-transform: capitalize;
+}
+.link-wrap{
+    display: flex;
+}

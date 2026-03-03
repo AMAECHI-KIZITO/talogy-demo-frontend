@@ -1,0 +1,92 @@
+<div class="root">
+    <div class="body authorize-body" *ngIf="showSuccess">
+        <img src="assets/newbrandimg/ph_check-circle-duotone.svg" alt="" class="auth-logo">
+        <div class="auth-message">
+            <div class="auth-head">Process Completed.</div>
+            <span class="auth-info">
+                {{this.successmsg}}
+            </span>
+            <div class="mt-2 flex-center">
+                <button mat-flat-button class="flat" (click)="closeSuccess()">Close</button> &nbsp; &nbsp;
+            </div>
+        </div>
+    </div>
+    <div class="body" *ngIf="!showSuccess">
+        <div class="top-wrapper">
+            <div class="popup-wrap">
+                <span class="popup-header" *ngIf="selectedRow.check === 'new'">Invite a User</span>
+                <span class="popup-header" *ngIf="selectedRow.check === 'edit'">Update User Roles</span>
+            </div>
+            <i class="ph-duotone ph-x cancel" (click)="close()"></i>
+        </div>
+        <form [formGroup]="form">
+
+            <div class="mt-1" *ngIf="selectedRow.check === 'edit'">
+                <label>Email</label>
+                <div class="usernameField">{{selectedRow.row.userEmail}}</div>
+            </div>
+
+            <div class="mt-1" *ngIf="selectedRow.check === 'edit'">
+                <label>Full Name</label>
+                <div class="usernameField">{{selectedRow.row.userName}}</div>
+            </div>
+           
+
+            <div class="mt-1" *ngIf="selectedRow.check === 'new'">
+                <label for="altcat">Email Address <sup style="color: red;">*</sup></label>
+                <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                    <input type="email" formControlName= "email" matInput placeholder="Enter Email">
+                </mat-form-field>
+            </div>
+
+            <div class="mt-1" *ngIf="selectedRow.check === 'new'">
+                <label for="altcat">Full Name <sup style="color: gray;">(optional)</sup></label>
+                <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                    <input type="text" formControlName= "fullname" matInput placeholder="Enter Full name">
+                </mat-form-field>
+            </div>
+           
+
+            <div *ngIf="selectedRow.check === 'edit'">
+                <label for="altcat">User Role <sup style="color: red;">*</sup></label>
+                <mat-form-field floatLabel="never" style="font-size: small;" class="custom-form-field"
+                    appearance="outline">
+                    <span *ngIf="roleloading" matPrefix>
+                        <mat-progress-spinner color="primary" diameter="18" mode="indeterminate">
+                        </mat-progress-spinner>
+                    </span>
+                    <mat-select placeholder="User Role" formControlName="updaterole" style="font-size: small;">
+                        <div class="custom-dropdown-search">
+                            <div class="flex-btw">
+                                <input #searchOrg placeholder="Search" type="text" class="selection-search"
+                                    (keydown)="$event.stopPropagation()" (keyup)="onKey(searchOrg.value)">
+                                <button mat-icon-button [ngClass]="{hideElement: searchOrg.value == ''}"
+                                    (click)="searchOrg.value=''; reset()" matSuffix>
+                                    <mat-icon style="font-size: 15px;">close</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="custom-dropdown-options">
+                            <mat-option style="background-color: whitesmoke;" *ngIf="roleList.length === 0">
+                                --Empty--
+                            </mat-option>
+                            <mat-option [value]="type.roleName" *ngFor="let type of roleList">
+                                {{type.roleName}}
+                            </mat-option>
+                        </div>
+
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+           
+            <div class="submit-wrap">
+                <button mat-flat-button style="width: 100%;" color="primary" [disabled]="form.invalid || loading" (click)="submit()">
+                    <span class="btn-text" *ngIf="!loading">{{ selectedRow.check == 'edit' ? "Update" : "Invite"}}</span>
+                    <app-button-loader *ngIf="loading"></app-button-loader>
+                    
+                </button>
+            </div>
+        </form> 
+    </div>
+</div>

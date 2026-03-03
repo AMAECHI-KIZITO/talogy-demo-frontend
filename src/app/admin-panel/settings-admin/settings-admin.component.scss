@@ -1,0 +1,41 @@
+@import '../../../assets/scss/mixin.scss';
+.root{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+.top-bar{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+.top-head{
+    color: var(--n-grey-70, #4F566B);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: -0.21px;
+}
+.add{
+    color: #FFF;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-left: 5px;
+}
+.body-wrap{
+    display: flex;
+    padding: 20px;
+    flex-direction: column;
+    gap: 20px;
+    align-self: stretch;
+    border-radius: 10px;
+    border: 1px solid var(--n-grey-30, #D9DCE1);
+    background: #FFF;
+    min-height: 75vh;
+}

@@ -1,0 +1,53 @@
+<div class="admin-root">
+    <div class="admin-topbar">
+        <div class="logo-wrap">
+            <img src="assets/newbrandimg/talogy-logo-col.png" class="logofull" />
+            <div class="admin">Admin</div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <div class="plan-body-two" (click)="goBack()">
+                <!-- <img src="../../assets/svg/ph_info-duotone.svg" alt=""> -->
+                <i class="ph ph-user-circle"></i>
+                <div class="current-plan">Go to App</div>
+            </div>
+
+            <div class="acc1" [matMenuTriggerFor]="menu">{{getInitials(name)}}</div>
+            <mat-menu #menu="matMenu" class="menu" style="padding: 20px;" xPosition="before" yPosition="below">
+                <div class="acc-wrap">
+                    <div class="acc">
+
+                        <div class="acc2">
+                            <span class="acc3">{{name}}</span>
+                            <span class="acc4">{{username}}</span>
+                        </div>
+                    </div>
+                    <!-- <button mat-menu-item routerLink="/app/settings" class="acc5">Profile settings</button> -->
+                    <mat-divider></mat-divider>
+                </div>
+                <button mat-menu-item (click)="loginType == 'google' ? signout() : logout()"
+                    style="color: var(--text-color); display: flex; align-items: center; justify-content: center; color: red;">
+                    <i class="ph ph-sign-out"></i>
+                    <span style="margin-left: 5px;">Logout</span>
+                </button>
+            </mat-menu>
+        </div>
+
+    </div>
+    <div class="admin-body">
+        <div class="left-body">
+            <mat-nav-list *ngFor="let item of menuList">
+                <a [routerLink]="item.link" class="link" [matTooltip]="item.name" routerLinkActive="active-list-item">
+                    <i [class]="item.icon" routerLinkActive="iconActive"></i>
+                    <span class="menu-name" routerLinkActive="nameActive">
+                        {{item.name}}
+                    </span>
+                </a>
+            </mat-nav-list>
+        </div>
+        <div class="right-body">
+            <router-outlet></router-outlet>
+        </div>
+
+    </div>
+</div>

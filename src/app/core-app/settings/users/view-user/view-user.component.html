@@ -1,0 +1,60 @@
+<div class="root">
+    <div class="body">
+        <div class="top-wrapper">
+            <div style="display: flex; flex-direction: column; gap: 2px;">
+                <span class="popup-header">User Report Access</span>
+                <span style="font-size: 12px;">These are the reports this user has access to</span>
+            </div>
+            <i class="ph-duotone ph-x cancel" (click)="close()"></i>
+        </div>
+
+        <div>
+            <div class="admin-table-search">
+                <div matPrefix class="search-icon">
+                    <i class="ph ph-magnifying-glass"></i>
+                </div>
+                <input type="text" matInput placeholder="Search User" [(ngModel)]="searchUserKey"
+                    style="font-size: small;" (keyup)="filters()">
+            </div>
+            <div class="flex-center" style="height: 40vh;" *ngIf="reportList.length === 0 && !errorList && !loading">
+                <div class="empty-root">
+                    <img src="assets/svg/accessempty.svg" style="width: 30%;" alt="empty state image">
+                    &nbsp;
+                    <div class="empty-state-header">No report has been granted to this user</div>
+                </div>
+            </div>
+
+            <div class="flex-center" style="height: 40vh;" *ngIf="list.length === 0 && reportList.length && !errorList && !loading">
+                <div class="empty-root">
+                    <img src="assets/svg/reportempty.svg" style="width: 30%;" alt="empty state image">
+                    &nbsp;
+                    <div class="empty-state-header" style="font-size: 14px;">We couldn't find any report matching your search</div>
+                </div>
+            </div>
+            <div class="error-block" style="height: 40vh;" *ngIf="!loading && errorList">
+                <app-empty-list></app-empty-list>
+                <!-- <button mat-flat-button color="primary" style="padding: 0 60px;">
+                    Refresh
+                </button> -->
+            </div>
+            <!-- <div *ngIf="loading"
+                style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 40vh;">
+                <app-loader></app-loader>
+                <div style="font-size: 14px; margin-top: 10px; font-weight: 500; color: var(--primary-color);">
+                    Just wait a moment...</div>
+            </div> -->
+            <div *ngIf="loading">
+                <ngx-skeleton-loader appearance="line" count="6" [theme]="{height: '30px'}"></ngx-skeleton-loader>
+            </div>
+            <div *ngIf="!loading && list.length != 0" class="custom-scroll-bar" style="height: 40vh;">
+                <div *ngFor="let item of list" class="reportlists">
+                    <i class="ph-bold ph-caret-double-right lists"></i>
+                    <div>{{item.reportname}}<div>
+                  
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,57 @@
+<div class="root">
+    <div class="top-wrapper">
+        <div class="popups-wrap">
+            <span class="popup-header">{{row.reportname}}</span>
+            <span class="header-text">Details of the report</span>
+        </div>
+        <i class="ph-duotone ph-x cancel" (click)="close()"></i>
+    </div>
+
+    <div style="margin-top: 20px; height: 20vh" class="custom-scroll-bar">
+        <div *ngIf="loading"
+            style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 20px auto; height: 100%;">
+            <app-loader></app-loader>
+            <div style="font-size: 14px; margin-top: 10px; font-weight: 500; color: var(--primary-color);">
+                Just wait a moment...</div>
+        </div>
+
+        <div class="flex-center" style="height: 20vh;" *ngIf="!loading && !reportData">
+            <div class="empty-root">
+                <img src="assets/newbrandimg/empty-connector-list 1.png" class="empty-state-image"
+                    alt="empty state image">
+                &nbsp;
+                <div class="empty-state-header">No Data found</div>
+            </div>
+        </div>
+
+        <ng-container *ngIf="reportData">
+            <div>
+                <div style="padding: 10px 0;" class="flex-btw">
+                    <div>
+                        <div class="topic">Report Name:</div>
+                        <div class="desc">{{reportData.name}}</div>
+                    </div>
+                    <div style="cursor: pointer; padding: 5px;" [cdkCopyToClipboard]="reportData.name" (cdkCopyToClipboardCopied)="onCopy($event)">
+                        <i *ngIf="!marked" class="ph-bold ph-copy"></i>
+                        <i *ngIf="marked" class="ph ph-check"></i>
+                    </div>
+                </div>
+                <div style="padding: 10px 0;">
+                    <div class="topic">Type:</div>
+                    <div class="desc">{{reportData.type}}</div>
+                </div>
+                <div style="padding: 10px 0;">
+                    <div class="topic">Dedicated Capacity:</div>
+                    <div class="desc">{{reportData.isOnDedicatedCapacity}}</div>
+                </div>
+            </div>
+            <div class="flex-btw" style="gap: 20px;">
+                <button mat-flat-button color="primary" style="width: 50%;" (click)="enable()" [disabled]="buttonloading">
+                    <app-button-loader *ngIf="buttonloading"></app-button-loader>
+                    <span class="btn-text" *ngIf="!buttonloading">Enable</span>
+                </button>
+                <button mat-stroked-button color="warn" style="width: 50%;" (click)="close()">Close</button>
+            </div>
+        </ng-container>
+    </div>
+</div>

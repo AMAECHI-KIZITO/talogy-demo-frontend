@@ -1,0 +1,92 @@
+@import '../../../../assets/scss/mixin.scss';
+.root-wrap{
+    padding: 20px;
+}
+.header-wrap{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.header-name{
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--header-color);
+}
+.top-wrap{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.admin-table-search{
+    display: flex;
+    padding: 7px 15px;
+    align-items: center;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    width: fit-content;
+}
+.acc1 {
+    padding: 10px;
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    border: 2px solid #86a1b1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+  
+  }
+  
+::ng-deep .mat-form-field-wrapper {
+    padding-bottom: 0.5em;
+}
+
+input{
+    width: 100%;
+    border: none;
+    background-color: transparent;
+    &:focus-visible{
+        outline: none !important;
+    }
+}
+
+//table
+
+tr.mat-header-row {
+    height: 45px !important;
+    background: var(--body-color) !important;
+
+}
+
+.table {
+    border-radius: 10px !important;
+    border: none !important;
+    // box-shadow: 0 0 5px -2px #bfbfbf;
+}
+
+tr.mat-header-row {
+    height: 45px !important;
+    background: var(--n-grey-10, #F7FAFC) !important;
+}
+tr.mat-row{
+    height: 48px !important;
+}
+td.mat-cell{
+    border-bottom-color: rgb(0 0 0 / 4%) !important;
+}
+
+.mat-header-cell {
+    color: var(--text-color) !important;
+    text-transform: capitalize;
+    font-family: Proxima Nova !important;
+    font-weight: 600 !important;
+}
+
+.mat-cell {
+    color: var(--text-color) !important;
+    font-family: Proxima Nova !important;
+    font-size: 12px !important;
+
+}

@@ -1,0 +1,82 @@
+<div class="root">
+    <div class="body">
+        <div class="top-wrapper">
+            <div class="popup-wrap">
+                <span class="popup-header">Embed Reports</span>
+            </div>
+            <i class="ph-duotone ph-x cancel" (click)="close()"></i>
+        </div>
+        <form [formGroup]="form">
+            <div class="mt-1">
+                <label for="altcat">New Report Name <sup style="color: red;">*</sup></label>
+                <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                    <input type="text" formControlName="name" matInput placeholder="Enter Report Name">
+                </mat-form-field>
+            </div>
+
+            <!-- <div class="mt-1">
+                <label for="altcat">Organization <sup style="color: red;">*</sup></label>
+                <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                    <mat-spinner [diameter]="16" mode="indeterminate" color="primary" *ngIf="organizationLoading"></mat-spinner>
+                    <mat-select placeholder="--Select Organization--" formControlName="organization">
+                        <mat-option *ngFor="let org of organizationList" [value]="org.organizationId"
+                            (onSelectionChange)="getOwners(org.organizationId)">{{org.organizationName}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div> -->
+
+            <!-- <div class="mt-1">
+                <label for="altcat">Owner <sup style="color: red;">*</sup></label>
+                <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                    <mat-spinner [diameter]="16" mode="indeterminate" color="primary" *ngIf="ownerLoading"></mat-spinner>
+                    <mat-select #selected placeholder="--Select Owner--" formControlName="owner">
+                        <mat-select-trigger>{{selected?.value['userName'] | titlecase}}</mat-select-trigger>
+                        <mat-option *ngFor="let own of ownersList" [value]="own">
+                            <div>{{own.userName}} &nbsp; <span class="small">{{own.userRole}}</span></div>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div> -->
+
+            <div class="mt-1">
+                <label for="altcat">Report Type <sup style="color: red;">*</sup></label>
+                <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                    <mat-spinner [diameter]="16" mode="indeterminate" color="primary" *ngIf="reportLoading"></mat-spinner>
+                    <mat-select placeholder="--Select Report Type--" formControlName="type">
+                        <mat-option *ngFor="let report of reportTypes"
+                            [value]="report._id">{{report.reportTypeName}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="mt-1">
+                <label for="altcat">Workspace ID <sup style="color: red;">*</sup></label>
+                <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                    <input type="text" formControlName="workspace" matInput placeholder="Enter Workspace ID">
+                </mat-form-field>
+            </div>
+
+            <div class="mt-1">
+                <label for="altcat">Report ID <sup style="color: red;">*</sup></label>
+                <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                    <input type="text" formControlName="report" matInput placeholder="Enter Report ID">
+                </mat-form-field>
+            </div>
+
+            <div class="mt-1">
+                <label for="altcat">Report Dataset <sup style="color: red;">*</sup></label>
+                <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                    <input type="text" formControlName="dataset" matInput placeholder="Enter Dataset">
+                </mat-form-field>
+            </div>
+
+            <div class="submit-wrap">
+                <button mat-flat-button style="width: 100%;" color="primary" [disabled]="form.invalid || loading"
+                    (click)="submit()">
+                    <span class="btn-text" *ngIf="!loading">Embed Report</span>
+                    <app-button-loader *ngIf="loading"></app-button-loader>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

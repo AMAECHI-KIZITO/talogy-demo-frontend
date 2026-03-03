@@ -1,0 +1,166 @@
+<div class="top-bar" style="margin-bottom: 20px;">
+    <div class="flex-btw full-width">
+        <div class="top-head">New Report Workflow</div>
+        <!-- <div>
+            <button class="" mat-flat-button color="primary" (click)="cloneReport()">Embed Reports</button>
+        </div> -->
+    </div>
+</div>
+<div class="body-wrap">
+    <div style="display: flex; gap: 10px; align-items: center;">
+        <div class="admin-table-search">
+            <div matPrefix class="search-icon">
+                <i class="ph ph-magnifying-glass"></i>
+            </div>
+            <input type="text" matInput placeholder="Search Report" [(ngModel)]="searchKey" style="font-size: small;"
+                (keyup)="applyFilters()">
+        </div>
+        <button mat-icon-button class="icon-button" (click)="getReport()" matTooltip="refresh">
+            <i class="ph ph-arrows-clockwise"></i>
+        </button>
+    </div>
+
+    <div class="table-wrapper custom-scroll-bar" style="max-height: 55vh;">
+        <div *ngIf="loading"
+            style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 20px auto; height: 60vh;">
+            <app-loader></app-loader>
+            <div style="font-size: 14px; margin-top: 10px; font-weight: 500; color: var(--primary-color);">
+                Just wait a moment...</div>
+        </div>
+
+        <div class="flex-center" style="height: 40vh;" *ngIf="!loading && reportList.length === 0 && !reportError">
+            <div class="empty-root">
+                <img src="assets/svg/reportempty.svg" alt="empty state image">
+                &nbsp;
+                <div class="empty-state-header">No Report worflow found</div>
+                <!-- <div class="empty-semi-text">Create your first connector to start unlocking data insights
+                    </div> -->
+                <!-- <button mat-flat-button color="primary" style="margin-top: 20px;" (click)="gotoRoute()">
+                        <span class="btn-text">Create Connector</span>
+                    </button> -->
+
+            </div>
+        </div>
+        <div class="error-block" style="height: 60vh;" *ngIf="!loading && reportError">
+            <app-empty-list></app-empty-list>
+            <button mat-flat-button color="primary" style="padding: 0 60px;" (click)="getReport()">
+                Refresh
+            </button>
+        </div>
+        <div class="card-wrapper" [ngClass]="{hideElement: reportList?.length == 0 || loading}">
+            <div class="card-sub-wrap" *ngFor="let item of reportList; let row let i = index">
+                <div>
+                    <button mat-icon-button color="primary" [matMenuTriggerFor]="menu"
+                        style="display: flex; margin-left: auto;">
+                        <i class="ph ph-dots-three-circle-vertical" style="font-size: 30px;"></i>
+                    </button>
+                    <div class="card-text" style="margin: 10px 0;">
+                        <span class="header-text">Report Name</span>
+                        <span class="inner-text">{{row.reportname}}</span>
+                    </div>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item>
+                            <div style="display: flex; align-items: center; color: var(--header-color);">
+                                <i class="ph-duotone ph-eye"></i>
+                                <span style="font-size: 12px; margin-left: 10px;">View More</span>
+                            </div>
+                        </button>
+                    </mat-menu>
+                </div>
+                <div class="card-cont">
+                    <div class="card-text">
+                        <span class="header-text">Status</span>
+                        <span class="inner-text"
+                            [ngClass]="{'approve':row.status == 'enabled', 'pending': row.status == 'in progress'}">
+                            {{row.status}}
+                        </span>
+                    </div>
+                    <div class="card-text">
+                        <span class="header-text">Created at</span>
+                        <span class="inner-text">
+                            {{row.createdat | date : 'medium'}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table [ngClass]="{hideElement: reportList?.length == 0 || loading}" mat-table [dataSource]="listData"
+            class="full-width table mat-elevation-z8" aria-label="rows">
+
+            <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef>
+                    <mat-checkbox (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()">
+                    </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <mat-checkbox (click)="$event.stopPropagation()"
+                        (change)="$event ? selection.toggle(element) : null" [checked]="selection.isSelected(element)">
+                    </mat-checkbox>
+                    <!-- <mat-checkbox [(ngModel)]="element.checked" (change)="employeeInfo($event, element)"></mat-checkbox> -->
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Report Name</th>
+                <td mat-cell *matCellDef="let row">
+                    {{row.reportname}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="createdat">
+                <th mat-header-cell *matHeaderCellDef>Created At</th>
+                <td mat-cell *matCellDef="let row">
+                    <span style="color: #2489ED;">{{row.created_at | date : 'medium'}}</span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>Status</th>
+                <td mat-cell *matCellDef="let row">
+                    <span [ngClass]="{'approve':row.status == 'enabled', 'pending': row.status == 'in progress'}">
+                        {{row.status}}
+                    </span>
+
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let row; let i = index" align="center">
+                    <button mat-icon-button [matMenuTriggerFor]="menu" *ngIf="!row.loading">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <app-button-loader *ngIf="row.loading"></app-button-loader>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="openReport(row)">
+                            <div style="display: flex; align-items: center; color: var(--header-color);">
+                                <i class="ph-bold ph-eye"></i>
+                                <span style="font-size: 12px; margin-left: 10px;">View Detail</span>
+                            </div>
+                        </button>
+                        <button mat-menu-item (click)="enableReport(row)">
+                            <div style="display: flex; align-items: center; color: var(--header-color);">
+                                <i class="ph-bold ph-check-square"></i>
+                                <span style="font-size: 12px; margin-left: 10px;">Enable Report</span>
+                            </div>
+                        </button>
+                    </mat-menu>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky :true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+    <div class="btn-wrap-page">
+        <button mat-button (click)="previousReport()" [disabled]="reportCount <= 1">
+            <i class="ph-bold ph-caret-left"></i>
+            <span [ngClass]="{'nonext':reportCount <= 1 , 'next':reportCount > 1}">Previous</span>
+        </button>
+        <button mat-button (click)="nextReport()" [disabled]="isNext">
+            <span [ngClass]="{'nonext': isNext , 'next': !isNext}">Next</span>
+            <i class="ph-bold ph-caret-right"></i>
+        </button>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+<div class="root">
+    <div class="body authorize-body" *ngIf="showSuccess">
+        <img src="assets/newbrandimg/ph_check-circle-duotone.svg" alt="" class="auth-logo">
+        <div class="auth-message">
+            <div class="auth-head">Process Completed.</div>
+            <span class="auth-info">
+                {{this.successmsg}}
+            </span>
+            <div class="mt-2 flex-center">
+                <button mat-flat-button class="flat" (click)="closeSuccess()">Close</button> &nbsp; &nbsp;
+            </div>
+        </div>
+    </div>
+    <div class="body" *ngIf="!showSuccess">
+        <div class="top-wrapper">
+            <div class="popup-wrap">
+                <span class="popup-header">Connect External GBQ Warehouse</span>
+            </div>
+            <i class="ph-duotone ph-x cancel" (click)="close()"></i>
+        </div>
+        <div>
+            <div class="mt-1">
+                <label for="altcat">Service Account Key</label>
+                <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                    <textarea [rows]="20" matInput [(ngModel)]="serviceToken"></textarea>
+                </mat-form-field>
+            </div>
+
+            <div class="submit-wrap">
+                <button mat-flat-button style="width: 100%;" color="primary" [disabled]="!serviceToken || loading"
+                    (click)="submit()">
+                    <span class="btn-text" *ngIf="!loading">Authenticate</span>
+                    <app-primary-button-loader *ngIf="loading"></app-primary-button-loader>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,112 @@
+<div class="root">
+    <div class="body">
+        <div class="top-wrapper">
+            <div class="popup-wrap">
+                <div style="display: flex; align-items: center;">
+                    <div style="display: flex; align-items: center;">
+                        <img src="assets/svg/Googleanalytics.svg" alt="" class="popup-img">
+                        <i class="ph-duotone ph-plus" style="margin: 0 10px;"></i>
+                        <img src="assets/svg/mangentoads.svg" alt="" class="popup-img">
+                    </div>
+                   
+                    <div class="popup-header">Create Ecommerce Report</div>
+                </div>
+            </div>
+            <i class="ph-duotone ph-x cancel" (click)="close()"></i>
+        </div>
+
+        <form [formGroup]="form">
+            <div class="split-el">
+                <label for="name">Magento Connector <sup style="color: red;"> * </sup></label>
+                <mat-form-field appearance="outline" style="font-size: small;"
+                    class="custom-form-field">
+                    <span *ngIf="maloading" matPrefix>
+                        <mat-progress-spinner color="primary" diameter="18" mode="indeterminate">
+                        </mat-progress-spinner>
+                    </span>
+                    <mat-select placeholder="--Select connector--" formControlName="maName"
+                        style="font-size: small;">
+                        <div class="custom-dropdown-search">
+                            <div class="flex-btw-search">
+                                <input #search placeholder="Search" type="text" class="selection-search"
+                                    (keydown)="$event.stopPropagation()"
+                                    (keyup)="maonKey(search.value)">
+                                <button mat-icon-button [ngClass]="{hideElement: search.value == ''}"
+                                    (click)="search.value=''; mareset()" matSuffix>
+                                    <mat-icon style="font-size: 15px;">close</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="custom-dropdown-options">
+                            <mat-option style="background-color: whitesmoke;" *ngIf="malist.length === 0">
+                                --Empty--
+                            </mat-option>
+                            <mat-option [value]="type" *ngFor="let type of malist">
+                                {{type.designatedConnectorName.toLowerCase()}}
+                            </mat-option>
+                        </div>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <!-- <div class="split-el">
+                <label for="name">type <sup style="color: red;"> * </sup></label>
+                <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+                    <mat-button-toggle [value]="item.value"  [checked]="item.isChecked" (click)="setType(item.value)" style="font-size: 12px;" *ngFor="let item of setArray">{{item.name}}</mat-button-toggle>
+                </mat-button-toggle-group>
+            </div> -->
+            <div class="split-el">
+                <label for="name">GA4 Connector <sup style="color: red;"> * </sup></label>
+                <mat-form-field appearance="outline" style="font-size: small;"
+                    class="custom-form-field">
+                    <span *ngIf="galoading" matPrefix>
+                        <mat-progress-spinner color="primary" diameter="18" mode="indeterminate">
+                        </mat-progress-spinner>
+                    </span>
+                    <mat-select placeholder="--Select connector--" formControlName="gaName"
+                        style="font-size: small;">
+                        <div class="custom-dropdown-search">
+                            <div class="flex-btw-search">
+                                <input #search1 placeholder="Search" type="text" class="selection-search"
+                                    (keydown)="$event.stopPropagation()"
+                                    (keyup)="ga4onKey(search1.value)">
+                                <button mat-icon-button [ngClass]="{hideElement: search1.value == ''}"
+                                    (click)="search1.value=''; ga4reset()" matSuffix>
+                                    <mat-icon style="font-size: 15px;">close</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="custom-dropdown-options">
+                            <mat-option style="background-color: whitesmoke;" *ngIf="ga4list.length === 0">
+                                --Empty--
+                            </mat-option>
+                            <mat-option [value]="type" *ngFor="let type of ga4list">
+                                {{type.designatedConnectorName.toLowerCase()}}
+                            </mat-option>
+                        </div>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <!-- <div class="split-el">
+                <label for="schedule">Refresh Schedule</label>
+                <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                    <mat-select placeholder="--Select schedule--" formControlName="refresh">
+                        <mat-option [value]="type.value" *ngFor="let type of scheduleType">
+                            {{type.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div> -->
+     
+            <div class="submit-wrap">
+                <span class="loader-text" *ngIf="reportLoading">Creating report please wait...</span>
+                <button mat-flat-button color="primary" [disabled]="form.invalid || reportLoading"
+                    (click)="transformMultiple()">
+                    <span *ngIf="!reportLoading" class="btn-text">Create Report</span>
+                    <app-button-loader *ngIf="reportLoading"></app-button-loader>
+                </button>
+            </div>
+        </form>
+
+    </div>
+
+</div>

@@ -1,0 +1,28 @@
+<div class="root">
+    <div class="top-bar">
+        <span class="top-head">Connector Management</span>
+    </div>
+    <mat-tab-group animationDuration="0ms" class="body-wrap">
+        <mat-tab label="Basic Connectors">
+            <ng-template mat-tab-label>
+                Basic Connectors
+            </ng-template>
+            <ng-template matTabContent>
+               
+                <app-basic-connector></app-basic-connector>
+            </ng-template>
+
+        </mat-tab>
+        <mat-tab label="Custom Connectors">
+            <ng-template mat-tab-label>
+                Custom Connectors
+            </ng-template>
+            <ng-template matTabContent>
+
+                <app-custom-connector></app-custom-connector>
+            </ng-template>
+
+        </mat-tab>
+    </mat-tab-group>
+
+</div>

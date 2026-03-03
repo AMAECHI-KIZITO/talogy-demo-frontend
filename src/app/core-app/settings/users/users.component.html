@@ -1,0 +1,172 @@
+<div class="root-wrap">
+    <div class="header-wrap">
+        <span class="header-name">Users in this Organisation</span>
+        <button mat-flat-button color="primary" style="display: flex; align-items: center;" (click)=" addUser('', 'new')">
+            <i class="ph-bold ph-paper-plane-tilt"></i>
+            <span style="margin-left: 10px;">Invite a User</span>
+        </button>
+      
+    </div>
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 20px;">
+        <div class="admin-table-search">
+            <div matPrefix class="search-icon">
+                <i class="ph ph-magnifying-glass"></i>
+            </div>
+            <input type="text" matInput placeholder="Search" [(ngModel)]="searchKey" style="font-size: small;"
+                (keyup)="applyFilters()">
+        </div>
+        <button mat-icon-button class="icon-button" style="margin-left: 5px;" (click)="getUser()"
+        matTooltip="refresh">
+        <i class="ph ph-arrows-clockwise"></i>
+    </button>
+    </div>
+
+    <div class="table-wrapper custom-scroll-bar" style="max-height: 60vh; margin-top: 20px;">
+        <div *ngIf="loading" style="height: 60vh;">
+            <ngx-skeleton-loader appearance="line" count="8" [theme]="{height: '30px'}"></ngx-skeleton-loader>
+        </div>
+
+        <div class="flex-center" style="height: 60vh;" *ngIf="!loading && userList.length === 0 && !userError">
+            <div class="empty-root">
+                <img src="assets/newbrandimg/empty-connector-list 1.png" class="empty-state-image"
+                    alt="empty state image">
+                &nbsp;
+                <div class="empty-state-header">No User Created</div>
+                <div class="empty-semi-text">Create and manage your first user
+                </div>
+                <button mat-flat-button color="primary" style="margin-top: 20px;" (click)="getUser()">
+                    <span class="btn-text">Add New</span>
+                </button>
+
+            </div>
+        </div>
+        <div class="error-block" style="height: 60vh;" *ngIf="!loading && userError">
+            <app-empty-list></app-empty-list>
+            <button mat-flat-button color="primary" style="padding: 0 60px;" (click)="getUser()">
+                Refresh
+            </button>
+        </div>
+        <div class="card-wrapper" [ngClass]="{hideElement: userList?.length == 0 || loading}">
+            <div class="card-sub-wrap" *ngFor="let item of userList; let row let i = index">
+                <div>
+                    <button mat-icon-button color="primary" [matMenuTriggerFor]="menu"
+                        style="display: flex; margin-left: auto;">
+                        <i class="ph ph-dots-three-circle-vertical" style="font-size: 30px;"></i>
+                    </button>
+                    <div class="card-text" style="margin: 10px 0;">
+                        <span class="header-text">User</span>
+                        <span class="inner-text">
+                            <div style="display: flex; align-items: center; gap: 10px; margin: 5px 0;">
+                                <div class="acc1">{{getInitials(row.userName)}}</div>
+                                <span style="text-transform: capitalize;">{{row.userName}}</span>
+                            </div>
+                        </span>
+                    </div>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="viewUser(row)">
+                            <div style="display: flex; align-items: center; color: var(--header-color);">
+                                <i class="ph-bold ph-eye"></i>
+                                <span style="font-size: 12px; margin-left: 10px;">View User Report</span>
+                            </div>
+                        </button>
+                        <button mat-menu-item (click)="editUser(row, 'edit')">
+                            <div style="display: flex; align-items: center; color: var(--header-color);">
+                                <i class="ph-bold ph-pencil-simple"></i>
+                                <span style="font-size: 12px; margin-left: 10px;">Edit Role</span>
+                            </div>
+                        </button>
+                    </mat-menu>
+                </div>
+                <div class="card-cont">
+                    <div class="card-text">
+                        <span class="header-text">Email</span>
+                        <span class="inner-text">{{row.userEmail}}</span>
+                    </div>
+                    <div class="card-text">
+                        <span class="header-text">Role</span>
+                        <span class="inner-text">{{row.userRole}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table [ngClass]="{hideElement: userList?.length == 0 || loading}" mat-table [dataSource]="listData"
+            class="full-width table mat-elevation-z8" aria-label="rows">
+
+            <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef>
+                    <mat-checkbox (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()">
+                    </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <mat-checkbox (click)="$event.stopPropagation()"
+                        (change)="$event ? selection.toggle(element) : null" [checked]="selection.isSelected(element)">
+                    </mat-checkbox>
+                    <!-- <mat-checkbox [(ngModel)]="element.checked" (change)="employeeInfo($event, element)"></mat-checkbox> -->
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="user">
+                <th mat-header-cell *matHeaderCellDef>User</th>
+                <td mat-cell *matCellDef="let row">
+                    <div style="display: flex; align-items: center; gap: 10px; margin: 5px 0;">
+                        <div class="acc1">{{getInitials(row.userName)}}</div>
+                        <span style="text-transform: capitalize;">{{row.userName}}</span>
+                    </div>
+
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef>Email</th>
+                <td mat-cell *matCellDef="let row">
+                    <span style="text-transform: lowercase; color: #2489ED; text-decoration: underline;">
+                        {{row.userEmail}}
+                    </span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="role">
+                <th mat-header-cell *matHeaderCellDef>Role</th>
+                <td mat-cell *matCellDef="let row" style="text-transform: capitalize;">
+                    {{row.userRole}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let row; let i = index" align="center">
+                    <button mat-icon-button [matMenuTriggerFor]="menu">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="viewUser(row)">
+                            <div style="display: flex; align-items: center; color: var(--header-color);">
+                                <i class="ph-bold ph-eye"></i>
+                                <span style="font-size: 12px; margin-left: 10px;">View User Report</span>
+                            </div>
+                        </button>
+                        <button mat-menu-item (click)="editUser(row, 'edit')">
+                            <div style="display: flex; align-items: center; color: var(--header-color);">
+                                <i class="ph-bold ph-pencil-simple"></i>
+                                <span style="font-size: 12px; margin-left: 10px;">Edit Role</span>
+                            </div>
+                        </button>
+
+                        <!-- <button mat-menu-item>
+                            <div style="display: flex; align-items: center; color: var(--header-color);">
+                                <i class="ph-bold ph-trash"></i>
+                                <span style="font-size: 12px; margin-left: 10px;">Delete User</span>
+                            </div>
+                        </button> -->
+
+
+                    </mat-menu>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky :true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+</div>

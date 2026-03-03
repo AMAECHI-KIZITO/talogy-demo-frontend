@@ -1,0 +1,100 @@
+<div class="body">
+    <div class="top-wrapper">
+        <div class="popup-wrap">
+            <span class="popup-header">Configure Adsource Connector</span>
+        </div>
+        <i class="ph-duotone ph-x cancel" (click)="close()"></i>
+    </div>
+    <div class="list-cont">
+        <div class="list-wrap">
+            <div class="selectad">Select Ad Source</div>
+            <div class="main-wrap">
+                <div class="source-btn" *ngFor="let item of sourceList" (click)="changeSource(item.value)"
+                [ngClass]="{activeTab: active === item.value, disableTab: !item.active}">
+                    <img [src]="item.image" alt="" class="source-img">
+                    <span class="source-title">{{item.name}}</span>
+                </div>
+                <!-- <button mat-button class="source-wrap"
+                [ngClass]="{activeTab: active === item.name}" *ngFor="let item of sourceList"
+                 [disabled]="!item.active" (click)="changeSource(item.name)">
+                
+                 
+
+                </button> -->
+            </div>
+        </div>
+        <div class="list-wrap-right">
+            <div class="selectad">Choose a Connector from the list below</div>
+            <form [formGroup]="form" style="margin: 0;">
+                <!-- <label for="name">{{active}} Connector</label> -->
+                <div class="form-wrap">
+                    <mat-form-field disabled="!item.active" appearance="outline"
+                        style="font-size: small;" class="custom-form-field">
+                        <span *ngIf="loading" matPrefix>
+                            <mat-progress-spinner color="primary" diameter="18" mode="indeterminate">
+                            </mat-progress-spinner>
+                        </span>
+                        <mat-select [placeholder]="active" style="font-size: small;"
+                            formControlName="source_name">
+                            <div class="custom-dropdown-search">
+                                <div class="flex-btw-search">
+                                    <input #search placeholder="Search" type="text" class="selection-search"
+                                        (keydown)="$event.stopPropagation()" (keyup)="onKey(search.value)">
+                                    <button mat-icon-button [ngClass]="{hideElement: search.value == ''}"
+                                        (click)="search.value=''; reset()" matSuffix>
+                                        <mat-icon style="font-size: 15px;">close</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="custom-dropdown-options">
+                                <mat-option style="background-color: whitesmoke;" *ngIf="listFilter?.length === 0">
+                                    --Empty--
+                                </mat-option>
+                                <mat-option [value]="type" *ngFor="let type of listFilter">
+                                    {{type.designatedConnectorName}}
+                                    <!-- {{type.connectorname}} -->
+                                </mat-option>
+                            </div>
+                        </mat-select>
+                    </mat-form-field>
+                    <div style="margin-left: 10px;">
+                        <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="addSource()">
+                            <span style="color: white;" *ngIf="!loading">Add</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <div style="font-size: 14px; color: var(--header-color); font-weight: 600; margin: 10px 0;">Selected Connectors</div>
+            <div class="list-wrap2 custom-scroll-bar">
+                <div class="empty_img_wrap" *ngIf="showList.length === 0">
+                       <span class="empty">Empty</span> 
+                    </div>
+                <div *ngIf="showList.length !== 0">
+                    <div *ngFor="let item of showList">
+                        <div class="detail">
+                            <div style="display: flex; align-items: center;">
+                                <i class="ph-duotone ph-dots-six-vertical"></i>
+                                <span class="listinfo">{{item.name.designatedConnectorName}}
+                                </span>
+                                 <!-- <span class="listinfo">{{item.name.connectorname
+                                    }}
+                                </span> -->
+                            </div>
+                            <i class="ph-duotone ph-trash" style="color: var(--error-color); cursor: pointer;"
+                            (click)="remove(item)">
+                            </i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 10px; display: flex; justify-content: flex-end;">
+                <button mat-raised-button color="primary" [disabled]="showList.length == 0|| reportLoading"
+                    (click)="submitSource()">
+                    <span class="btn-text" *ngIf="!reportLoading">Create Report</span>
+                    <app-button-loader *ngIf="reportLoading"></app-button-loader>
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>

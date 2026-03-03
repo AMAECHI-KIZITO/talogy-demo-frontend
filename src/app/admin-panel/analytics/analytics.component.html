@@ -1,0 +1,216 @@
+<div class="root">
+    <div class="top-bar">
+        <span class="top-head">Analytics</span>
+    </div>
+
+    <div class="body-wrap">
+        <div class="grids">
+            <div class="flex-btw card">
+                <ng-container *ngIf="activeLoading">
+                    <ngx-skeleton-loader appearance="line" count="1" [theme]="{height: '50px'}"></ngx-skeleton-loader>
+                </ng-container>
+                <ng-container *ngIf="!activeLoading">
+                    <div>
+                        <div class="label">Active Users</div>
+                        <div class="value">{{activeUsersData.activeUsersCount | number}}</div>
+                    </div>
+                    <div class="view-c">
+                        <select [(ngModel)]="activeFilter" (change)="getActiveUsers(activeFilter)">
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="monthly">Monthly</option>
+                        </select>
+
+                        <i class="ph ph-eye mt-2 view" title="view more" (click)="openDetails('active_users')"></i>
+                    </div>
+                </ng-container>
+            </div>
+
+            <div class="flex-btw card">
+                <ng-container *ngIf="signupsLoading">
+                    <ngx-skeleton-loader appearance="line" count="1" [theme]="{height: '50px'}"></ngx-skeleton-loader>
+                </ng-container>
+
+                <ng-container *ngIf="!signupsLoading">
+                    <div>
+                        <div class="label">New User Sign Ups</div>
+                        <div class="value">{{signupsUsersData.totalSignups | number}}</div>
+                    </div>
+                    <div class="view-c">
+                        <select [(ngModel)]="signupsFilter" (change)="getUserSignups(signupsFilter)">
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="monthly">Monthly</option>
+                        </select>
+
+                        <i class="ph ph-eye mt-2 view" title="view more" (click)="openDetails('new_user')"></i>
+                    </div>
+                </ng-container>
+            </div>
+
+            <div class="flex-btw card">
+                <ng-container *ngIf="periodicLoading">
+                    <ngx-skeleton-loader appearance="line" count="1" [theme]="{height: '50px'}"></ngx-skeleton-loader>
+                </ng-container>
+
+                <ng-container *ngIf="!periodicLoading">
+                    <div>
+                        <div class="label">Reports Generated</div>
+                        <div class="value">{{periodicData.reportsGeneratedCount | number}}</div>
+                    </div>
+                    <div>
+                        <select [(ngModel)]="periodicFilter" (change)="getPeriodicReportsInsights(periodicFilter)">
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="monthly">Monthly</option>
+                        </select>
+                    </div>
+                </ng-container>
+            </div>
+
+            <div class="card">
+                <ng-container *ngIf="overallReportLoading">
+                    <ngx-skeleton-loader appearance="line" count="1" [theme]="{height: '50px'}"></ngx-skeleton-loader>
+                </ng-container>
+
+                <ng-container *ngIf="!overallReportLoading">
+                    <div class="label">Overall Total Reports generated</div>
+                    <div class="value">{{overallReportData.totalNumReports | number}}</div>
+                </ng-container>
+            </div>
+
+            <div class="card">
+                <ng-container *ngIf="overallReportLoading">
+                    <ngx-skeleton-loader appearance="line" count="1" [theme]="{height: '50px'}"></ngx-skeleton-loader>
+                </ng-container>
+
+                <ng-container *ngIf="!overallReportLoading">
+                    <div class="label">Average Reports Generated per User</div>
+                    <div class="value">{{overallReportData.avgReportGeneratedPerUser | number}}</div>
+                </ng-container>
+            </div>
+
+            <div class="card">
+                <ng-container *ngIf="organizationalLoading">
+                    <ngx-skeleton-loader appearance="line" count="1" [theme]="{height: '50px'}"></ngx-skeleton-loader>
+                </ng-container>
+
+                <ng-container *ngIf="!organizationalLoading">
+                    <div class="label">Total Organizations Signed Up</div>
+                    <div class="value">{{organizationalData.organizationSignupCount | number}}</div>
+                </ng-container>
+            </div>
+
+            <div class="card">
+                <ng-container *ngIf="organizationalLoading">
+                    <ngx-skeleton-loader appearance="line" count="1" [theme]="{height: '50px'}"></ngx-skeleton-loader>
+                </ng-container>
+
+                <ng-container *ngIf="!organizationalLoading">
+                    <div class="label">Active Organizations</div>
+                    <div class="value">{{organizationalData.activeOrganizationsCount | number}}</div>
+                </ng-container>
+            </div>
+
+            <div class="card">
+                <ng-container *ngIf="organizationalLoading">
+                    <ngx-skeleton-loader appearance="line" count="1" [theme]="{height: '50px'}"></ngx-skeleton-loader>
+                </ng-container>
+
+                <ng-container *ngIf="!organizationalLoading">
+                    <div class="label">Inactive Organizations</div>
+                    <div class="value">{{organizationalData.inactiveOrganizationsCount | number}}</div>
+                </ng-container>
+            </div>
+        </div>
+
+        <div class="grids-two">
+            <div class="card two">
+                <ng-container *ngIf="orgLoginLoading">
+                    <ngx-skeleton-loader appearance="line" count="1" [theme]="{height: '200px'}"></ngx-skeleton-loader>
+                </ng-container>
+
+                <ng-container *ngIf="!orgLoginLoading">
+                    <div class="flex-btw mb-1">
+                        <div class="label">Login Frequency</div>
+                        <div>
+                            <select [(ngModel)]="orgLoginFilter"
+                                (change)="getOrganizationLoginFrequency(orgLoginFilter)">
+                                <option *ngFor="let org of orgLoginList" [value]="org._id">{{org.orgName | titlecase}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </ng-container>
+                <div class="canvas-height" [ngClass]="{'hide': orgLoginLoading}">
+                    <canvas id="linecanvas">{{lineChart}}</canvas>
+                </div>
+            </div>
+
+            <div class="card two">
+                <ng-container *ngIf="orgUsersLoading">
+                    <ngx-skeleton-loader appearance="line" count="6"></ngx-skeleton-loader>
+                </ng-container>
+
+                <ng-container *ngIf="!orgUsersLoading">
+                    <div class="flex-btw mb-1">
+                        <div class="label">Active Users Per Organization</div>
+                        <div>
+                            <select [(ngModel)]="orgUsersFilter"
+                                (change)="getOrganizationalActiveUsers(orgUsersFilter)">
+                                <option value="daily">Daily</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="monthly">Monthly</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <table style="width: 100%;">
+                            <thead>
+                                <th>Organization</th>
+                                <th>Active Users</th>
+                                <th>Total Users</th>
+                                <th>Last Active Date</th>
+                            </thead>
+                            <tbody *ngFor="let org of orgUsersData">
+                                <tr>
+                                    <td>{{org.organizationName | titlecase}}</td>
+                                    <td>{{org.organizationActiveUsers | number}}</td>
+                                    <td>{{org.organizationActiveUsers + org.organizationInactiveUsers | number}}</td>
+                                    <td>{{org.lastActiveTimestamp == 'N/A' ? org.lastActiveTimestamp :
+                                        org.lastActiveTimestamp | date : 'mediumDate'}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </ng-container>
+            </div>
+
+            <div class="card two">
+                <ng-container *ngIf="overallReportLoading">
+                    <ngx-skeleton-loader appearance="line" count="1" [theme]="{height: '200px'}"></ngx-skeleton-loader>
+                </ng-container>
+
+                <ng-container *ngIf="!overallReportLoading">
+                    <div class="label mb-1">No. of Reports per Organization</div>
+                </ng-container>
+                <div class="canvas-height" [ngClass]="{'hide': overallReportLoading}">
+                    <canvas id="barcanvas">{{barChart}}</canvas>
+                </div>
+            </div>
+
+            <div class="card two">
+                <ng-container *ngIf="overallReportLoading">
+                    <ngx-skeleton-loader appearance="line" count="1" [theme]="{height: '200px'}"></ngx-skeleton-loader>
+                </ng-container>
+
+                <ng-container *ngIf="!overallReportLoading">
+                    <div class="label mb-1">Most Popular Report Templates</div>
+                </ng-container>
+                <div class="canvas-height" [ngClass]="{'hide': overallReportLoading}">
+                    <canvas id="stackedcanvas">{{stackedChart}}</canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

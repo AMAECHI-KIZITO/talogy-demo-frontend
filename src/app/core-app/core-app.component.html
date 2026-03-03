@@ -1,0 +1,293 @@
+<!-- <div class="trial-info" *ngIf="trial">
+    You are in the Free trial Mode
+</div> -->
+<mat-sidenav-container class="sidenav-container" autosize>
+    <mat-sidenav *ngIf="!hideSidebar" #drawer class="sidenav"
+        [style.width]="(isHandset$ | async) ? '220px' : drawerOpen ? '220px' : '60px'"
+        [style.boxShadow]="(isHandset$ | async) ? 'none' : drawerOpen ? 'none' : 'none' "
+        [ngClass]="(isHandset$ | async) ? 'showSection' : drawerOpen ? 'showSection' : 'hideSection' "
+        [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
+        [opened]="(isHandset$ | async) === false">
+        <!-- [style.borderRadius] = "(isHandset$ | async) ? '0px' : drawerOpen ? '0px' : '0px 25px 25px 0px' " -->
+        <mat-toolbar [style.padding-left]="drawerOpen ? '0px' : '0px' ">
+            <div class="logo-cover" *ngIf='drawerOpen'>
+                <img src="assets/newbrandimg/talogy-logo-col.png"
+                    class="logofull" />
+                <!-- <img *ngIf="brandLogo !== null" [src]="brandLogo" class="logofull" /> -->
+            </div>
+
+            <div *ngIf='!(isHandset$ | async)'>
+                <button class="fab_alt " [style.pointer-events]="isLocked ? 'none' : 'unset'"
+                    [style.left]="!drawerOpen ? '50px' : '205px'" mat-fab style="background: var(--bg-color);"
+                    (click)="drawerOpen = !drawerOpen">
+                    <mat-icon *ngIf='drawerOpen'>menu_open</mat-icon>
+                    <mat-icon *ngIf='!drawerOpen'>keyboard_arrow_right</mat-icon>
+
+                </button>
+
+            </div>
+        </mat-toolbar>
+
+        <mat-nav-list [ngClass]="{listOpen: drawerOpen, list: !drawerOpen}">
+            <div>
+                <div [ngClass]="{lnm: drawerOpen, snm: !drawerOpen}">
+
+                    <div>
+                        <ng-container *ngFor="let menu of appMenu">
+                            <a mat-list-item [routerLink]="menu.link" *ngIf="menu.free || isAnAdmin"
+                                (click)="trackMenu(menu.track)"
+                                [ngClass]="{longlist: drawerOpen, shortlist: !drawerOpen}"
+                                routerLinkActive="active-list-item"
+                                [ngStyle]="{'margin-bottom' : menu.name == 'Home' ? '20px' : 'inherit'}">
+                                <i class="{{menu.icon}}" [ngClass]="{longicon: drawerOpen, shorticon: !drawerOpen}"
+                                    routerLinkActive="iconActive"></i>
+                                <span class="menu-name" *ngIf="(isHandset$ | async) ? true : drawerOpen"
+                                    routerLinkActive="nameActive">
+                                    {{menu.name}}
+                                </span>
+                            </a>
+                        </ng-container>
+
+                        <!-- <a mat-list-item routerLink="/app/home" (click)="trackMenu('home')"
+                            [ngClass]="{longlist: drawerOpen, shortlist: !drawerOpen}"
+                            routerLinkActive="active-list-item" style="margin-bottom: 20px;">
+
+
+                            <i class="ph-fill ph-house" [ngClass]="{longicon: drawerOpen, shorticon: !drawerOpen}"
+                                routerLinkActive="iconActive"></i>
+
+                            <span class="menu-name" *ngIf="(isHandset$ | async) ? true : drawerOpen"
+                                routerLinkActive="nameActive">
+                                Home
+                            </span>
+                        </a> -->
+
+                        <!-- <a mat-list-item routerLink="/app/create-connector" (click)="trackMenu('create_connectors')"
+                            [ngClass]="{longlist: drawerOpen, shortlist: !drawerOpen}"
+                            routerLinkActive="active-list-item">
+                            <i class="ph-bold ph-plus" [ngClass]="{longicon: drawerOpen, shorticon: !drawerOpen}"
+                                routerLinkActive="iconActive"></i>
+
+                            <span class="menu-name" *ngIf="(isHandset$ | async) ? true : drawerOpen"
+                                routerLinkActive="nameActive">
+                                Create Connectors
+                            </span>
+                        </a> -->
+
+                        <!-- <a mat-list-item routerLink="/app/my-connectors" (click)="trackMenu('my_connectors')"
+                            [ngClass]="{longlist: drawerOpen, shortlist: !drawerOpen}"
+                            routerLinkActive="active-list-item">
+                            <i class="ph-bold ph-plug" [ngClass]="{longicon: drawerOpen, shorticon: !drawerOpen}"
+                                routerLinkActive="iconActive"></i>
+                            <span class="menu-name" *ngIf="(isHandset$ | async) ? true : drawerOpen"
+                                routerLinkActive="nameActive">
+                                My Connectors
+                            </span>
+
+                        </a> -->
+
+                        <!-- <a mat-list-item routerLink="/dashboard"
+                            [ngClass]="{longlist: drawerOpen, shortlist: !drawerOpen}"
+                            routerLinkActive="active-list-item">
+                            <i class="ph-bold ph-squares-four"
+                                [ngClass]="{longicon: drawerOpen, shorticon: !drawerOpen}"
+                                routerLinkActive="iconActive"></i>
+                            <span class="menu-name" *ngIf="(isHandset$ | async) ? true : drawerOpen"
+                            routerLinkActive="nameActive">
+                                My Dashboard
+                            </span>
+
+                        </a> -->
+
+                        <!-- <a mat-list-item routerLink="/app/create-report" (click)="trackMenu('create_report')"
+                            [ngClass]="{longlist: drawerOpen, shortlist: !drawerOpen}"
+                            routerLinkActive="active-list-item">
+                            <i class="ph-bold ph-file-plus" routerLinkActive="iconActive"
+                                [ngClass]="{longicon: drawerOpen, shorticon: !drawerOpen}"></i>
+                            <span class="menu-name" *ngIf="(isHandset$ | async) ? true : drawerOpen"
+                                routerLinkActive="nameActive">
+                                Create Report
+                            </span>
+                        </a>
+
+                        <a mat-list-item routerLink="/app/report" (click)="trackMenu('my_reports')"
+                            [ngClass]="{longlist: drawerOpen, shortlist: !drawerOpen}"
+                            routerLinkActive="active-list-item">
+                            <i class="ph-bold ph-presentation-chart" routerLinkActive="iconActive"
+                                [ngClass]="{longicon: drawerOpen, shorticon: !drawerOpen}"></i>
+                            <span class="menu-name" *ngIf="(isHandset$ | async) ? true : drawerOpen"
+                                routerLinkActive="nameActive">
+                                My Reports
+                            </span>
+                        </a> -->
+
+
+
+                    </div>
+                    <div *ngIf="isAnAdmin">
+                        <!-- <div class="soon" *ngIf="(isHandset$ | async) ? true : drawerOpen">In Beta</div>
+                        <a mat-list-item routerLink="/app/ai-search" (click)="trackMenu('datae_gpt')"
+                            [ngClass]="{longlist: drawerOpen, shortlist: !drawerOpen}"
+                            routerLinkActive="active-list-item">
+                            <i class="ph-duotone ph-chat-circle-dots" routerLinkActive="iconActive"
+                                [ngClass]="{longicon: drawerOpen, shorticon: !drawerOpen}"></i>
+                            <span class="menu-name" *ngIf="(isHandset$ | async) ? true : drawerOpen"
+                                routerLinkActive="nameActive">
+                                Datae GPT
+                            </span>
+                        </a> -->
+
+                        <!-- <a mat-list-item (click)="requestDestination('destination')"
+                            [ngClass]="{longlist: drawerOpen, shortlist: !drawerOpen}"
+                            routerLinkActive="active-list-item">
+                            <i class="ph-bold ph-map-pin" routerLinkActive="iconActive"
+                                [ngClass]="{longicon: drawerOpen, shorticon: !drawerOpen}"></i>
+                            <span class="menu-name" *ngIf="(isHandset$ | async) ? true : drawerOpen"
+                                routerLinkActive="nameActive" style="display: flex; align-items: center;">
+                                Destination
+                                <i class="ph ph-lock" style="margin-left: 10px;"></i>
+                            </span>
+
+                        </a> -->
+                    </div>
+                    <div style="margin-top: 20px;">
+
+                        <!-- <div class="mode-wrap"  *ngIf="(isHandset$ | async) ? true : !drawerOpen">
+                            <a mat-list-item [ngClass]="{longlist: drawerOpen, shortlist: !drawerOpen}" (click)="changeMode()"
+                                routerLinkActive="active-list-item">
+                                <i class="ph-bold ph-sun" style="margin-top: 8px;"
+                                    [ngClass]="{longicon: drawerOpen, shorticon: !drawerOpen, modeactive: lightmode == 'light'}"></i>
+
+                            </a>
+
+                            <a mat-list-item [ngClass]="{longlist: drawerOpen, shortlist: !drawerOpen}" (click)="changeDarkMode()"
+                                routerLinkActive="active-list-item" >
+                                <i class="ph-bold ph-moon" style="margin-top: 8px;"
+                                    [ngClass]="{longicon: drawerOpen, shorticon: !drawerOpen, modeactive: lightmode == 'dark'}"></i>
+
+                            </a>
+                        </div> -->
+
+
+                        <!-- <a mat-list-item href="https://datae.ae/documentation/" (click)="trackMenu('documentation')"
+                            [ngClass]="{longlist: drawerOpen, shortlist: !drawerOpen}"
+                            routerLinkActive="active-list-item">
+                            <i class="ph-bolder ph-file-text" routerLinkActive="iconActive"
+                                [ngClass]="{longicon: drawerOpen, shorticon: !drawerOpen}"></i>
+                            <span class="menu-name" *ngIf="(isHandset$ | async) ? true : drawerOpen"
+                                routerLinkActive="nameActive">
+                                Documentation
+                            </span>
+
+                        </a> -->
+
+                        <a mat-list-item routerLink="/app/settings" (click)="trackMenu('settings')"
+                            [ngClass]="{longlist: drawerOpen, shortlist: !drawerOpen}"
+                            routerLinkActive="active-list-item">
+                            <i class="ph-bold ph-gear" routerLinkActive="iconActive"
+                                [ngClass]="{longicon: drawerOpen, shorticon: !drawerOpen}"></i>
+                            <span class="menu-name" *ngIf="(isHandset$ | async) ? true : drawerOpen"
+                                routerLinkActive="nameActive">
+                                Settings
+                            </span>
+
+                        </a>
+
+                        <!-- <a mat-list-item href="https://datae.ae/contact-us/" (click)="trackMenu('contact')"
+                            [ngClass]="{longlist: drawerOpen, shortlist: !drawerOpen}"
+                            routerLinkActive="active-list-item">
+                            <i class="ph-bold ph-headset" routerLinkActive="iconActive"
+                                [ngClass]="{longicon: drawerOpen, shorticon: !drawerOpen}"></i>
+                            <span class="menu-name" *ngIf="(isHandset$ | async) ? true : drawerOpen"
+                                routerLinkActive="nameActive">
+                                Contact
+                            </span>
+
+                        </a> -->
+                    </div>
+
+                </div>
+            </div>
+
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content
+        [style.margin-left]="((isHandset$ | async) && !hideSidebar) ? '0px' : (drawerOpen && !hideSidebar)  ? '220px' : hideSidebar ? '0px' : '60px'"
+        class="root-cont">
+        <div class="tool-cont">
+            <div class="toolbar_content" *ngIf="!hideSidebar">
+                <button type="button" class="" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
+                    *ngIf="isHandset$ | async" style="color: var(--primary-color);">
+                    <mat-icon color='secondary' aria-label="Side nav toggle icon">menu</mat-icon>
+                </button>
+                <div class="bread-wrap">
+                    <div class="logo-cover" *ngIf='!drawerOpen'>
+                        <img *ngIf="brandLogo === null" src="assets/newbrandimg/datae-logo-inverted-full.png"
+                            class="logoshowfull" />
+                        <img *ngIf="brandLogo !== null" [src]="brandLogo" class="logoshowfull" />
+                    </div>
+                    <!-- <div>
+                        <i class="ph-duotone ph-arrow-left" style="color: var(--parent-link-color); cursor: pointer;"></i>
+                    </div> -->
+                    <app-breadcrumb></app-breadcrumb>
+                </div>
+
+                <div class="profile-wrap">
+                    <div class="plan-body-two" (click)="gotoCalendar()" *ngIf="isTrial">
+                        <img src="../../assets/svg/ph--calendar-dots-duotone.svg" alt="">
+                        <!-- <i class="ph-bold ph-calendar-dot"></i>                         -->
+                        <div class="current-plan-two">Book a call with us</div>
+                    </div>
+
+                    <!-- <div class="plan-body">
+                        <img src="../../assets/svg/ph_info-duotone.svg" alt="">
+                        <div class="current-plan">Your current plan: <span style="color: #0457BC;">{{trial}}</span>
+                        </div>
+                    </div> -->
+                    <div class="plan-body-two" *ngIf="admin != 'member' " (click)="goToAdmin()">
+                        <!-- <img src="../../assets/svg/ph_info-duotone.svg" alt=""> -->
+                         <i class="ph ph-user-circle"></i>
+                        <div class="current-plan">Go to Admin Portal</div>
+                    </div>
+
+                    <div class="mode-long" style="margin: 0 20px;">
+                        <a mat-list-item [ngClass]="{modeactive: lightmode == 'light'}" (click)="changeMode()"
+                            routerLinkActive="active-list-item" class="mode-link" matTooltip="ligh mode">
+                            <i class="ph-bold ph-sun" style="margin: 10px 0; cursor: pointer;"></i>
+                        </a>
+
+                        <a mat-list-item matTooltip="dark mode" (click)="changeDarkMode()"
+                            [ngClass]="{modeactive: lightmode == 'dark'}" routerLinkActive="active-list-item"
+                            class="mode-link">
+                            <i class="ph-bold ph-moon" style="margin: 10px 0; cursor: pointer;"></i>
+
+                        </a>
+                    </div>
+                    <!-- <i class="ph-bold ph-gear" style="cursor: pointer; margin: 0 10px;"></i> -->
+                    <div class="acc1" [matMenuTriggerFor]="menu">{{getInitials(name)}}</div>
+                    <mat-menu #menu="matMenu" class="menu" style="padding: 20px;" xPosition="before" yPosition="below">
+                        <div class="acc-wrap">
+                            <div class="acc">
+
+                                <div class="acc2">
+                                    <span class="acc3">{{name}}</span>
+                                    <span class="acc4">{{username}}</span>
+                                </div>
+                            </div>
+                            <!-- <button mat-menu-item routerLink="/app/settings" class="acc5">Profile settings</button> -->
+                            <mat-divider></mat-divider>
+                        </div>
+                        <button mat-menu-item class="" (click)="loginType == 'google' ? signout() : logout()"
+                            style="color: var(--text-color); display: flex; align-items: center; justify-content: center; color: red;">
+                            <i class="ph ph-sign-out"></i>
+                            <span style="margin-left: 5px;">Logout</span>
+                        </button>
+                    </mat-menu>
+                </div>
+
+            </div>
+            <router-outlet></router-outlet>
+        </div>
+
+    </mat-sidenav-content>
+</mat-sidenav-container>

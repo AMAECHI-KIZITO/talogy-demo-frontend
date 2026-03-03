@@ -1,0 +1,28 @@
+<div class="root">
+    <div class="flex">
+        <!-- <a style="height: 20px;" routerLink = 'dashboard'>
+            <mat-icon class = 'icon' color = 'primary' >speed</mat-icon>
+        </a> -->
+        <div class="bC" *ngIf = 'breadCrumb$ | async as breadCrumbData'>
+
+            <!-- <div *ngIf = 'breadCrumbData?.parent !== "" ' class="breadcrumb">
+                    <span  class="breadcrumb_link"  >
+                        {{breadCrumbData?.parent}}
+                    </span>
+            </div> -->
+            <div class="link-wrap">
+                <!-- <a class="home" routerLink = '/'>
+                    Home
+                </a>
+                <span style="margin: 5px 3px; font-size: 12px; color: #353D42;">/</span> -->
+                <a class="small" [routerLink] = 'breadCrumbData?.parentLink'>
+                    {{breadCrumbData?.parent}}
+                </a>
+            </div>
+            
+
+          
+
+        </div>
+    </div>
+</div>

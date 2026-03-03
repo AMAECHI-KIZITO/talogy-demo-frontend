@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+  </script>
+  <!-- Google Tag Manager -->
+  <!-- <script>(function (w, d, s, l, i) {
+      w[l] = w[l] || []; w[l].push({
+        'gtm.start':
+          new Date().getTime(), event: 'gtm.js'
+      }); var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-KDXMSC7H');</script> -->
+
+  <meta charset="utf-8">
+
+  <!-- Prod title -->
+  <!-- <title>Datae - Fully Managed Data Platform</title> -->
+
+  <!-- Staging title -->
+  <title>Talogy Analytics Dashboard</title>
+
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://unpkg.com/phosphor-icons"></script>
+  <link rel="icon" type="image/x-icon" href="./assets/newbrandimg/talogy-fav.png">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/proxima-nova" rel="stylesheet">
+
+  <!-- <script>
+    !function () {
+      var analytics = window.analytics = window.analytics || [];
+      if (!analytics.initialize)
+        if (analytics.invoked) window.console && console.error && console.error("Segment snippet included twice.");
+        else {
+          analytics.invoked = !0;
+          analytics.methods = ["trackSubmit", "trackClick", "trackLink", "trackForm", "pageview", "identify", "reset", "group", "track", "ready", "alias", "debug", "page", "once", "off", "on"];
+          analytics.factory = function (t) {
+            return function () {
+              var e = Array.prototype.slice.call(arguments);
+              e.unshift(t);
+              analytics.push(e);
+              return analytics;
+            };
+          };
+          for (var t = 0; t < analytics.methods.length; t++) {
+            var e = analytics.methods[t];
+            analytics[e] = analytics.factory(e);
+          }
+          analytics.load = function (t, e) {
+            var n = document.createElement("script");
+            n.type = "text/javascript";
+            n.async = !0;
+            n.src = "https://cdn.segment.com/analytics.js/v1/" + t + "/analytics.min.js";
+            var a = document.getElementsByTagName("script")[0];
+            a.parentNode.insertBefore(n, a);
+            analytics._loadOptions = e;
+          };
+          analytics.SNIPPET_VERSION = "4.13.2";
+          analytics.load("DDv4jW7bpQqpKtmFmrNdXPvWeyTnKfqI"); // Replace YOUR_WRITE_KEY with your actual Segment write key
+          analytics.page();
+        }
+    }();
+  </script> -->
+
+
+  <!-- End Google Tag Manager Staging -->
+  
+ <!-- This is the old script -->
+  <!-- <script>
+    !function () {
+      var i = "analytics", analytics = window[i] = window[i] || []; if (!analytics.initialize) if (analytics.invoked) window.console && console.error && console.error("Segment snippet included twice."); else {
+        analytics.invoked = !0; analytics.methods = ["trackSubmit", "trackClick", "trackLink", "trackForm", "pageview", "identify", "reset", "group", "track", "ready", "alias", "debug", "page", "screen", "once", "off", "on", "addSourceMiddleware", "addIntegrationMiddleware", "setAnonymousId", "addDestinationMiddleware", "register"]; analytics.factory = function (e) { return function () { if (window[i].initialized) return window[i][e].apply(window[i], arguments); var n = Array.prototype.slice.call(arguments); if (["track", "screen", "alias", "group", "page", "identify"].indexOf(e) > -1) { var c = document.querySelector("link[rel='canonical']"); n.push({ __t: "bpc", c: c && c.getAttribute("href") || void 0, p: location.pathname, u: location.href, s: location.search, t: document.title, r: document.referrer }) } n.unshift(e); analytics.push(n); return analytics } }; for (var n = 0; n < analytics.methods.length; n++) { var key = analytics.methods[n]; analytics[key] = analytics.factory(key) } analytics.load = function (key, n) { var t = document.createElement("script"); t.type = "text/javascript"; t.async = !0; t.setAttribute("data-global-segment-analytics-key", i); t.src = "https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js"; var r = document.getElementsByTagName("script")[0]; r.parentNode.insertBefore(t, r); analytics._loadOptions = n }; analytics._writeKey = "PNFmPvakd3heNEk8tArumlxx3xLtQcM2";; analytics.SNIPPET_VERSION = "5.2.0";
+        analytics.load("PNFmPvakd3heNEk8tArumlxx3xLtQcM2");
+        analytics.page();
+      }
+    }();
+  </script> -->
+
+   <!-- Prod script -->
+   <!-- <script>
+    !function(){var i="analytics",analytics=window[i]=window[i]||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","screen","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware","register"];analytics.factory=function(e){return function(){if(window[i].initialized)return window[i][e].apply(window[i],arguments);var n=Array.prototype.slice.call(arguments);if(["track","screen","alias","group","page","identify"].indexOf(e)>-1){var c=document.querySelector("link[rel='canonical']");n.push({__t:"bpc",c:c&&c.getAttribute("href")||void 0,p:location.pathname,u:location.href,s:location.search,t:document.title,r:document.referrer})}n.unshift(e);analytics.push(n);return analytics}};for(var n=0;n<analytics.methods.length;n++){var key=analytics.methods[n];analytics[key]=analytics.factory(key)}analytics.load=function(key,n){var t=document.createElement("script");t.type="text/javascript";t.async=!0;t.setAttribute("data-global-segment-analytics-key",i);t.src="https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";var r=document.getElementsByTagName("script")[0];r.parentNode.insertBefore(t,r);analytics._loadOptions=n};analytics._writeKey="UGoG0D14qsJ4I6Xj1B0f8sP9V1zdJFH0";;analytics.SNIPPET_VERSION="5.2.0";
+    analytics.load("UGoG0D14qsJ4I6Xj1B0f8sP9V1zdJFH0");
+    analytics.page();
+    }}();
+  </script> -->
+
+   <!-- Staging script -->
+   <script>
+    !function(){var i="analytics",analytics=window[i]=window[i]||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","screen","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware","register"];analytics.factory=function(e){return function(){if(window[i].initialized)return window[i][e].apply(window[i],arguments);var n=Array.prototype.slice.call(arguments);if(["track","screen","alias","group","page","identify"].indexOf(e)>-1){var c=document.querySelector("link[rel='canonical']");n.push({__t:"bpc",c:c&&c.getAttribute("href")||void 0,p:location.pathname,u:location.href,s:location.search,t:document.title,r:document.referrer})}n.unshift(e);analytics.push(n);return analytics}};for(var n=0;n<analytics.methods.length;n++){var key=analytics.methods[n];analytics[key]=analytics.factory(key)}analytics.load=function(key,n){var t=document.createElement("script");t.type="text/javascript";t.async=!0;t.setAttribute("data-global-segment-analytics-key",i);t.src="https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";var r=document.getElementsByTagName("script")[0];r.parentNode.insertBefore(t,r);analytics._loadOptions=n};analytics._writeKey="nvtx7VFAZUmWlOGcFzuY1cR8HIOgKWSW";;analytics.SNIPPET_VERSION="5.2.0";
+    analytics.load("nvtx7VFAZUmWlOGcFzuY1cR8HIOgKWSW");
+    analytics.page();
+    }}();
+  </script>
+
+</head>
+
+<body>
+  <script src="/powerbi-client/dist/powerbi.js"></script>
+
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KDXMSC7H" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <app-root></app-root>
+
+</body>
+
+</html>

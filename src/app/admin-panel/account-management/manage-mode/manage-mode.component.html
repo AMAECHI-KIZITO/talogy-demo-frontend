@@ -1,0 +1,55 @@
+
+<div class="root">
+    <div class="body authorize-body" *ngIf="showSuccess">
+        <img src="assets/newbrandimg/ph_check-circle-duotone.svg" alt="" class="auth-logo">
+        <div class="auth-message">
+            <div class="auth-head">Process Completed.</div>
+            <span class="auth-info">
+                {{this.successmsg}}
+            </span>
+            <div class="mt-2 flex-center">
+                <button mat-flat-button class="flat" (click)="closeSuccess()">Close</button> &nbsp; &nbsp;
+            </div>
+        </div>
+    </div>
+    <div class="body" *ngIf="!showSuccess">
+        <div class="top-wrapper">
+            <div class="popup-wrap">
+                <span class="popup-header">Manage Organization Status</span>
+            </div>
+            <i class="ph-duotone ph-x cancel" (click)="close()"></i>
+        </div>
+        <form [formGroup]="form">
+            <!-- <div class="mt-1" style="display: flex; flex-direction: column; gap: 10px;">
+                <label for="altcat" style="text-align: left;">Organization Status<sup style="color: red;">*</sup></label>
+                <mat-button-toggle-group name="fontStyle" aria-label="Font Style" formControlName="mode">
+                    <mat-button-toggle value="ENABLED" style="color: green;">Active</mat-button-toggle>
+                    <mat-button-toggle value="PENDING" style="color: #b9b959;">Pending</mat-button-toggle>
+                    <mat-button-toggle value="DISABLED" style="color: red;">Inactive</mat-button-toggle>
+                  </mat-button-toggle-group>
+            </div> -->
+
+            <div class="mt-1">
+                <label for="altcat">Please assign a status to this organization<sup style="color: red;">*</sup></label>
+                <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                    <mat-select placeholder="Select status" formControlName="mode" style="font-size: small;">
+                        <mat-option [value]="type.value" *ngFor="let type of statusList">
+                            <span *ngIf="type.name == 'Active'" style="color: green;">{{type.name}}</span>
+                            <span *ngIf="type.name == 'Pending'" style="color: #b9b959;">{{type.name}}</span>
+                            <span *ngIf="type.name == 'Inactive'" style="color: red;">{{type.name}}</span>
+                        </mat-option>
+                      
+                    </mat-select>
+                </mat-form-field>
+            </div>
+         
+            <div class="submit-wrap">
+                <button mat-flat-button style="width: 100%;" color="primary" [disabled]="form.invalid || loading" (click)="changeStatus()">
+                    <span class="btn-text" *ngIf="!loading">Submit</span>
+                    <app-button-loader *ngIf="loading"></app-button-loader>
+                    
+                </button>
+            </div>
+        </form> 
+    </div>
+</div>

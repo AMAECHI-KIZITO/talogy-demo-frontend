@@ -1,0 +1,71 @@
+<div class="root">
+    <div class="body authorize-body" *ngIf="showSuccess">
+        <img src="assets/newbrandimg/ph_check-circle-duotone.svg" alt="" class="auth-logo">
+        <div class="auth-message">
+            <div class="auth-head">Process Completed.</div>
+            <span class="auth-info">
+                {{this.successmsg}}
+            </span>
+            <div class="mt-2 flex-center">
+                <button mat-flat-button class="flat" (click)="closeSuccess()">Close</button> &nbsp; &nbsp;
+            </div>
+        </div>
+    </div>
+    <div class="body" *ngIf="!showSuccess">
+        <div class="top-wrapper">
+            <div class="popup-wrap">
+                <span class="popup-header">Personalize Organisation Color</span>
+            </div>
+            <i class="ph-duotone ph-x cancel" (click)="close()"></i>
+        </div>
+        <div style="margin-top: 20px;">
+            <div class="brand-header">
+                <div class="primary-head">
+                    <span class="brand-color">Brand Primary Color</span>
+                    <div class="brand-body" [style.backgroundColor]="primary"></div>
+                    <div>
+                        <label style="font-weight: 600;">Hex</label>
+                        <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                            <input type="text" [(ngModel)]="primary" matInput
+                            maxlength="7" >
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="primary-head">
+                    <span class="brand-color">Brand Secondary Color</span>
+                    <div class="brand-body" [style.backgroundColor]="secondary"></div>
+                    <div>
+                        <label style="font-weight: 600;">Hex</label>
+                        <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                            <input type="text" [(ngModel)]="secondary" matInput
+                            maxlength="7" >
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="primary-head">
+                    <span class="brand-color">Brand Font Color</span>
+                    <div class="brand-body" [style.backgroundColor]="texts"></div>
+                    <div>
+                        <label style="font-weight: 600;">Hex</label>
+                        <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                            <input type="text" [(ngModel)]="texts" matInput
+                            maxlength="7" >
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="submit-wrap">
+                <button mat-flat-button style="width: 100%;" color="primary" [disabled]="loading" (click)="submit()">
+                    <span class="btn-text" *ngIf="!loading">Save Changes</span>
+                    <app-button-loader *ngIf="loading"></app-button-loader>
+
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

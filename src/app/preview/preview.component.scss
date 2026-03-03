@@ -1,0 +1,48 @@
+::ng-deep .report-container {
+    width: 100% !important;
+    height: 100vh !important;
+}
+.empty-state-image {
+    width: 200px;
+}
+// ::ng-deep iframe{
+//     height: 100% !important;
+// }
+.btn-cont {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-left: auto;
+    height: 100%;
+}
+.wrap-cont {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-top: 20px;
+}
+.export {
+    text-align: center;
+    padding: 9px;
+    font-size: 12px;
+    background-color: #0457bc;
+    color: white;
+    width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.report-container {
+    position: relative;
+}
+
+.selection-box {
+    position: absolute;
+    border: 2px dashed #000;
+    background: rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}

@@ -1,0 +1,37 @@
+<div>
+    <div class="topic">OTP Verification</div>
+    <div class="detail">Please enter the OTP (One-Time Password) sent to your email ({{'your@example.com'}}) to complete your
+        verification.</div>
+
+    <div class="otp-container">
+        <!-- <ng-container *ngFor="let otp of otpValues; let i = index"> -->
+            <input type="text" maxlength="1" pattern="[0-9]*"
+            inputmode="numeric" [(ngModel)]="otpValues[0]" (input)="onInput($event, 0)"
+            (keydown)="onKeyDown($event, 0)" #otpInput />
+            <input type="text" maxlength="1" pattern="[0-9]*"
+            inputmode="numeric" [(ngModel)]="otpValues[1]" (input)="onInput($event, 1)"
+            (keydown)="onKeyDown($event, 1)" #otpInput />
+            <input type="text" maxlength="1" pattern="[0-9]*"
+            inputmode="numeric" [(ngModel)]="otpValues[2]" (input)="onInput($event, 2)"
+            (keydown)="onKeyDown($event, 2)" #otpInput />
+            <input type="text" maxlength="1" pattern="[0-9]*"
+            inputmode="numeric" [(ngModel)]="otpValues[3]" (input)="onInput($event, 3)"
+            (keydown)="onKeyDown($event, 3)" #otpInput />
+            <input type="text" maxlength="1" pattern="[0-9]*"
+            inputmode="numeric" [(ngModel)]="otpValues[4]" (input)="onInput($event, 4)"
+            (keydown)="onKeyDown($event, 4)" #otpInput />
+            <input type="text" maxlength="1" pattern="[0-9]*"
+            inputmode="numeric" [(ngModel)]="otpValues[5]" (input)="onInput($event, 5)"
+            (keydown)="onKeyDown($event, 5)" #otpInput />
+        <!-- </ng-container> -->
+    </div>
+    <div class="resend">Didn't get the code? <span>Resend</span></div>
+
+    <div *ngIf="errormsg" style="color: red; padding: 10px 0; font-size: 13px;">{{errormsg}}</div>
+    <div class="v-but">
+        <button mat-flat-button color="primary" [disabled]="isOtp || buttonloading" (click)="submitOTP()">
+            <span *ngIf="!buttonloading">Verify</span>
+            <app-button-loader *ngIf="buttonloading"></app-button-loader>
+        </button>
+    </div>
+</div>

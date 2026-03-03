@@ -1,0 +1,61 @@
+<div class="root">
+    <div class="body authorize-body" *ngIf="showSuccess">
+        <img src="assets/newbrandimg/ph_check-circle-duotone.svg" alt="" class="auth-logo">
+        <div class="auth-message">
+            <div class="auth-head">Process Completed.</div>
+            <span class="auth-info">
+                {{this.successmsg}}
+            </span>
+            <div class="mt-2 flex-center">
+                <button mat-flat-button class="flat" (click)="closeSuccess()">Close</button> &nbsp; &nbsp;
+            </div>
+        </div>
+    </div>
+    <div class="body" *ngIf="!showSuccess">
+        <div class="top-wrapper">
+            <div class="popup-wrap">
+                <span class="popup-header">Manage Access To Report Template</span>
+            </div>
+            <i class="ph-duotone ph-x cancel" (click)="close()"></i>
+        </div>
+        <form [formGroup]="form">
+            <div class="mt-1">
+                <label for="altcat">Template Name<sup style="color: red;">*</sup></label>
+                <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                    <mat-select placeholder="Select Report Template" formControlName="templatename" 
+                    multiple
+                    style="font-size: small;">
+                        <div class="custom-dropdown-search">
+                            <div class="flex-btw-search">
+                                <input #search placeholder="Search" type="text" class="selection-search"
+                                    (keydown)="$event.stopPropagation()"
+                                    (keyup)="onKey(search.value)">
+                                <button mat-icon-button [ngClass]="{hideElement: search.value == ''}"
+                                    (click)="search.value=''; reset()" matSuffix>
+                                    <mat-icon style="font-size: 15px;">close</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="custom-dropdown-options">
+                            <mat-option style="background-color: whitesmoke;" *ngIf="templateList?.length === 0">
+                                --Empty--
+                            </mat-option>
+                            <mat-option [value]="type.value" *ngFor="let type of templateList">
+                                {{type.name}}
+                            </mat-option>
+                        </div>
+                      
+                    </mat-select>
+                </mat-form-field>
+            </div>
+         
+            <div class="submit-wrap">
+                <button mat-flat-button style="width: 100%;" color="primary" [disabled]="form.invalid || loading" (click)="submit()">
+                    <span class="btn-text" *ngIf="!loading">Submit</span>
+                    <app-button-loader *ngIf="loading"></app-button-loader>
+                    
+                </button>
+            </div>
+        </form> 
+    </div>
+</div>

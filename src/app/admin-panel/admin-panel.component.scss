@@ -1,0 +1,239 @@
+@import '../../assets/scss/variable.scss';
+@import '../../assets/scss/mixin.scss';
+
+.admin-root {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-topbar {
+  display: flex;
+  padding: 20px 30px;
+  justify-content: space-between;
+  align-items: center;
+  align-self: stretch;
+  border-bottom: 1px solid var(--n-grey-30, #D9DCE1);
+  background: #FFF;
+
+}
+
+.logofull {
+  width: 125px;
+  height: 33px;
+  flex-shrink: 0;
+}
+
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin {
+  color: var(--n-grey-70, #4F566B);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  border-radius: 3px;
+  background: var(--n-grey-20, #E3E8EE);
+  width: 50px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.acc-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+}
+
+.acc {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px;
+  align-items: center;
+}
+
+.acc1 {
+  padding: 10px;
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
+  border: 1px solid var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+}
+
+.acc2 {
+  display: flex;
+  flex-direction: column;
+  // margin: 0 10px;
+}
+
+.acc3 {
+  font-size: 16px;
+  text-transform: uppercase;
+  color: var(--text-color);
+}
+
+.acc4 {
+  font-size: 12px;
+  color: var(--text-color);
+}
+
+.acc5 {
+  font-size: 14px;
+  cursor: pointer;
+  // padding: 10px 20px;
+}
+
+.acc5:hover {
+  background-color: var(--hover-color);
+}
+
+.admin-body {
+  display: flex;
+}
+
+.left-body {
+  display: flex;
+  padding: 20px;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+  border-right: 1px solid var(--n-grey-30, #D9DCE1);
+  background: #F7FAFC;
+  width: fit-content;
+  min-height: 90vh;
+}
+
+.right-body {
+  display: flex;
+  padding: 0 20px;
+  flex-direction: column;
+  align-self: stretch;
+  background: #F7FAFC;
+  width: 100%;
+  overflow: auto;
+}
+
+.menu-name {
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+
+  @include for-desktop-mid {
+    display: none;
+  }
+}
+
+.link {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 200px;
+
+  @include for-desktop-mid {
+    width: fit-content;
+  }
+
+  &:hover {
+    border-radius: 3px;
+    background: rgba(227, 232, 238, 0.35);
+  }
+}
+
+.plan-body-two {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  border: 1px solid var(--primary-color);
+  padding: 8px 10px;
+  border-radius: 20px;
+  margin-right: 20px;
+  font-size: 13px;
+
+  &:hover {
+    background-color: #0457bc1a;
+  }
+}
+
+.active-list-item {
+  color: var(--primary-color, #0457BC);
+  border-radius: 3px;
+  background: rgba(227, 232, 238, 0.35);
+}
+
+.toolbar_search {
+  mat-form-field {
+    width: 280px;
+    margin-right: 6px;
+    transition: all .5s;
+    padding: 0rem 0.5rem;
+  }
+
+  .mat-focused {
+    padding: 0rem 0.9rem;
+    transform: translateX(0.1);
+    width: 280px;
+  }
+
+  ::ng-deep .mat-form-field-wrapper {
+    padding-bottom: 0px;
+  }
+
+  ::ng-deep .mat-form-field-infix {
+    border: none;
+  }
+
+  ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: .5em;
+    display: flex;
+    padding: 0px 0;
+    padding: .4em 0.05em;
+
+  }
+
+  ::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
+    position: static;
+    margin-top: 0em;
+    padding: 3px;
+
+  }
+
+  ::ng-deep .mat-form-field-subscript-wrapper {
+    margin-top: -15px;
+    top: calc(100% + 18px);
+  }
+
+  ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline-start,
+  ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline-end {
+    border: none;
+  }
+
+  ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline-thick .mat-form-field-outline-start,
+  ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline-thick .mat-form-field-outline-end,
+  ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline-thick .mat-form-field-outline-gap {
+    border-width: 0.5px !important;
+  }
+
+  ::ng-deep .mat-form-field-appearance-outline .mat-form-field-wrapper {
+    margin: 0 0;
+  }
+
+  ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-infix {
+    padding: 1rem 0
+  }
+
+
+}

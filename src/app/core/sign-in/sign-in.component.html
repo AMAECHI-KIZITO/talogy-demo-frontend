@@ -1,0 +1,28 @@
+<div class="root-wrapper">
+    <div class="center">
+        <div class="middle-wrap">
+            <img src="../../../assets/newbrandimg/talogy-logo-col.png" alt="" class="logo">
+            <div class="mid-wrap">
+                <span class="signin">Sign in</span>
+                <span class="please">Please click the button to begin</span>
+            </div>
+            <div class="login-wrap">
+                <div class="btn-wrap" (click)="login()">
+                    <div class="btn-center">
+                        <img *ngIf="!activateLoading" src="../../../assets/newbrandimg/ms2.png" alt="" class="ms-logo">
+                        <span *ngIf="!activateLoading" class="ms-text">Sign in with Microsoft</span>
+                        <app-login-button-loader *ngIf="activateLoading"></app-login-button-loader>
+                    </div>
+                </div>
+                <div class="btn-wrap" (click)="activateGoolgeUser()">
+                    <div class="btn-center">
+                        <img *ngIf="!googleLoad" src="../../../assets/newbrandimg/googlelogo.png" alt=""
+                            class="gs-logo">
+                        <span *ngIf="!googleLoad" class="ms-text">Sign in with Google Workspace</span>
+                        <app-login-button-loader *ngIf="googleLoad"></app-login-button-loader>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

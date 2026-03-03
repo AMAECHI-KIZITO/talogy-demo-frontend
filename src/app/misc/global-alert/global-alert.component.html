@@ -1,0 +1,23 @@
+<ng-container *ngIf="type">
+    <div class="cover">
+        <div
+            [ngClass]="{alert: true, 'success': type == SUCCESS, 'warning': type == WARNING, 'error': type == ERROR, 'info': type == INFO}">
+
+            <div class="flex-el" style="gap: 10px;">
+                <div *ngIf="type == SUCCESS"><i class="ph ph-check-circle"></i></div>
+                <div *ngIf="type == WARNING"><i class="ph ph-warning-fill"></i></div>
+                <div *ngIf="type == ERROR"><i class="ph ph-warning-octagon-fill"></i></div>
+                <div *ngIf="type == INFO"><i class="ph ph-info-fill"></i></div>
+                
+                <div style="text-align: left;">
+                    <div class="topic">{{message}}</div>
+                    <div class="det">{{details}}</div>
+                </div>
+            </div>
+
+            <div><button mat-button (click)="actionClicked()">{{action}}</button></div>
+
+            <div><button mat-icon-button (click)="close()"><i class="ph ph-x"></i></button></div>
+        </div>
+    </div>
+</ng-container>

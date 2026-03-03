@@ -1,0 +1,105 @@
+<div class="root-wrap">
+    <div class="header-wrap">
+        <span class="header-name">Account Information</span>
+        <button mat-icon-button class="icon-button" style="margin-left: 5px;" (click)="getAccount()"
+            matTooltip="refresh">
+            <i class="ph ph-arrows-clockwise"></i>
+        </button>
+    </div>
+    <div>
+        <!-- <div *ngIf="loading"
+            style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 20px auto; height: 40vh;">
+            <app-loader></app-loader>
+            <div style="font-size: 14px; margin-top: 10px; font-weight: 500; color: var(--primary-color);">
+                Just wait a moment...</div>
+        </div> -->
+
+        <div *ngIf="loading">
+            <div class="flex-el" style="gap: 10;">
+                <ngx-skeleton-loader appearance="circle" count="1"
+                    [theme]="{width: '60px', height: '60px', margin: '10px'}"></ngx-skeleton-loader>
+                <div class="flex-el" style="flex-direction: column;">
+                    <ngx-skeleton-loader appearance="line" count="1"
+                        [theme]="{width: '100px', height: '15px'}"></ngx-skeleton-loader>
+                    <ngx-skeleton-loader appearance="line" count="1"
+                        [theme]="{width: '100px', height: '10px'}"></ngx-skeleton-loader>
+                </div>
+            </div>
+
+            <ngx-skeleton-loader appearance="line" count="2"
+                [theme]="{height: '3em'}"></ngx-skeleton-loader>
+        </div>
+
+        <div class="error-block" style="height: 60vh;" *ngIf="!loading && errorList">
+            <app-empty-list></app-empty-list>
+            <button mat-flat-button color="primary" style="padding: 0 60px;" (click)="getAccount()">
+                Refresh
+            </button>
+        </div>
+        <div [ngClass]="{hideElement: accountDetail === null || loading}">
+            <div class="top-wrap">
+                <div class="profile-cont">
+                    <div class="acc1">{{getInitials(name)}}</div>
+                    <div class="name-wrap">
+                        <span class="name">{{name}}</span>
+                        <span class="username">{{accountDetail?.useremail}}</span>
+                    </div>
+                </div>
+                <img *ngIf="accountDetail?.method === 'google'" src="assets/newbrandimg/googlelogo.png" alt=""
+                    class="google">
+                <img *ngIf="accountDetail?.method === 'microsoft'" src="assets/newbrandimg/microsoft.png" alt=""
+                    class="microsoft">
+            </div>
+
+            <form [formGroup]="form">
+                <div class="form-wrap">
+                    <div>
+                        <label for="fname">Account Name:</label>
+                        <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                            <input type="text" readonly matInput formControlName="fname" placeholder="Enter first name">
+                        </mat-form-field>
+                    </div>
+                    <!-- <div>
+                    <label for="middlename">Middle Name:</label>
+                    <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                        <input type="text" readonly matInput formControlName="middlename" placeholder="Enter middle name">
+                    </mat-form-field>
+                </div>
+                <div>
+                    <label for="lastname">Last Name:</label>
+                    <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                        <input type="text" readonly matInput formControlName="lastname" placeholder="Enter last name">
+                    </mat-form-field>
+                </div> -->
+                    <div>
+                        <label for="organization">Organization:</label>
+                        <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                            <input type="text" readonly matInput formControlName="organization"
+                                placeholder="Enter organization name">
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <label for="email">Email Address:</label>
+                        <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                            <input type="email" readonly matInput formControlName="email"
+                                placeholder="Enter Email Address">
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <label for="phone">Account:</label>
+                        <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                            <input type="text" readonly matInput formControlName="account" placeholder="Enter Account">
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <!-- <button mat-flat-button color="primary" style="margin-top: 20px;">
+                    <span class="btn-text" style="font-size: 12px;">Update Information</span>
+                </button> -->
+
+            </form>
+        </div>
+    </div>
+
+
+</div>

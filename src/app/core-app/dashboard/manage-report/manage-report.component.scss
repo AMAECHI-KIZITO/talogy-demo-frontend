@@ -1,0 +1,9 @@
+.root{
+    padding: 20px;
+    height: 100%;
+    width: 100%;
+}
+::ng-deep .report-container{
+    width: 100% !important;
+    height: 85vh !important;
+}

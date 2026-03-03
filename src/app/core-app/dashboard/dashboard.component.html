@@ -1,0 +1,137 @@
+<div *ngIf="loading"
+    style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 20px auto; height: 100vh;">
+    <app-loader></app-loader>
+    <div style="font-size: 14px; margin-top: 10px; font-weight: 500; color: var(--primary-color);">Just wait a moment...</div>
+</div>
+<div class="flex-center" style="height: 60vh;" *ngIf="!loading && tempArray.length === 0 && !errorList">
+    <div class="empty-root">
+        <img src="assets/newbrandimg/empty-state.svg" class="empty-state-image"
+            alt="empty state image">
+        &nbsp;
+        <div class="empty-state-header">Your Reports Will Be Displayed Here.</div>
+    </div> 
+</div>
+<div class="error-block" *ngIf="!loading && errorList">
+    <app-empty-list></app-empty-list>
+    <button mat-flat-button color="primary" style="padding: 0 60px;" (click)="getList()">
+        Refresh
+    </button>
+</div>
+<mat-sidenav-container class="sidenav-container" autosize [ngClass]="{hideElement: tempArray.length == 0 || loading}">
+    <mat-sidenav #drawer class="sidenav" [style.width]="(isHandset$ | async) ? '220px' : drawerOpen ? '220px' : '60px'"
+        [style.boxShadow]="(isHandset$ | async) ? 'none' : drawerOpen ? 'none' : '0.2rem 0 1rem rgba(0,0,0,0.5)' "
+        [ngClass]="(isHandset$ | async) ? 'showSection' : drawerOpen ? 'showSection' : 'hideSection' "
+        [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
+        [opened]="(isHandset$ | async) === false">
+        <!-- [style.borderRadius] = "(isHandset$ | async) ? '0px' : drawerOpen ? '0px' : '0px 25px 25px 0px' " -->
+        <mat-toolbar [style.padding-left]="drawerOpen ? '0px' : '0px' ">
+            <div class="app_title" *ngIf="(isHandset$ | async) ? true : drawerOpen">
+                <img src="assets/img/convz logo.png" class="logo" />
+                <!-- <span class="data-logo">Staging</span> -->
+
+            </div>
+
+            <div *ngIf='!(isHandset$ | async)'>
+                <button class="fab_alt" [style.left]="!drawerOpen ? '38px' : '205px'" mat-fab style="background: white;"
+                    (click)="drawerOpen = !drawerOpen">
+                    <mat-icon *ngIf='drawerOpen' style="color: #2a4770;">menu_open</mat-icon>
+                    <mat-icon *ngIf='!drawerOpen' style="color: #2a4770;">keyboard_arrow_right</mat-icon>
+
+                </button>
+
+            </div>
+        </mat-toolbar>
+
+        <mat-nav-list class="list">
+            <div>
+                <p class="nav-heading">Select report to manage</p>
+                <div style="height: 80vh; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div class="custom-scroll-bar" style="height: 60vh;">
+                        <div *ngFor="let item of tempArray">
+                            <a mat-list-item (click)="viewList(item)" 
+                            [ngClass]="{'active-list-item': item.workspaceid === id}">
+                                <mat-icon class="icon">summarize</mat-icon>
+                                <span class="menu-name" *ngIf="(isHandset$ | async) ? true : drawerOpen">
+                                    {{item.reportname}}
+                                </span>
+                            </a>
+    
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="profile-section">
+                            <div class="profile-imagetext">
+                                {{getInitials(name)}}
+                            </div>
+                            <div style="display: flex; flex-direction: column; margin: 0 10px;"
+                                *ngIf="(isHandset$ | async) ? true : drawerOpen">
+                                <div style="font-size: 14px; font-weight: 500;">{{name}}</div>
+                                <div style="font-size: 12px; color: gray;">{{username}}</div>
+                            </div>
+                            
+                        </div>
+                        <div class="back" (click)="back()">Back to Home</div>
+                    </div>
+                    
+                    
+                </div>
+
+
+
+
+
+            </div>
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content [style.margin-left]="(isHandset$ | async) ? '0px' : drawerOpen  ? '220px' : '60px'"
+        style="transition: all .3s;">
+        <mat-toolbar color="primary">
+            <div class="toolbar_content">
+                <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
+                    *ngIf="isHandset$ | async" style="color: var(--primary-color);">
+                    <mat-icon color='secondary' aria-label="Side nav toggle icon">menu</mat-icon>
+                </button>
+
+                <div class="bread-wrap">
+                    <!-- <mat-icon (click)="back()" color='primary' class="backIcon" matTooltip="back">arrow_back</mat-icon> -->
+                    <app-breadcrumb></app-breadcrumb>
+                </div>
+
+                <div class="profile-wrap">
+                    <!-- <button mat-button type="button" style="background-color: var(--primary-color); margin-right: 20px;"
+                        (click)="addReport()">
+                        <mat-icon color='primary' class="menuIcon" style="color: white;">add</mat-icon>
+                        <span style="color: white;">New Report</span>
+                    </button> -->
+                    <div class="user">
+                        <mat-icon class="users-icon">person</mat-icon>
+                    </div>
+
+                    <div class="account-name">{{name}}</div>
+                    <mat-icon aria-label="Profile" class="arrow-down" [matMenuTriggerFor]="menu">keyboard_arrow_down
+                    </mat-icon>
+                    <mat-menu #menu="matMenu" class="menu" style="padding: 20px;" xPosition="before" yPosition="below">
+                        <div class="acc-wrap">
+                            <div class="acc">
+                                <div class="acc1">{{getInitials(name)}}</div>
+                                <div class="acc2">
+                                    <span class="acc3">{{name}}</span>
+                                    <span class="acc4">{{username}}</span>
+                                </div>
+                            </div>
+                            <button mat-menu-item routerLink="/app/settings" class="acc5">Profile settings</button>
+                            <mat-divider></mat-divider>
+                        </div>
+                        <button mat-menu-item (click)="logout()">
+                            <mat-icon>logout</mat-icon>
+                            LOGOUT
+                        </button>
+                    </mat-menu>
+                </div>
+
+            </div>
+        </mat-toolbar>
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>

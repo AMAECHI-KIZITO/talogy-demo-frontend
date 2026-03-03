@@ -1,0 +1,112 @@
+<div class="root">
+    <div class="body authorize-body" *ngIf="showSuccess">
+        <img src="assets/newbrandimg/ph_check-circle-duotone.svg" alt="" class="auth-logo">
+        <div class="auth-message">
+            <div class="auth-head">Process Completed.</div>
+            <span class="auth-info">
+                You have successfully requested a report. We will be in touch soon.
+            </span>
+            <div class="mt-2 flex-center">
+                <button mat-flat-button class="flat" (click)="close()">Close</button> &nbsp; &nbsp;
+            </div>
+        </div>
+    </div>
+    <div class="body" *ngIf="!showSuccess">
+        <div class="top-wrapper">
+            <div class="popup-wrap">
+                <span class="popup-header">Request Report</span>
+            </div>
+            <i class="ph-duotone ph-x cancel" (click)="close()"></i>
+        </div>
+        <form [formGroup]="form">
+            
+            <div class="mt-1">
+                <label for="name">Report Category:<sup style="color: red;"> * </sup></label>
+                <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                    <!-- <span *ngIf="reporttypeLoading" matPrefix>
+                        <mat-progress-spinner color="primary" diameter="18" mode="indeterminate">
+                        </mat-progress-spinner>
+                    </span> -->
+                    <mat-select (selectionChange)="onSelectionChange($event)" placeholder="--Select Report Category" formControlName="category" style="font-size: small;">
+                        <div class="custom-dropdown-search">
+                            <div class="flex-btw-search">
+                                <input #search placeholder="Search" type="text" class="selection-search"
+                                    (keydown)="$event.stopPropagation()"
+                                    (keyup)="onKey(search.value)">
+                                <button mat-icon-button [ngClass]="{hideElement: search.value == ''}"
+                                    (click)="search.value=''; reset()" matSuffix>
+                                    <mat-icon style="font-size: 15px;">close</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="custom-dropdown-options">
+                            <mat-option style="background-color: whitesmoke;" *ngIf="reportcat?.length === 0">
+                                --Empty--
+                            </mat-option>
+                            <mat-option [value]="type.value" *ngFor="let type of reportcat">
+                                {{type.name}}
+                            </mat-option>
+                        </div>
+                      
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="mt-1" *ngIf="showOption">
+                <label for="altcat">Can't find a report category? (tell us the report category you want)</label>
+                <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                    <input type="text" formControlName= "altcat" matInput placeholder="Enter your desired report category">
+                </mat-form-field>
+            </div>
+
+            <div class="mt-1">
+                <label for="reportSource">Report Source:<sup style="color: red;"> * </sup></label>
+                <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                    <span *ngIf="loading" matPrefix>
+                        <mat-progress-spinner color="primary" diameter="18" mode="indeterminate">
+                        </mat-progress-spinner>
+                    </span>
+                    <mat-select placeholder="Select Report Source" formControlName="reportSource" 
+                    multiple
+                    style="font-size: small;">
+                        <div class="custom-dropdown-search">
+                            <div class="flex-btw-search">
+                                <input #searchSource placeholder="Search" type="text" class="selection-search"
+                                    (keydown)="$event.stopPropagation()"
+                                    (keyup)="onKeySource(searchSource.value)">
+                                <button mat-icon-button [ngClass]="{hideElement: searchSource.value == ''}"
+                                    (click)="searchSource.value=''; reset()" matSuffix>
+                                    <mat-icon style="font-size: 15px;">close</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="custom-dropdown-options">
+                            <mat-option style="background-color: whitesmoke;" *ngIf="totalList?.length === 0">
+                                --Empty--
+                            </mat-option>
+                            <mat-option [value]="type.connectorName" *ngFor="let type of totalList">
+                                {{type.connectorName}}
+                            </mat-option>
+                        </div>
+                      
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="mt-1">
+                <label for="altcat">Website link for desired report sample</label>
+                <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                    <input type="text" formControlName= "link" matInput placeholder="Enter link of sample report">
+                </mat-form-field>
+            </div>
+           
+            <div class="submit-wrap">
+                <button mat-flat-button style="width: 100%;" color="primary" [disabled]="form.invalid || postReportLoading" (click)="requestReport()">
+                    <span *ngIf="!postReportLoading" class="btn-text">Submit</span>
+                    <app-button-loader *ngIf="postReportLoading"></app-button-loader>
+                    
+                </button>
+            </div>
+        </form> 
+    </div>
+</div>

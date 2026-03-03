@@ -1,0 +1,42 @@
+<div class="root">
+    <div class="top-wrapper">
+        <div class="popups-wrap">
+            <span class="popup-header">{{dashboard.name}}</span>
+        </div>
+        <i class="ph-duotone ph-x cancel" (click)="close()"></i>
+    </div>
+
+    <table mat-table [dataSource]="userData" class="full-width mt-3" aria-label="rows">
+        <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef>Email</th>
+            <td mat-cell *matCellDef="let row">
+                {{row.useremail}}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="org">
+            <th mat-header-cell *matHeaderCellDef>Organization<th>
+            <td mat-cell *matCellDef="let row">{{row.organization}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="orgname">
+            <th mat-header-cell *matHeaderCellDef>Organization<th>
+            <td mat-cell *matCellDef="let row">{{row.organizationName | titlecase}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="count">
+            <th mat-header-cell *matHeaderCellDef>No of Signups<th>
+            <td mat-cell *matCellDef="let row">{{row.newSignUpCount | number}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="time">
+            <th mat-header-cell *matHeaderCellDef>Last Login</th>
+            <td mat-cell *matCellDef="let row">
+                {{row.lastLoginTimestamp | date: 'medium'}}
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky :true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div>

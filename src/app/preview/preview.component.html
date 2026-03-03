@@ -1,0 +1,30 @@
+<div style="height: 100vh;">
+    <div *ngIf="loading"
+        style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 20px auto; height: 60vh;">
+        <app-loader></app-loader>
+        <div style="font-size: 14px; margin-top: 10px; font-weight: 500; color: var(--primary-color);">Just wait a
+            moment...
+        </div>
+    </div>
+    <div class="flex-center" style="height: 60vh;" *ngIf="!loading && listToken === {}">
+        <div class="empty-root">
+            <img src="assets/img/Feature_DashboardANDReportDesigner-removebg-preview.png" class="empty-state-image"
+                alt="empty state image">
+            &nbsp;
+            <div class="empty-state-header">Your Reports Will Be Displayed Here.</div>
+        </div>
+    </div>
+    <div class="error-block" style="height: 60vh;" *ngIf="!loading && error">
+        <app-empty-list></app-empty-list>
+        <button mat-flat-button color="primary" style="padding: 0 60px;" (click)="getToken()">
+            Refresh
+        </button>
+    </div>
+    <div *ngIf="!loading" class="wrap-cont">
+        <div #reportContainer>
+            <powerbi-report frameborder="0" allowFullScreen="true" [embedConfig]="reportConfig"
+                [cssClassName]="reportClass" [phasedEmbedding]="phasedEmbeddingFlag" [eventHandlers]="eventHandlersMap">
+            </powerbi-report>
+        </div>
+    </div>
+</div>

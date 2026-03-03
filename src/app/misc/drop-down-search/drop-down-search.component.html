@@ -1,0 +1,43 @@
+<div>
+    <mat-form-field class="custom-form-field full-width" appearance="outline" floatLabel="never">
+        <div matPrefix *ngIf="loading" class="custom-loader">
+            <mat-progress-spinner
+            diameter="18"
+            color="accent"
+            mode="indeterminate">
+            </mat-progress-spinner>
+        </div>
+        <mat-select  [placeholder]=" 'Select ' + dropdowndata.name" [(ngModel)]="selectedItem" (selectionChange)="setItem()">
+            <div class="custom-dropdown-search">
+                <div class="flex-btw">
+                    <input #search placeholder="Search" type="text" autofocus
+                    class="selection-search" (keydown)="$event.stopPropagation()"
+                    (keyup)="onKey(search.value)">
+                    <button mat-icon-button [ngClass]="{hideElement: search.value == ''}" 
+                    (click)="search.value=''; resetSearch()" matSuffix>
+                        <mat-icon style="font-size: 15px;">close</mat-icon>
+                    </button>                                          
+                </div>
+            </div>
+
+            <div class="custom-dropdown-options">
+                <mat-option style="background-color: whitesmoke;">
+                    --
+                </mat-option>
+
+                <mat-option *ngIf="selectedList?.length == 0 && loading == false">
+                    Not Available
+                </mat-option>
+                <mat-option *ngFor="let account of selectedList" [value]="account">
+                    <div class="flex-el">
+                        <div *ngFor="let item of setitem ; let last = last">
+                            {{ account[item]}}
+                            <span *ngIf="!last"> - </span>
+                            &nbsp;
+                        </div>
+                    </div>
+                </mat-option>
+            </div>
+        </mat-select>
+    </mat-form-field>
+</div>

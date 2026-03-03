@@ -1,0 +1,578 @@
+<div class="root">
+    <div class="top-bar">
+        <span class="top-head">Account Management</span>
+        <button mat-flat-button color="primary" (click)="addOrg()" *ngIf="!setView">
+            <img src="assets/svg/addbtn.svg" alt="">
+            <span class="add">Add New Organisation</span>
+        </button>
+    </div>
+    <div class="body-wrap" *ngIf="!setView">
+        <div class="admin-table-search">
+            <div matPrefix class="search-icon">
+                <i class="ph ph-magnifying-glass"></i>
+            </div>
+            <input type="text" matInput placeholder="Search" [(ngModel)]="searchKey" style="font-size: small;"
+                (keyup)="applyFilters()">
+        </div>
+        <div class="table-wrapper custom-scroll-bar" style="max-height: 65vh;">
+            <div *ngIf="loading"
+                style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 20px auto; height: 60vh;">
+                <app-loader></app-loader>
+                <div style="font-size: 14px; margin-top: 10px; font-weight: 500; color: var(--primary-color);">
+                    Just wait a moment...</div>
+            </div>
+
+            <div class="flex-center" style="height: 60vh;"
+                *ngIf="!loading && accountList.length === 0 && !accountError">
+                <div class="empty-root">
+                    <img src="assets/newbrandimg/empty-connector-list 1.png" class="empty-state-image"
+                        alt="empty state image">
+                    &nbsp;
+                    <div class="empty-state-header">No Organisation Created</div>
+                    <div class="empty-semi-text">Create and manage your first organisation
+                    </div>
+                    <button mat-flat-button color="primary" style="margin-top: 20px;" (click)="addOrg()">
+                        <span class="btn-text">Add New</span>
+                    </button>
+
+                </div>
+            </div>
+            <div class="error-block" style="height: 60vh;" *ngIf="!loading && accountError">
+                <app-empty-list></app-empty-list>
+                <button mat-flat-button color="primary" style="padding: 0 60px;" (click)="getAccount()">
+                    Refresh
+                </button>
+            </div>
+            <div class="card-wrapper" [ngClass]="{hideElement: accountList?.length == 0 || loading}">
+                <div class="card-sub-wrap" *ngFor="let item of accountList; let row let i = index">
+                    <div>
+                        <button mat-icon-button color="primary" [matMenuTriggerFor]="menu"
+                            style="display: flex; margin-left: auto;">
+                            <i class="ph ph-dots-three-circle-vertical" style="font-size: 30px;"></i>
+                        </button>
+                        <div class="card-text" style="margin: 10px 0;">
+                            <span class="header-text">Organisation</span>
+                            <span class="inner-text">{{row.organizationName}}</span>
+                        </div>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="getUserList(row)">
+                                <div style="display: flex; align-items: center; color: var(--header-color);">
+                                    <img src="assets/svg/viewmore.svg" alt="">
+                                    <span style="font-size: 12px; margin-left: 10px;">View More Details</span>
+                                </div>
+                            </button>
+
+                            <button mat-menu-item (click)="manageDestination(row)">
+                                <div style="display: flex; align-items: center; color: var(--header-color);">
+                                    <i class="ph-bold ph-buildings"></i>
+                                    <span style="font-size: 12px; margin-left: 10px;">Manage Destination</span>
+                                </div>
+                            </button>
+
+                            <button mat-menu-item (click)="addUser(row, 'new')">
+                                <div style="display: flex; align-items: center; color: var(--header-color);">
+                                    <img src="assets/svg/addNew.svg" alt="">
+                                    <span style="font-size: 12px; margin-left: 10px;">Invite New User</span>
+                                </div>
+                            </button>
+
+                            <button mat-menu-item (click)="cloneOrg(row)">
+                                <div style="display: flex; align-items: center; color: var(--header-color);">
+                                    <i class="ph-bold ph-copy"></i>
+                                    <span style="font-size: 12px; margin-left: 10px;">Clone Organisation</span>
+                                </div>
+                            </button>
+
+                            <button mat-menu-item (click)="templateAccess(row)">
+                                <div style="display: flex; align-items: center; color: var(--header-color);">
+                                    <i class="ph-bold ph-notepad"></i>
+                                    <span style="font-size: 12px; margin-left: 10px;">Assign Template Report</span>
+                                </div>
+                            </button>
+
+                            <button mat-menu-item (click)="manangeMode(row, 'parent', null)">
+                                <div style="display: flex; align-items: center; color: var(--header-color);">
+                                    <i class="ph-bold ph-toggle-right"></i>
+                                    <span style="font-size: 12px; margin-left: 10px;">Manage Status</span>
+                                </div>
+                            </button>
+
+                            <button mat-menu-item (click)="manageBrand(row)">
+                                <div style="display: flex; align-items: center; color: var(--header-color);">
+                                    <i class="ph-bold ph-paint-brush"></i>
+                                    <span style="font-size: 12px; margin-left: 10px;">Manage Brand</span>
+                                </div>
+                            </button>
+                        </mat-menu>
+                    </div>
+                    <div class="card-cont">
+                        <div class="card-text">
+                            <span class="header-text">Onboarding Date</span>
+                            <span class="inner-text">{{row.onboardingDate}}</span>
+                        </div>
+                        <div class="card-text">
+                            <span class="header-text">Status</span>
+                            <span class="inner-text"
+                                [ngClass]="{'approve':row.organizationStatus == 'ENABLED', 'pending':row.organizationStatus == 'PENDING', 'reject':row.organizationStatus == 'DISABLED'}">
+                                {{row.organizationStatus}}
+                            </span>
+                        </div>
+                        <div class="card-text">
+                            <span class="header-text">Domain</span>
+                            <span class="inner-text">{{row.organizationUrl}}</span>
+                        </div>
+                        <div class="card-text">
+                            <span class="header-text">Tenant ID</span>
+                            <span class="inner-text">{{row.organizationTenant === "false" ? "N/A" :
+                                row.organizationTenant }}</span>
+                        </div>
+                        <div class="card-text">
+                            <span class="header-text">Number of Users</span>
+                            <span class="inner-text">{{row.totalUsers}}</span>
+                        </div>
+                        <div class="card-text">
+                            <span class="header-text">Active Users</span>
+                            <span class="inner-text">
+                                {{row.activatedUsers}}
+                            </span>
+                        </div>
+                        <div class="card-text">
+                            <span class="header-text">Disable Users</span>
+                            <span class="inner-text">
+                                {{row.deactivatedUsers}}
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <table [ngClass]="{hideElement: accountList?.length == 0 || loading}" mat-table [dataSource]="listData"
+                class="full-width table mat-elevation-z8" aria-label="rows">
+
+                <ng-container matColumnDef="select">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <mat-checkbox (change)="$event ? masterToggle() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()">
+                        </mat-checkbox>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <mat-checkbox (click)="$event.stopPropagation()"
+                            (change)="$event ? selection.toggle(element) : null"
+                            [checked]="selection.isSelected(element)">
+                        </mat-checkbox>
+                        <!-- <mat-checkbox [(ngModel)]="element.checked" (change)="employeeInfo($event, element)"></mat-checkbox> -->
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef>Organisation</th>
+                    <td mat-cell *matCellDef="let row">
+                        <div style="display: flex; align-items: center; gap: 10px; margin: 5px 0;">
+                            <!-- <div class="acc1">{{getInitials(row.organizationName)}}</div> -->
+                            <span>{{row.organizationName}}</span>
+                        </div>
+
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="onboarddate">
+                    <th mat-header-cell *matHeaderCellDef>Onboarding Date</th>
+                    <td mat-cell *matCellDef="let row">
+                        <span style="text-transform: lowercase;">
+                            {{row.onboardingDate}}
+                        </span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef>Status</th>
+                    <td mat-cell *matCellDef="let row">
+                        <span
+                            [ngClass]="{'approve':row.organizationStatus == 'ENABLED', 'pending':row.organizationStatus == 'PENDING', 'reject':row.organizationStatus  == 'DISABLED'}">
+                            {{row.organizationStatus}}
+                        </span>
+
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="url">
+                    <th mat-header-cell *matHeaderCellDef>Domain</th>
+                    <td mat-cell *matCellDef="let row">
+                        {{row.organizationUrl}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="tenant">
+                    <th mat-header-cell *matHeaderCellDef>Tenant ID</th>
+                    <td mat-cell *matCellDef="let row">
+                        {{row.organizationTenant === "false" ? "N/A" : row.organizationTenant }}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="nou">
+                    <th mat-header-cell *matHeaderCellDef>Number of Users</th>
+                    <td mat-cell *matCellDef="let row">
+                        {{row.totalUsers}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="nau">
+                    <th mat-header-cell *matHeaderCellDef>Active Users</th>
+                    <td mat-cell *matCellDef="let row">
+                        {{row.activatedUsers}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="niu">
+                    <th mat-header-cell *matHeaderCellDef>Disable Users</th>
+                    <td mat-cell *matCellDef="let row">
+                        {{row.deactivatedUsers}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let row; let i = index" align="center">
+                        <button mat-icon-button [matMenuTriggerFor]="menu">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="getUserList(row)">
+                                <div style="display: flex; align-items: center; color: var(--header-color);">
+                                    <img src="assets/svg/viewmore.svg" alt="">
+                                    <span style="font-size: 12px; margin-left: 10px;">View More Details</span>
+                                </div>
+                            </button>
+
+                            <button mat-menu-item (click)="viewLogs(row)">
+                                <div style="display: flex; align-items: center; color: var(--header-color);">
+                                    <i class="ph-bold ph-users"></i>
+                                    <span style="font-size: 12px; margin-left: 10px;">View User Logs</span>
+                                </div>
+                            </button>
+
+                            <button mat-menu-item (click)="manageDestination(row)">
+                                <div style="display: flex; align-items: center; color: var(--header-color);">
+                                    <i class="ph-bold ph-buildings"></i>
+                                    <span style="font-size: 12px; margin-left: 10px;">Manage Destination</span>
+                                </div>
+                            </button>
+
+                            <button mat-menu-item (click)="addUser(row, 'new')">
+                                <div style="display: flex; align-items: center; color: var(--header-color);">
+                                    <img src="assets/svg/addNew.svg" alt="">
+                                    <span style="font-size: 12px; margin-left: 10px;">Invite New User</span>
+                                </div>
+                            </button>
+
+                            <button mat-menu-item (click)="cloneOrg(row)">
+                                <div style="display: flex; align-items: center; color: var(--header-color);">
+                                    <i class="ph-bold ph-copy"></i>
+                                    <span style="font-size: 12px; margin-left: 10px;">Clone Organisation</span>
+                                </div>
+                            </button>
+
+                            <button mat-menu-item (click)="templateAccess(row)">
+                                <div style="display: flex; align-items: center; color: var(--header-color);">
+                                    <i class="ph-bold ph-notepad"></i>
+                                    <span style="font-size: 12px; margin-left: 10px;">Assign Template Report</span>
+                                </div>
+                            </button>
+
+                            <button mat-menu-item (click)="manangeMode(row, 'parent', null)">
+                                <div style="display: flex; align-items: center; color: var(--header-color);">
+                                    <i class="ph-bold ph-toggle-right"></i>
+                                    <span style="font-size: 12px; margin-left: 10px;">Manage Status</span>
+                                </div>
+                            </button>
+
+                            <button mat-menu-item (click)="manageBrand(row)">
+                                <div style="display: flex; align-items: center; color: var(--header-color);">
+                                    <i class="ph-bold ph-paint-brush"></i>
+                                    <span style="font-size: 12px; margin-left: 10px;">Manage Brand</span>
+                                </div>
+                            </button>
+
+
+
+
+                            
+                            <!-- <button mat-menu-item (click)="changeStatus(row, 'parent', null)">
+                                <div style="display: flex; align-items: center; color: var(--header-color);">
+                                    <img src="assets/svg/disableOrg.svg" alt=""
+                                        *ngIf="row.organizationStatus == 'ENABLED'">
+                                    <i class="ph-bold ph-toggle-right" *ngIf="row.organizationStatus == 'DISABLED'"></i>
+                                    <i class="ph-bold ph-toggle-right" *ngIf="row.organizationStatus == 'PENDING' "></i>
+                                    <span style="font-size: 12px; margin-left: 10px;"> {{row.organizationStatus ==
+                                        'ENABLED' ? 'Disable' : 'Enable' }} Organisation</span>
+                                </div>
+                            </button> -->
+                        </mat-menu>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky :true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+    </div>
+
+
+    <div class="body-wrap" *ngIf="setView">
+        <div *ngIf="userloading"
+            style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 20px auto; height: 60vh;">
+            <app-loader></app-loader>
+            <div style="font-size: 14px; margin-top: 10px; font-weight: 500; color: var(--primary-color);">
+                Just wait a moment...</div>
+        </div>
+        <div class="error-block" style="height: 60vh;" *ngIf="!userloading && userError">
+            <app-empty-list></app-empty-list>
+            <!-- <button mat-flat-button color="primary" style="padding: 0 60px;" (click)="getUserList()">
+                Refresh
+            </button> -->
+        </div>
+        <div *ngIf="!userloading && !userError">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="top-wrap">
+                    <div class="back-wrap" (click)="back()">
+                        <i class="ph-bold ph-caret-left"></i>
+                        <span class="backicon">Back</span>
+                    </div>
+                    <!-- <div class="orgname">
+                        {{userList.organizationName}}
+                    </div> -->
+                </div>
+                <!-- <button mat-flat-button *ngIf="userList.organizationStatus == 'DISABLED'" color="primary"
+                    (click)="changeStatus(userList, 'subparent', null)">
+                    {{userList.organizationStatus ==
+                    'ENABLED' ? 'Disable' : 'Enable'}} Organisation
+                </button>
+
+                <button mat-flat-button *ngIf="userList.organizationStatus == 'ENABLED'" color="warn"
+                    (click)="changeStatus(userList, 'subparent', null)">
+                    {{userList.organizationStatus ==
+                    'ENABLED' ? 'Disable' : 'Enable'}} Organisation
+                </button> -->
+
+                <button mat-flat-button color="primary"
+                (click)="manangeMode(userList, 'parent', null)">
+                 Manage Status
+            </button>
+
+                
+            </div>
+
+
+            <div class="org-bodywrap">
+
+                <div style="display: flex; align-items: center; gap: 5px;">
+                    <span class="backicon">Organisation Details</span>
+                    <span style="font-size: 12px; color: green; font-weight: 600;"
+                        *ngIf="showMessage == 'show' ">{{uploadMessage}}</span>
+                </div>
+                <div class="org-details">
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                        <div class="image-upload-container"
+                            [style.backgroundImage]="imageUrl ? 'url(' + imageUrl + ')' : 'none'">
+
+                            <div class="upload-wrapper">
+                                <img *ngIf="!imageUrl" src="../../../assets/newbrandimg/uploadlogo.svg" alt="">
+                                <span *ngIf="!imageUrl" class="uploadlogo">Upload a Logo</span>
+                            </div>
+
+                            <!-- <div class="initials">{{ getInitials(userList.organizationName) }}</div> -->
+                            <div class="overlay">
+                                <i class="ph-bold ph-camera" style="color: white;"></i>
+                                <input type="file" (change)="onFileSelected($event)" accept="image/*">
+                            </div>
+                        </div>
+                        <div>
+                            <button mat-flat-button *ngIf="showMessage == 'showsave' " color="primary"
+                                style="font-size: 11px;" (click)="saveImage()" [disabled]="uploadLoading">
+                                <span *ngIf="!uploadLoading">Save Logo</span>
+                                <app-button-loader *ngIf="uploadLoading"></app-button-loader>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <!-- <div class="showImage">{{getInitials(userList.organizationName)}}</div> -->
+                    <!-- <img [src]="orgImage" alt="" class="org-img"> -->
+                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                        <div
+                            style="display: grid; 	grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 5px; width: 100%;">
+                            <span class="item-detail">Name:</span>
+                            <span class="item-detailinfo">{{userList.organizationName}}</span>
+                        </div>
+                        <div
+                            style="display: grid; 	grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 5px; width: 100%;">
+                            <span class="item-detail">Current Plan:</span>
+                            <span
+                                class="item-detailinfo">{{userList.subscriptionPlan?.nameOfPlan?.subscriptionChoice?.nameOfPlan
+                                ? userList.subscriptionPlan?.nameOfPlan?.subscriptionChoice?.nameOfPlan : "N/A"}}</span>
+                        </div>
+                        <div
+                            style="display: grid; 	grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 5px; width: 100%;">
+                            <span class="item-detail">Plan expires:</span>
+                            <span class="item-detailinfo">{{userList.subscriptionPlan?.endDate}}</span>
+                        </div>
+                        <div
+                            style="display: grid; 	grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 5px; width: 100%;">
+                            <span class="item-detail">Tenant ID:</span>
+                            <span class="item-detailinfo">{{userList.organizationTenant === "false" ? "N/A" :
+                                userList.organizationTenant }}</span>
+                        </div>
+                        <div
+                            style="display: grid; 	grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 5px; width: 100%;">
+                            <span class="item-detail">Active Users:</span>
+                            <span class="item-detailinfo">{{userList.activatedUsers}}/{{userList.totalUsers}}</span>
+                        </div>
+                        <div
+                            style="display: grid; 	grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 5px; width: 100%;">
+                            <span class="item-detail">Domain:</span>
+                            <span class="item-detailinfo"
+                                style="color: #0F88D0; text-decoration: underline;">{{userList.organizationUrl}}</span>
+                        </div>
+                        <div
+                            style="display: grid; 	grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 5px; width: 100%;">
+                            <span class="item-detail">Status:</span>
+                            <span
+                                [ngClass]="{'approve':userList.organizationStatus == 'ENABLED', 'pending':userList.organizationStatus == 'PENDING', 'reject':userList.organizationStatus  == 'DISABLED'}">{{userList.organizationStatus}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="org-bodywrap">
+                <span class="backicon">Users in this Organisation</span>
+                <div class="admin-table-search">
+                    <div matPrefix class="search-icon">
+                        <i class="ph ph-magnifying-glass"></i>
+                    </div>
+                    <input type="text" matInput placeholder="Search" [(ngModel)]="searchKeyUser"
+                        style="font-size: small;" (keyup)="applyUserFilters()">
+                </div>
+                <div class="flex-center" style="height: 30vh;" *ngIf="userList.users.length === 0">
+                    <div class="empty-root">
+                        <!-- <img src="assets/newbrandimg/empty-connector-list 1.png" class="empty-state-image"
+                            alt="empty state image">
+                        &nbsp; -->
+                        <div class="empty-state-header">No User with this Organisation</div>
+                        <!-- <button mat-flat-button color="primary" style="margin-top: 20px;" (click)="addUser(showItem)">
+                            <span class="btn-text">Add New User</span>
+                        </button> -->
+
+                    </div>
+                </div>
+                <div class="table-wrapper custom-scroll-bar" style="max-height: 35vh;">
+                    <table [ngClass]="{hideElement: userList.users.length == 0 || userloading}" mat-table
+                        [dataSource]="listUserData" class="full-width table mat-elevation-z8" aria-label="rows">
+
+                        <ng-container matColumnDef="select">
+                            <th mat-header-cell *matHeaderCellDef>
+                                <mat-checkbox (change)="$event ? masterUserToggle() : null"
+                                    [checked]="selectionUser.hasValue() && isAllUserSelected()"
+                                    [indeterminate]="selectionUser.hasValue() && !isAllUserSelected()">
+                                </mat-checkbox>
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <mat-checkbox (click)="$event.stopPropagation()"
+                                    (change)="$event ? selectionUser.toggle(element) : null"
+                                    [checked]="selectionUser.isSelected(element)">
+                                </mat-checkbox>
+                                <!-- <mat-checkbox [(ngModel)]="element.checked" (change)="employeeInfo($event, element)"></mat-checkbox> -->
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="user">
+                            <th mat-header-cell *matHeaderCellDef>Users({{userList.users.length}})</th>
+                            <td mat-cell *matCellDef="let row">
+                                <div style="display: flex; align-items: center; gap: 10px; margin: 5px 0;">
+                                    <div class="acc1">{{getInitials(row.userName)}}</div>
+                                    <span>{{row.userName}}</span>
+                                </div>
+
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="role">
+                            <th mat-header-cell *matHeaderCellDef>User Role</th>
+                            <td mat-cell *matCellDef="let row">
+                                <span style="text-transform: capitalize;">
+                                    {{row.userRole}}
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="email">
+                            <th mat-header-cell *matHeaderCellDef>Contact Details</th>
+                            <td mat-cell *matCellDef="let row">
+                                <span style="text-transform: lowercase;">
+                                    {{row.userEmail}}
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="date">
+                            <th mat-header-cell *matHeaderCellDef>Onboarding Date</th>
+                            <td mat-cell *matCellDef="let row">
+                                <span style="text-transform: lowercase;">
+                                    {{row.onboardingDate}}
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="lastlogin">
+                            <th mat-header-cell *matHeaderCellDef>Last Login</th>
+                            <td mat-cell *matCellDef="let row">
+                                {{row.lastLogin}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="status">
+                            <th mat-header-cell *matHeaderCellDef>Status</th>
+                            <td mat-cell *matCellDef="let row">
+                                <span
+                                    [ngClass]="{'approve':row.status == 'activated', 'reject':row.status != 'activated'}">
+                                    {{row.status == 'activated' ? "Active" : "Inactive"}}
+                                </span>
+
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="action">
+                            <th mat-header-cell *matHeaderCellDef></th>
+                            <td mat-cell *matCellDef="let row; let i = index" align="center">
+                                <button mat-icon-button [matMenuTriggerFor]="menu">
+                                    <mat-icon>more_vert</mat-icon>
+                                </button>
+                                <mat-menu #menu="matMenu">
+                                    <button mat-menu-item (click)="updateUser(row, 'edit')">
+                                        <div style="display: flex; align-items: center; color: var(--header-color);">
+                                            <i class="ph-bold ph-pencil-simple"></i>
+                                            <span style="font-size: 12px; margin-left: 10px;">Update Role</span>
+                                        </div>
+                                    </button>
+                                    <button mat-menu-item (click)="changeStatus(row, 'child', showItem)">
+                                        <div style="display: flex; align-items: center; color: var(--header-color);">
+                                            <img src="assets/svg/disableOrg.svg" alt=""
+                                                *ngIf="row.status == 'activated'">
+                                            <i class="ph-bold ph-toggle-right" *ngIf="row.status != 'activated'"></i>
+                                            <span style="font-size: 12px; margin-left: 10px;">{{row.status ==
+                                                'activated' ?
+                                                "Disable" : "Enable"}} User</span>
+                                        </div>
+                                    </button>
+                                </mat-menu>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedUserColumns; sticky :true"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedUserColumns;"></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>

@@ -1,0 +1,37 @@
+.cover{
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-direction: column;
+    position: relative;
+}
+
+.image{
+    width: 20em;
+}
+
+.title{
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.detail{
+    font-size: 13px;
+    color: #333;
+    font-weight: 500;
+}
+
+.logo{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.logofull{
+    width: 125px;
+    height: 33px;
+    flex-shrink: 0;
+}

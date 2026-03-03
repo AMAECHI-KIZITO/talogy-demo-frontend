@@ -1,0 +1,53 @@
+<div class="cover-chat" *ngIf="show">
+    <div class="empty-state" *ngIf="!chatList.length">DataeGPT</div>
+
+    <div class="custom-scroll-bar msg-box" id="messageboard" *ngIf="chatList.length !== 0">
+        <div *ngFor="let item of chatList; let i = index">
+            <div *ngIf="item.id === 'title'" class="chat-title">
+                <div class="title-msg"><i style="color: #aaa; font-weight: 400;">Report:</i>
+                    <br>{{item.title?.reportname}}
+                </div>
+            </div>
+            <div *ngIf="item.id === 'question'" class="question">
+                <div class="message">
+                    <div class="acc1">{{getInitials(name)}}</div>
+                    <div class="message-txt" [ngClass]="{'msg-loading': item.loading}">
+                        <div class="loader" *ngIf="item.loading">
+                            <mat-spinner [diameter]="18" mode="indeterminate"></mat-spinner>
+                        </div>
+                        {{item.reply}}
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="item.id === 'answer'" class="reply">
+                <img src="assets/newbrandimg/chat.png" alt="" class="chat-img2">
+                <pre class="fade" *ngIf="!item.loading" [innerHtml]="item.reply"></pre>
+                <span class="fade" *ngIf="item.loading">...</span>
+                <!-- <i class="think" *ngIf="item.loading">Bot is thinking...</i> -->
+                <span *ngIf="!item.loading" (click)="copy(item.reply, i)" class="copy">
+                    <i class="ph ph-copy" *ngIf="copied != i"></i>
+                    <i class="ph ph-check" *ngIf="copied == i"></i>
+                </span>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="full-width">
+        <!-- <div *ngIf="!chatList.length">
+            <div class="text qut">Suggested Prompts:</div>
+            <div class="suggestion">
+                <div class="text">Which <b>Customer Support</b> is the Fastest Growing?</div>
+                <div><i class="ph ph-caret-right"></i></div>
+            </div>
+        </div> -->
+        <form class="chat-field">
+            <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                <textarea [formControl]="message" autofocus matInput placeholder="Type your prompt"
+                    cdkTextareaAutosize  (keydown)="enter($event)" (keyup)="resetKey($event)"></textarea>
+                <img src="assets/svg/send2.svg" *ngIf="message.valid && canSend" alt="" class="sendicon"
+                    matSuffix (click)="send()">
+            </mat-form-field>
+        </form>
+    </div>
+</div>

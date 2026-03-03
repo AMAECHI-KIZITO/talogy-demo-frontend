@@ -1,0 +1,64 @@
+.cover {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    z-index: 99999;
+    animation: slide-in .5s;
+    transition: all .5s;
+    overflow-y: hidden;
+}
+
+.alert {
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    max-width: 30em;
+    // animation: name duration timing-function delay iteration-count direction fill-mode;
+
+    .topic {
+        color: white;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: -0.12px;
+        line-height: 1.5;
+    }
+
+    .det {
+        color: white;
+        font-size: 11px;
+        letter-spacing: -0.12px;
+    }
+
+    &.success {
+        background-color: #0b8a00;
+    }
+
+    &.warning {
+        background-color: #F90;
+    }
+
+    &.error {
+        background-color: #F21E1E;
+    }
+
+    &.info {
+        background-color: #0457BC;
+    }
+}
+
+button{
+    color: white !important;
+    font-size: 10px !important;
+}
+
+i{
+    color: white !important;
+}
+
+@keyframes slide-in {
+    0%{right: -100%;}
+    100%{right: 0;}
+}

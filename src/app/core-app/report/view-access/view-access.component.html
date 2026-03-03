@@ -1,0 +1,19 @@
+<div class="body">
+    <div class="top-wrapper">
+        <div style="display: flex; flex-direction: column; gap: 2px;">
+            <span class="popup-header">Report Access Users</span>
+            <span style="font-size: 12px;">Users with access to this report</span>
+        </div>
+        <i class="ph-duotone ph-x cancel" (click)="close()"></i>
+    </div>
+
+    <div>
+        <div class="flex-center" style="height: 30vh;" *ngIf="userAccess.length === 0">
+            <div class="empty-root">
+                <img src="assets/svg/reportempty.svg" style="width: 30%;" alt="empty state image">
+                &nbsp;
+                <div class="empty-state-header">No User assigned to this report</div>
+            </div>
+        </div>
+    </div>
+</div>

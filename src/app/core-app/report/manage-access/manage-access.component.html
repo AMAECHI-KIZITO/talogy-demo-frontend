@@ -1,0 +1,75 @@
+<div class="root">
+    <div class="body authorize-body" *ngIf="showSuccess">
+        <img src="assets/newbrandimg/ph_check-circle-duotone.svg" alt="" class="auth-logo">
+        <div class="auth-message">
+            <div class="auth-head">Process Completed.</div>
+            <span class="auth-info">
+                {{this.successmsg}}
+            </span>
+            <div class="mt-2 flex-center">
+                <button mat-flat-button class="flat" (click)="closeSuccess()">Close</button> &nbsp; &nbsp;
+            </div>
+        </div>
+    </div>
+    <div class="body" *ngIf="!showSuccess">
+        <div class="top-wrapper">
+            <div style="display: flex; flex-direction: column; gap: 2px;">
+                <span class="popup-header">Enable Users</span>
+                <span style="font-size: 12px;">Manage report access</span>
+            </div>
+            <i class="ph-duotone ph-x cancel" (click)="close()"></i>
+        </div>
+        <form [formGroup]="form">
+            <div class="mt-1">
+                <label for="altcat">Users<sup style="color: red;">*</sup></label>
+                <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                    <mat-select placeholder="Select user to enable" formControlName="name" 
+                    multiple
+                    style="font-size: small;">
+                        <div class="custom-dropdown-search">
+                            <div class="flex-btw-search">
+                                <input #search placeholder="Search" type="text" class="selection-search"
+                                    (keydown)="$event.stopPropagation()"
+                                    (keyup)="onKey(search.value)">
+                                <button mat-icon-button [ngClass]="{hideElement: search.value == ''}"
+                                    (click)="search.value=''; reset()" matSuffix>
+                                    <mat-icon style="font-size: 15px;">close</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="custom-dropdown-options">
+                            <mat-option style="background-color: whitesmoke;" *ngIf="userList?.length === 0">
+                                --Empty--
+                            </mat-option>
+                            <mat-option [value]="type.userId" *ngFor="let type of userList">
+                                {{type.userEmail}}
+                            </mat-option>
+                        </div>
+                      
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <!-- <div class="mt-1">
+                <label for="altcat">Permission<sup style="color: red;">*</sup></label>
+                <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                    <mat-select placeholder="Select Status" formControlName="status" style="font-size: small;">
+                        <mat-option [value]="type.value" *ngFor="let type of statusList">
+                            <span *ngIf="type.name == 'Enable'" style="color: green;">{{type.name}}</span>
+                            <span *ngIf="type.name == 'Disable'" style="color: red;">{{type.name}}</span>
+                        </mat-option>
+                      
+                    </mat-select>
+                </mat-form-field>
+            </div> -->
+         
+            <div class="submit-wrap">
+                <button mat-flat-button style="width: 100%;" color="primary" [disabled]="form.invalid || loading" (click)="submit()">
+                    <span class="btn-text" *ngIf="!loading">Enable</span>
+                    <app-button-loader *ngIf="loading"></app-button-loader>
+                    
+                </button>
+            </div>
+        </form> 
+    </div>
+</div>

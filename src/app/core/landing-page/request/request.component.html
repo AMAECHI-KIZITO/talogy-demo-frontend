@@ -1,0 +1,62 @@
+<div class="root">
+    <div class="body authorize-body" *ngIf="showSuccess">
+        <img src="assets/newbrandimg/ph_check-circle-duotone.svg" alt="" class="auth-logo">
+        <div class="auth-message">
+            <div class="auth-head">Process Completed.</div>
+            <span class="auth-info">
+                You have successfully requested a report. We will be in touch soon.
+            </span>
+            <div class="mt-2 flex-center">
+                <button mat-flat-button class="flat" (click)="close()">Close</button> &nbsp; &nbsp;
+            </div>
+        </div>
+    </div>
+    <div class="body" *ngIf="!showSuccess">
+        <div class="top-wrapper">
+            <div class="popup-wrap">
+                <span class="popup-header">Request {{selectedRow.res}}</span>
+            </div>
+            <i class="ph-duotone ph-x cancel" (click)="close()"></i>
+        </div>
+      
+        <form [formGroup]="form">
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+                <span style="font-size: 12px;">Selected {{selectedRow.res}}:</span>
+                <span class="selectTemp">{{selectedRow.item.name}}</span>
+            </div>
+
+            <div style="font-size: 14px; font-weight: 500; color: #020511; margin: 20px 0;">
+                Please submit the form and our team will be in touch with you to help you integrate your data with this {{selectedRow.res}}.
+            </div>
+            <div class="mt-1">
+                <label for="altcat">Fullname<sup style="color: red;"> * </sup></label>
+                <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                    <input type="text" formControlName= "fullname" matInput placeholder="Enter fullname">
+                </mat-form-field>
+            </div>
+
+            <div class="mt-1">
+                <label for="altcat">Email<sup style="color: red;"> * </sup></label>
+                <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                    <input type="email" formControlName= "email" matInput placeholder="Enter email">
+                </mat-form-field>
+            </div>
+
+
+            <div class="mt-1">
+                <label for="description">Comment</label>
+                <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                    <textarea style="height: 100px;" formControlName= "description" matInput></textarea>
+                </mat-form-field>
+            </div>
+
+            <div class="submit-wrap">
+                <button mat-flat-button style="width: 100%;" color="primary" [disabled]="form.invalid || loading" (click)="request()">
+                    <span *ngIf="!loading" class="btn-text">Submit</span>
+                    <app-button-loader *ngIf="loading"></app-button-loader>
+                    
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

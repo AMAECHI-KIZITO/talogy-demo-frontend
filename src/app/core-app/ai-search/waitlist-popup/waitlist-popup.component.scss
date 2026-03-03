@@ -1,0 +1,50 @@
+@import '../../../../assets/scss/variable.scss';
+@import '../../../../assets/scss/mixin.scss';
+
+.body {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    // justify-content: space-between;
+}
+.wait-body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+   
+}
+.wait-logo{
+    width: 20%;
+}
+.wait-head{
+    color: var(--n-grey-60, #697386);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    text-align: center;
+    line-height: normal;
+    letter-spacing: -0.28px;
+}
+.wait-info{
+    color: var(--n-grey-60, #697386);
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 20px; /* 137.5% */
+    letter-spacing: -0.32px;
+    margin: auto;
+}
+.wait-btn{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.cancel{
+    background: var(--hover-bg-color-light-mode, rgba(134, 161, 177, 0.10));
+}

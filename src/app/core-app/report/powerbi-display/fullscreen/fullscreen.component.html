@@ -1,0 +1,21 @@
+<div [ngClass]="{'fullscreen': true}">
+    <div class="view-top">
+        <!-- <div class="time" *ngIf="timer">This report will be refreshed in {{timer}}s</div> -->
+        <!-- <i class="ph-duotone ph-x cancel" (click)="close()"></i> -->
+        <button mat-raised-button class="btn-cont" color="primary" (click)="close()">
+            <div style="display: flex; align-items: center; gap: 3px;">
+                <i class="ph-bold ph-arrows-in"></i>
+                <span style="font-size: 12px;">Close</span>
+            </div>
+        </button>
+    </div> 
+    <div #reportContainer class="full-body" *ngIf="data.reportType == 'PowerBI' && !timerComplete ">
+        <powerbi-report frameborder="0" allowFullScreen="true" [embedConfig]="data.reportConfig" [cssClassName]="data.reportClass"
+            [phasedEmbedding]="data.phasedEmbeddingFlag" [eventHandlers]="data.eventHandlersMap">
+        </powerbi-report>
+    </div>
+
+    <div class="full-body cover" *ngIf="data.reportType == 'Looker' ">
+        <iframe [src]="data.reportUrl | safe" frameborder="0" width="100%" height="100%"></iframe>
+    </div>
+</div>

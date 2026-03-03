@@ -1,0 +1,381 @@
+<mat-drawer-container class="root-wrap">
+    <mat-drawer #drawer mode="over" position="end" class="custom-filter">
+        <div *ngIf="!mode">
+            <div class="filter-header flex-btw">
+                <div style="font-weight: 600;">Filter Report</div>
+                <button mat-icon-button (click)="drawer.toggle();" color="warn">
+                    <mat-icon>cancel</mat-icon>
+                </button>
+            </div>
+            <div style="padding: 0 20px;">
+                <form [formGroup]="filter" style="margin-top: 0px;">
+                    <div class="filter-section-style">
+                        <div class="custom-label">Type</div>
+                        <mat-form-field floatLabel="never" style="font-size: small;" class="custom-form-field"
+                            appearance="outline">
+                            <span *ngIf="reporttypeLoading" matPrefix>
+                                <mat-progress-spinner color="primary" diameter="18" mode="indeterminate">
+                                </mat-progress-spinner>
+                            </span>
+                            <mat-select placeholder="--Select Type--" formControlName="type" style="font-size: small;">
+                                <div class="custom-dropdown-search">
+                                    <div class="flex-btw">
+                                        <input #search placeholder="Search" type="text" class="selection-search"
+                                            (keydown)="$event.stopPropagation()" (keyup)="onKey(search.value)">
+                                        <button mat-icon-button [ngClass]="{hideElement: search.value == ''}"
+                                            (click)="search.value=''; reset()" matSuffix>
+                                            <mat-icon style="font-size: 15px;">close</mat-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="custom-dropdown-options">
+                                    <mat-option style="background-color: whitesmoke;" *ngIf="reporttype.length === 0">
+                                        --Empty--
+                                    </mat-option>
+                                    <mat-option value="">All</mat-option>
+                                    <mat-option [value]="type._id" *ngFor="let type of reporttype">
+                                        {{type.reportTypeName}}
+                                    </mat-option>
+                                </div>
+
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="filter-section-style">
+                        <div class="custom-label">Status</div>
+                        <mat-form-field floatLabel="never" style="font-size: small;" class="custom-form-field"
+                            appearance="outline">
+                            <mat-select placeholder="--Select Status--" formControlName="status">
+                                <mat-option value="">All</mat-option>
+                                <mat-option [value]="type.value" *ngFor="let type of reportStatus">
+                                    {{type.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="mt-2">
+                        <button mat-raised-button class="full-width" color="primary" (click)="getList('Filter')">
+                            <span *ngIf="!loading"> Apply </span>
+                            <app-button-loader *ngIf="loading"></app-button-loader>
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        <div *ngIf="mode">
+            <div class="filter-header flex-btw">
+                <div style="display: flex; align-items: center; gap: 5px;" *ngIf="showadd">
+                    <i class="ph-bold ph-arrow-left" style="cursor: pointer;" (click)="hideAdd()"></i>
+                    <div style="font-weight: 600;">Add people</div>
+                </div>
+
+                <div style="font-weight: 600;" *ngIf="!showadd">Manage Access</div>
+
+                <button mat-icon-button (click)="drawer.toggle();" color="warn">
+                    <mat-icon>cancel</mat-icon>
+                </button>
+            </div>
+            <div style="padding: 0 20px;">
+                <button mat-flat-button style="width: 100%;" *ngIf="!showadd" color="primary" (click)="showAdd()">
+                    <i class="ph-bold ph-plus"></i>
+                    <span class="btn-text" style="margin-left: 5px;">Add users</span>
+                </button>
+
+                <form [formGroup]="form" *ngIf="showadd">
+                    <div class="mt-1">
+                        <div class="custom-label" style="text-transform: none;">Select user(s)</div>
+                        <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                            <span *ngIf="userloading" matPrefix>
+                                <mat-progress-spinner color="primary" diameter="18" mode="indeterminate">
+                                </mat-progress-spinner>
+                            </span>
+                            <mat-select placeholder="Select user to enable" formControlName="name" multiple
+                                style="font-size: small;">
+                                <div class="custom-dropdown-search">
+                                    <div class="flex-btw-search">
+                                        <input #searchUser placeholder="Search" type="text" class="selection-search"
+                                            (keydown)="$event.stopPropagation()" (keyup)="onKeyUser(searchUser.value)">
+                                        <button mat-icon-button [ngClass]="{hideElement: searchUser.value == ''}"
+                                            (click)="searchUser.value=''; resetUser()" matSuffix>
+                                            <mat-icon style="font-size: 15px;">close</mat-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="custom-dropdown-options">
+                                    <mat-option style="background-color: whitesmoke;" *ngIf="userList?.length === 0">
+                                        --Empty--
+                                    </mat-option>
+                                    <mat-option [value]="type.userId" *ngFor="let type of userList">
+                                        {{type.userEmail}}
+                                    </mat-option>
+                                </div>
+
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="mt-1">
+                        <div class="custom-label">Access Interval 
+                            <small style="font-size: 12px;">(optional)</small> &nbsp;
+                            <i class="ph ph-question" style="position: relative; top: 3px;" matTooltip="Give temporary access to selected users by selecting a date range. Leave empty to give users permanent access"></i>
+                        </div>
+                        <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                            <!-- <input matInput [matDatepicker]="picker" formControlName="date">
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker> -->
+                            <mat-date-range-input [rangePicker]="picker">
+                                <input matStartDate placeholder="Start date" formControlName="startdate">
+                                <input matEndDate placeholder="End date" formControlName="enddate">
+                            </mat-date-range-input>
+                            <mat-datepicker-toggle class="small-icons" matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker></mat-date-range-picker>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="submit-wrap">
+                        <button mat-flat-button color="primary" [disabled]="form.invalid || addloading"
+                            (click)="submit()">
+                            <span class="btn-text" *ngIf="!addloading">Add</span>
+                            <app-button-loader *ngIf="addloading"></app-button-loader>
+
+                        </button>
+                    </div>
+                </form>
+
+                <div *ngIf="!showadd">
+                    <div class="admin-table-search">
+                        <div matPrefix class="search-icon">
+                            <i class="ph ph-magnifying-glass"></i>
+                        </div>
+                        <input type="text" matInput placeholder="Search User" [(ngModel)]="searchUserKey"
+                            style="font-size: small;" (keyup)="filters()">
+                    </div>
+
+                    <div class="flex-center" style="height: 30vh;"
+                        *ngIf="userAccessList?.length === 0 && !accessListLoader && !accessError">
+                        <div class="empty-root">
+                            <img src="assets/svg/accessempty.svg" style="width: 30%;" alt="empty state image">
+                            &nbsp;
+                            <div class="empty-state-header" style="font-size: 14px; text-align: center;">
+                                No users have been granted access to this report yet.
+                            </div>
+                            <div class="empty-semi-text"
+                                style="width: 80%; font-size: 12px; text-align: center; color: #3c4257;">
+                                To see users, add users to this report
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-center" style="height: 30vh;"
+                        *ngIf="myAccessList?.length === 0 && userAccessList.length && !accessListLoader && !accessError">
+                        <div class="empty-root">
+                            <img src="assets/svg/searchempty1.svg" style="width: 30%;" alt="empty state image">
+                            &nbsp;
+                            <div class="empty-state-header" style="font-size: 14px; text-align: center;">
+                                We couldn't find any users matching your search
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="accessListLoader"
+                        style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 20px auto; height: 60vh;">
+                        <app-loader></app-loader>
+                        <div style="font-size: 14px; margin-top: 10px; font-weight: 500; color: var(--primary-color);">
+                            Just wait a moment...</div>
+                    </div>
+                    <div *ngIf="!accessListLoader && myAccessList?.length != 0" class="custom-scroll-bar"
+                        style="height: 50vh;">
+                        <div *ngFor="let item of myAccessList">
+                            <div class="accesslist">
+                                <span style="font-size: 12px;">
+                                    {{item.useremail}}
+                                </span>
+
+                                <button mat-flat-button class="accessbtn" [disabled]="item.addloading"
+                                    (click)="disable(item)">
+                                    <span class="btn-text" *ngIf="!item.addloading">Remove</span>
+                                    <app-button-loader *ngIf="item.addloading"></app-button-loader>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+        </div>
+
+    </mat-drawer>
+    <div class="table-wrapper custom-scroll-bar">
+        <div class="header-wrapper">
+            <div>
+
+            </div>
+            <div style="display: flex; align-items: center;">
+                <div class="table-search">
+                    <div matPrefix class="search-icon">
+                        <i class="ph ph-magnifying-glass"></i>
+                    </div>
+                    <input type="text" matInput placeholder="Search" autofocus [(ngModel)]="searchKey"
+                        style="font-size: small;" (keyup)="filters()">
+                </div>
+                <div>
+                    <button mat-icon-button class="icon-button" style="margin: 0 5px;"
+                        (click)="drawer.toggle(); handleClick();" matTooltip="filter">
+                        <i class="ph ph-funnel"></i>
+                    </button>
+                    <button mat-icon-button class="icon-button" (click)="getList('Refresh')" matTooltip="refresh">
+                        <i class="ph ph-arrows-clockwise"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="custom-scroll-bar" style="height: 80vh;">
+
+            <div *ngIf="loading">
+                <ngx-skeleton-loader animation="line" count="5" [theme]="{height: '100px'}"></ngx-skeleton-loader>
+                <!-- <app-loader></app-loader>
+                <div style="font-size: 14px; margin-top: 10px; font-weight: 500; color: var(--primary-color);">Just wait a moment...</div> -->
+            </div>
+            <!-- <div class="please" *ngIf="connectLoading">
+                    <app-loader></app-loader>
+                    <span style="font-size: 12px; color: red;">Please Wait...</span>
+                    
+                </div> -->
+            <div class="flex-center" style="height: 60vh;" *ngIf="!loading && reportList.length === 0 && !errorList">
+                <div class="empty-root">
+                    <img src="assets/svg/reportempty.svg" style="width: 20%;" alt="empty state image">
+                    &nbsp;
+                    <div class="empty-state-header">No Report Created</div>
+                    <div class="empty-semi-text" style="width: 80%; text-align: center;">Get inspired by our pre-built
+                        template reports and start creating your own report today
+                    </div>
+                    <button mat-flat-button color="primary" style="margin-top: 20px;" (click)="gotoRoute()">
+                        <span class="btn-text">Go To Template Reports</span>
+                    </button>
+
+                </div>
+            </div>
+
+            <div class="error-block" style="height: 60vh;" *ngIf="!loading && errorList">
+                <app-empty-list></app-empty-list>
+                <button mat-flat-button color="primary" style="padding: 0 60px;" (click)="getList('Refresh')">
+                    Refresh
+                </button>
+            </div>
+
+            <div class="list-wrap" *ngFor="let item of reportList"
+                [ngClass]="{hideElement: reportList.length == 0 || loading, 'no-click': item.status == 'in progress'}" (click)="viewReport(item)">
+                <div class="list-head">
+                    <span class="list-name">Report Name</span>
+                    <span class="list-info">{{item.reportname}}</span>
+                </div>
+                <div class="list-head">
+                    <span class="list-name">Platform</span>
+                    <div class="platwrap">
+                        <img *ngIf="item.reportPlatform == 'PowerBI'" src="assets/newbrandimg/powebilogo.svg"
+                            class="replogo" alt="">
+                        <img *ngIf="item.reportPlatform == 'Looker'" src="assets/newbrandimg/simple-icons--looker.svg"
+                            class="replogo" alt="">
+                        <img *ngIf="item.reportPlatform == 'Tableau'" src="assets/newbrandimg/simple-icons--tableau.svg"
+                            class="replogo" alt="">
+                        <span class="list-info">{{item.reportPlatform}}</span>
+                    </div>
+                </div>
+                <div class="list-head">
+                    <span class="list-name">Type</span>
+                    <span class="list-info">{{item.reporttype?.reportTypeName}}</span>
+                </div>
+
+                <!-- <div class="list-head">
+                    <span class="list-name">Source</span>
+                    <span class="list-info">{{item.reportource.length == 0 ? "N/A" : item.reportource}}</span>
+                </div> -->
+                <!-- <div class="list-head">
+                    <span class="list-name">Refreshed (GMT)</span>
+                    <span class="list-info"> 
+                        {{ item.last_updated == "N/A" ? "N/A" :
+                        convertTimestampToDate(item.last_updated) + ',' + getTimeFromTimestamp(item.last_updated) +
+                        'UTC' }}
+                        {{item.last_updated == 'N/A' ? 'N/A' : item.last_updated | date : 'MMMM d, y, h:mm:ss a':'UTC'}}
+                    </span>
+                </div> -->
+                <!-- <div class="list-head">
+                    <span class="list-name">Next Refresh (GMT)</span>
+                    <span class="list-info">
+                        {{ item.last_updated == "N/A" ? "N/A" :
+                        convertTimestampToDate(getNextDateTimestamp(item.last_updated)) + ','
+                        +getTimeFromTimestamp(getNextDateTimestamp(item.last_updated)) +
+                        'UTC'}}
+                        {{item.last_updated == 'N/A' ? 'N/A' : add24(item.last_updated) | date : 'MMMM d, y, h:mm:ss a':'UTC'}}
+                    </span>
+                </div> -->
+
+
+                <div class="list-head" style="width: 50%; margin: 0 20px; align-items: center;">
+                    <span class="list-name">Status</span>
+                    <span [ngClass]="{'approve':item.status == 'enabled','reject':item.status == 'disabled', 'pending': item.status == 'in progress'}">
+                        {{item.status | titlecase}}
+                    </span>
+                </div>
+                <div>
+                    <!-- <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()" [ngClass]="{'hideElement': item.status == 'in progress'}">
+                        <mat-icon>more_vert</mat-icon>
+                    </button> -->
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="viewReport(item)">
+                            <div style="display: flex; align-items: center; color: var(--header-color);">
+                                <i class="ph-duotone ph-eye"></i>
+                                <span style="font-size: 12px; margin-left: 10px;">View Report</span>
+                            </div>
+                        </button>
+                        <button *ngIf="item.reportowner == userId" mat-menu-item
+                            (click)="drawer.toggle(); setMode(item)">
+                            <div style="display: flex; align-items: center; color: var(--header-color);">
+                                <i class="ph-bold ph-toggle-left"></i>
+                                <span style="font-size: 12px; margin-left: 10px;">Manage user access</span>
+                            </div>
+                        </button>
+                        <!-- <button mat-menu-item (click)="disableAccess(item)" *ngIf="item.accessList.length != 0">
+                            <div style="display: flex; align-items: center; color: var(--header-color);">
+                                <i class="ph-bold ph-toggle-left"></i>
+                                <span style="font-size: 12px; margin-left: 10px;">Disable user access</span> 
+                            </div>
+                        </button> -->
+                        <div *ngIf="item.reportowner == userId">
+                            <button mat-menu-item [disabled]="pauseLoading" (click)="pauseReport(item)"
+                                *ngIf="item.status === 'enabled' ">
+                                <div style="display: flex; align-items: center; color: var(--header-color);">
+                                    <i class="ph-duotone ph-plugs"></i>
+                                    <span style="font-size: 12px; margin-left: 10px;">Disable</span>
+                                </div>
+
+                                <app-button-loader *ngIf="pauseLoading"></app-button-loader>
+                            </button>
+
+                            <button mat-menu-item (click)="pauseReport(item)" *ngIf="item.status === 'disabled' ">
+                                <div style="display: flex; align-items: center; color: var(--header-color);">
+                                    <i class="ph-duotone ph-plugs"></i>
+                                    <span style="font-size: 12px; margin-left: 10px;">Enable</span>
+                                </div>
+                                <app-button-loader *ngIf="pauseLoading"></app-button-loader>
+                            </button>
+                        </div>
+
+                        <button mat-menu-item (click)="delete(item)" *ngIf="item.reportowner == userId">
+                            <div style="display: flex; align-items: center; color: var(--error-color);">
+                                <i class="ph-duotone ph-trash"></i>
+                                <span style="font-size: 12px; margin-left: 10px;">Delete</span>
+                            </div>
+                        </button>
+                    </mat-menu>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</mat-drawer-container>

@@ -1,0 +1,230 @@
+<mat-drawer-container class="root">
+    <mat-drawer #drawer mode="over" position="end" class="custom-filter">
+        <div class="filter-header flex-btw">
+            <div style="font-weight: 600;">Filter Request</div>
+            <button mat-icon-button (click)="drawer.toggle();" color="warn">
+                <mat-icon>cancel</mat-icon>
+            </button>
+        </div>
+        <div style="padding: 0 20px;">
+            <form [formGroup]="filter" style="margin-top: 0px;">
+                <mat-form-field floatLabel="never" style="font-size: small;" class="custom-form-field"
+                    appearance="outline">
+                    <mat-select placeholder="Connector Request" formControlName="type" style="font-size: small;">
+                        <div class="custom-dropdown-search">
+                            <div class="flex-btw">
+                                <input #search placeholder="Search" type="request" class="selection-search"
+                                    (keydown)="$event.stopPropagation()" (keyup)="onKey(search.value)">
+                                <button mat-icon-button [ngClass]="{hideElement: search.value == ''}"
+                                    (click)="search.value=''; reset()" matSuffix>
+                                    <mat-icon style="font-size: 15px;">close</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="custom-dropdown-options">
+                            <mat-option style="background-color: whitesmoke;" *ngIf="connectList.length === 0">
+                                --Empty--
+                            </mat-option>
+                            <mat-option [value]="type.value" *ngFor="let type of connectList">
+                                {{type.name}}
+                            </mat-option>
+                        </div>
+
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field floatLabel="never" style="font-size: small;" class="custom-form-field mt-1"
+                    appearance="outline">
+                    <span *ngIf="orgloading" matPrefix>
+                        <mat-progress-spinner color="primary" diameter="18" mode="indeterminate">
+                        </mat-progress-spinner>
+                    </span>
+                    <mat-select placeholder="Organisation" formControlName="org" style="font-size: small;">
+                        <div class="custom-dropdown-search">
+                            <div class="flex-btw">
+                                <input #searchOrg placeholder="Search" type="text" class="selection-search"
+                                    (keydown)="$event.stopPropagation()" (keyup)="onKeyOrg(searchOrg.value)">
+                                <button mat-icon-button [ngClass]="{hideElement: searchOrg.value == ''}"
+                                    (click)="searchOrg.value=''; reset()" matSuffix>
+                                    <mat-icon style="font-size: 15px;">close</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="custom-dropdown-options">
+                            <mat-option style="background-color: whitesmoke;" *ngIf="orgList.length === 0">
+                                --Empty--
+                            </mat-option>
+                            <mat-option [value]="type.organizationId" *ngFor="let type of orgList">
+                                {{type.organizationName}}
+                            </mat-option>
+                        </div>
+
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="never" style="font-size: small;"
+                    class="custom-form-field mt-1">
+                    <input (dateChange)="formatStartDate($event)" formControlName="startdate" matInput
+                        [matDatepicker]="startDatePicker" placeholder="From">
+                    <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #startDatePicker></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="never" style="font-size: small;"
+                    class="custom-form-field mt-1">
+                    <input (dateChange)="formatEndDate($event)" formControlName="enddate" matInput
+                        [matDatepicker]="doepicker" [min]="filter.value.startdate" placeholder="To">
+                    <mat-datepicker-toggle matSuffix [for]="doepicker"></mat-datepicker-toggle>
+                    <mat-datepicker #doepicker></mat-datepicker>
+                </mat-form-field>
+                <div class="mt-2">
+                    <button mat-raised-button class="full-width" color="primary" (click)="getList()">
+                        <span *ngIf="!loading"> Apply </span>
+                        <app-button-loader *ngIf="loading"></app-button-loader>
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </mat-drawer>
+    <div class="top-bar">
+        <span class="top-head">Requests</span>
+    </div>
+    <div class="body-wrap" *ngIf="!setView">
+        <div class="filter-wrap">
+            <div class="admin-table-search">
+                <div matPrefix class="search-icon">
+                    <i class="ph ph-magnifying-glass"></i>
+                </div>
+                <input type="text" matInput placeholder="Search Request" [(ngModel)]="searchKey"
+                    style="font-size: small;" (keyup)="filters()">
+            </div>
+            <mat-checkbox *ngIf="isExist && !loading" class="example-margin" [(ngModel)]="showResolvedRequests">Show resolved
+                Requests</mat-checkbox>
+
+            <button mat-icon-button class="icon-button"
+                (click)="getList()" matTooltip="refresh">
+                <i class="ph ph-arrows-clockwise"></i>
+            </button>
+
+            <button mat-icon-button class="icon-button"
+                (click)="drawer.toggle();" matTooltip="filter">
+                <i class="ph ph-funnel"></i>
+        </button>
+
+        </div>
+        <div>
+
+            <div class="request-body  custom-scroll-bar" style="height: 60vh;">
+                <div *ngIf="loading"
+                    style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 20px auto; height: 60vh;">
+                    <app-loader></app-loader>
+                    <div style="font-size: 14px; margin-top: 10px; font-weight: 500; color: var(--primary-color);">
+                        Just wait a moment...</div>
+                </div>
+
+                <div class="flex-center" style="height: 40vh;" *ngIf="!loading && requestList.length === 0 && !error">
+                    <div class="empty-root">
+                        <img src="assets/svg/reportempty.svg" alt="empty state image">
+                        &nbsp;
+                        <div class="empty-state-header">No Request Created</div>
+
+                    </div>
+                </div>
+                <div class="error-block" style="height: 60vh;" *ngIf="!loading && error">
+                    <app-empty-list></app-empty-list>
+                    <button mat-flat-button color="primary" style="padding: 0 60px;" (click)="getList()">
+                        Refresh
+                    </button>
+                </div>
+                <div [ngClass]="{hideElement: requestList?.length == 0 || loading}" class="request-wrap" *ngFor="let item of filterRequests()" (click)="viewMore(item)">
+                    <div class="request">
+                        <span class="request-head">{{item.requestType === 'destination' ? item.requestDetails.name :
+                            item.requestType === 'report' ? item.requestDetails.category : "N/A" }}</span>
+                        <span class="request-info">{{item.requestType === 'destination' ? item.requestDetails.description :
+                            item.requestType === 'report' ? item.requestDetails.source : "N/A"}}</span>
+                    </div>
+                    <div class="request2">
+                        <span class="request-info">{{item.requestDate}}</span>
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                            <div *ngIf="item.requestStatus == 'open'" class="request-list-notactive"></div>
+                            <div *ngIf="item.requestStatus != 'open'" class="request-list-active"></div>
+                            <span class="request-status">{{item.requestStatus == 'open' ? 'Not Resolved' :
+                                "Resolved"}}</span>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <!-- <div class="btn-wrap-page" style="margin-top: 10px;">
+                <button mat-button (click)="previousReport()" [disabled]="reportCount <= 1">
+                    <i class="ph-bold ph-caret-left"></i>
+                    <span [ngClass]="{'nonext':reportCount <= 1 , 'next':reportCount > 1}">Previous</span>
+                </button>
+                <button mat-button (click)="nextReport()" [disabled]="isNext">
+                    <span [ngClass]="{'nonext': isNext , 'next': !isNext}">Next</span>
+                    <i class="ph-bold ph-caret-right"></i>
+                </button>
+            </div> -->
+        </div>
+    </div>
+    <div class="body-wrap" *ngIf="setView">
+        <div class="top-wrap">
+            <div class="back-wrap" (click)="back()">
+                <i class="ph-bold ph-caret-left"></i>
+                <span class="backicon">Back</span>
+            </div>
+            <div class="orgname">
+                {{requestName}}
+            </div>
+        </div>
+        <div class="org-bodywrap">
+            <div  style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="orgname">Connector Request Details</div>
+                <button *ngIf="status == 'open'" mat-flat-button color="primary" style="font-size: 12px;" [disabled]="markLoading" (click)="mark()">
+                   
+                    <span class="btn-text" *ngIf="!markLoading"> Marked as resolved</span>
+                    <app-button-loader *ngIf="markLoading"></app-button-loader>
+                </button>
+            </div>
+            
+
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                 <!-- <mat-checkbox *ngIf="status == 'open'" class="example-margin" (click)="mark()" >Marked as resolved</mat-checkbox> -->
+                <div
+                        style="display: grid; 	grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 5px; width: 25%;">
+                        <span class="item-detail">Request Date:</span>
+                        <span class="item-detailinfo">{{requestDate}}</span>
+                    </div>
+
+                <div *ngIf="requestType == 'destination'"
+                    style="display: grid; 	grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 5px; width: 25%;">
+                    <span class="item-detail">Region:</span>
+                    <span class="item-detailinfo">{{region}}</span>
+                </div>
+                <div *ngIf="requestType == 'destination'"
+                    style="display: grid; 	grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 5px; width: 25%;">
+                    <span class="item-detail">Subscription:</span>
+                    <span class="item-detailinfo">{{sub}}</span>
+                </div>
+                <div *ngIf="requestType == 'report'"
+                    style="display: grid; 	grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 5px; width: 25%;">
+                    <span class="item-detail">Data Source Name:</span>
+                    <span class="item-detailinfo">{{source}}</span>
+                </div>
+                <div *ngIf="requestType == 'report'"
+                    style="display: grid; 	grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 5px; width: 25%;">
+                    <span class="item-detail">Data Source URL:</span>
+                    <a href="#" class="item-detailinfo" style="color: #0F88D0;">{{url}}</a>
+                </div>
+                <div *ngIf="requestType == 'destination'"
+                    style="display: grid; 	grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 5px; width: 25%;">
+                    <span class="item-detail">Region:</span>
+                    <span class="item-detailinfo" style="width: 500px;">
+                        {{info}}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</mat-drawer-container>

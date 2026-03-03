@@ -1,0 +1,40 @@
+.list{
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.body {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    // justify-content: space-between;
+}
+.name{
+    font-size: 20px;
+    font-weight: 600;
+    color: #0457bc;
+}
+.email{
+    font-size: 16px;
+    font-weight: 600;
+}
+.list-wrap{
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+}
+.list-top{
+    font-weight: 600;
+    color: gray;
+    margin-bottom: 5px;
+}
+.list-buttom{
+    font-weight: 600;
+}
+.plan-wrap{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    column-gap: 10px;
+    row-gap: 10px;
+}

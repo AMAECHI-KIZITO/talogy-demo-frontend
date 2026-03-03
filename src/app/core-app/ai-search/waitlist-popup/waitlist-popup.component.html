@@ -1,0 +1,29 @@
+<div class="root">
+    <div class="body wait-body" *ngIf="!check">
+        <img src="assets/svg/waitlist.svg" alt="" class="wait-logo">
+        <div class="wait-message">
+            <div class="wait-head">Join the Waitlist!</div>
+            <div class="wait-info" style="width: 98%;">
+                Be among the first to experience our revolutionary
+                AI Search Feature! Sign up for our waitlist now.
+            </div>
+            <div class="mt-2 wait-btn">
+                <button mat-flat-button color="primary" (click)="join()">Join Now</button>
+                <button mat-flat-button class="cancel" (click)="close()">Cancel</button> 
+            </div>
+        </div>
+    </div>
+
+    <div class="body wait-body" *ngIf="check">
+        <img src="assets/svg/success.svg" alt="" class="wait-logo">
+        <div class="wait-message">
+            <div class="wait-head">Successful!</div>
+            <div class="wait-info">
+                Thank you for joining our waitlist.
+            </div>
+            <div class="mt-2 wait-btn">
+                <button mat-flat-button class="cancel" (click)="close()">Cancel</button> 
+            </div>
+        </div>
+    </div>
+</div>

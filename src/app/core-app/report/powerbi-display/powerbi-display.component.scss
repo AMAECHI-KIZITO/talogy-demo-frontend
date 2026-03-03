@@ -1,0 +1,145 @@
+@import "../../../../assets/scss/variable.scss";
+@import "../../../../assets/scss/mixin.scss";
+
+$primary-color: var(--primary, #{var(--primary-color)});
+$secondary-color: var(--secondary, #{var(--side-bar-color)});
+$texts-color: var(--texts, #{var(--text-color)});
+
+::ng-deep .report-container {
+    width: 100% !important;
+    height: 85vh !important;
+}
+
+::ng-deep iframe {
+    width: 100% !important;
+    height: 100% !important;
+    border: none !important;
+}
+
+::ng-deep .report-container-full {
+    width: 100% !important;
+    height: 89vh !important;
+}
+
+.cover{
+    height: 85vh;
+    width: 100%;
+}
+
+.empty-state-image {
+    width: 200px;
+}
+
+.hide{
+    display: none !important;
+}
+
+.btn-cont {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    background-color: $primary-color;
+    // margin-left: auto;
+}
+.wrap-cont {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+.export {
+    text-align: center;
+    padding: 9px;
+    font-size: 12px;
+    background-color: #0457bc;
+    color: white;
+    width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.report-container {
+    position: relative;
+}
+
+.time-banner{
+    width: 100%;
+    background-color: #DFF1FD;
+    padding: 5px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #0B396D;
+    text-align: center;
+}
+
+.selection-box {
+    position: absolute;
+    border: 2px dashed #000;
+    background: rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+::ng-deep .back-drop {
+    &.cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
+        backdrop-filter: blur(1px) !important;
+        background: rgb(0 0 0 / 48%) !important;
+    }
+}
+
+::ng-deep .custom-popup {
+    .mat-mdc-dialog-container .mdc-dialog__surface {
+        background-color: transparent !important;
+    }
+}
+
+/////////////////
+.right-chat {
+    transform: rotate(-90deg);
+    width: fit-content;
+    padding: 10px 20px;
+    position: absolute;
+    top: 50%;
+    display: flex;
+    right: -60px;
+    font-size: 12px;
+    background: white;
+    border-radius: 5px 5px 0 0;
+    box-shadow: 0px 4px 7px 0px rgba(134, 161, 177, 0.3);
+    gap: 10px;
+    cursor: pointer;
+}
+
+.ash-cancel {
+    padding: 5px;
+    background: #d9dce1;
+    border-radius: 50%;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.side-chat {
+    width: 22em;
+    background: white;
+    height: 100vh;
+    position: absolute;
+    border-radius: 8px 0 0 8px;
+    right: 0;
+    top: 0;
+    animation: slide 0.3s linear;
+    // box-shadow: 0 0 5px -2px;
+    background: linear-gradient(0deg, #f7fafc 0%, #f7fafc 100%), var(--Primary-Base-White, #fff);
+    box-shadow: 0px 12px 8px 0px rgba(112, 123, 133, 0.12);
+}
+
+@keyframes slide {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: 22em;
+    }
+}

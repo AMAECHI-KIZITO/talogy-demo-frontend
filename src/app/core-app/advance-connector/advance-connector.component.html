@@ -1,0 +1,250 @@
+<mat-drawer-container class="root-wrap">
+    <mat-drawer #drawer mode="over" position="end" class="custom-filter">
+        <div class="filter-header flex-btw">
+            <div style="font-weight: 600;">Filter Connectors</div>
+            <button mat-icon-button (click)="drawer.toggle()" color="warn">
+                <mat-icon>cancel</mat-icon>
+            </button>
+        </div>
+        <div style="padding: 0 20px;">
+            <form [formGroup]="filterGroup" style="margin-top: 0px;">
+                <div class="filter-section-style">
+                    <div class="custom-label">Service</div>
+                    <mat-form-field floatLabel="never" class="custom-form-field" style="font-size: small;"
+                        appearance="outline">
+                        <!-- <span *ngIf="loading" matPrefix>
+                                <mat-progress-spinner color="primary" diameter="18" mode="indeterminate">
+                                </mat-progress-spinner>
+                            </span> -->
+                        <mat-select placeholder="--Select Service--" formControlName="service"
+                            style="font-size: small;">
+                            <div class="custom-dropdown-search">
+                                <div class="flex-btw-search">
+                                    <input #search placeholder="Search" type="text" class="selection-search"
+                                        (keydown)="$event.stopPropagation()" (keyup)="onKey(search.value)">
+                                    <button mat-icon-button [ngClass]="{hideElement: search.value == ''}"
+                                        (click)="search.value=''; reset()" matSuffix>
+                                        <mat-icon style="font-size: 15px;">close</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="custom-dropdown-options">
+                                <mat-option style="background-color: whitesmoke;" *ngIf="serviceList.length === 0">
+                                    --Empty--
+                                </mat-option>
+                                <mat-option value="">All</mat-option>
+                                <mat-option [value]="type.connectorId" *ngFor="let type of list">
+                                    {{type.value}}
+                                </mat-option>
+                            </div>
+
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="filter-section-style">
+                    <div class="custom-label">Status</div>
+                    <mat-form-field floatLabel="never" style="font-size: small;" class="custom-form-field"
+                        appearance="outline">
+                        <mat-select placeholder="--Select Status--" formControlName="status">
+                            <mat-option value="">All</mat-option>
+                            <mat-option [value]="type.value" *ngFor="let type of reportStatus">
+                                {{type.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="filter-section-style">
+                    <div class="custom-label">Date created</div>
+                    <mat-form-field style="font-size: small;" class="custom-form-field" appearance="outline"
+                        floatLabel="never">
+                        <input matInput autocomplete="off" [matDatepicker]="pickers" formControlName="date"
+                            (dateChange)="formatStartDate($event)" placeholder="mm/dd/yyyy">
+                        <mat-datepicker-toggle matSuffix [for]="pickers"></mat-datepicker-toggle>
+                        <mat-datepicker #pickers></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="mt-2">
+                    <button mat-raised-button class="full-width trackable-button" color="primary"
+                        (click)="getCustomConnector('Filter')">
+                        <span *ngIf="!customLoading"> Apply </span>
+                        <app-button-loader *ngIf="customLoading"></app-button-loader>
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </mat-drawer>
+    <div>
+        <div class="header-wrapper">
+            <div class="text-wrapper">
+                <span class="data-source">Custom Connector List</span>
+                <span class="semi-text">Detailed list of user's custom connectors</span>
+            </div>
+
+            <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <div>
+
+                    <div class="table-search">
+                        <div matPrefix class="search-icon">
+                            <i class="ph ph-magnifying-glass"></i>
+                        </div>
+                        <input type="text" matInput placeholder="Search" autofocus [(ngModel)]="searchKey2"
+                            (keyup)="applyFilters2(); handleClick();" style="font-size: small;">
+                    </div>
+                </div>
+                <div>
+                    <button mat-icon-button class="icon-button" style="margin: 0 5px;" (click)="drawer.toggle()"
+                        matTooltip="filter">
+                        <i class="ph ph-funnel"></i>
+                    </button>
+                    <button mat-icon-button class="icon-button" (click)="getCustomConnector('Refresh')"
+                        matTooltip="refresh">
+                        <i class="ph ph-arrows-clockwise"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+        <div class="table-wrapper custom-scroll-bar" style="max-height: 80vh;">
+
+            <!-- <div *ngIf="customLoading"
+                style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 20px auto; height: 60vh;">
+                <app-loader></app-loader>
+                <div style="font-size: 14px; margin-top: 10px; font-weight: 500; color: var(--primary-color);">Just wait
+                    a
+                    moment...</div>
+            </div> -->
+            <div *ngIf="customLoading">
+                <ngx-skeleton-loader animation="line" count="12" [theme]="{height: '30px'}"></ngx-skeleton-loader>
+            </div>
+            <div class="flex-center" style="height: 60vh;"
+                *ngIf="!customLoading && customList.length === 0 && !customError">
+                <div class="empty-root">
+                    <img src="assets/newbrandimg/empty-connector-list 1.png" class="empty-state-image"
+                        alt="empty state image">
+                    &nbsp;
+                    <div class="empty-state-header">No Connector Created</div>
+                    <div class="empty-semi-text">Create your first connector to start unlocking data insights
+                    </div>
+                    <button mat-flat-button color="primary" style="margin-top: 20px;" (click)="gotoRoute()">
+                        <span class="btn-text">Create Connector</span>
+                    </button>
+
+                </div>
+            </div>
+            <div class="error-block" *ngIf="!customLoading && customError">
+                <app-empty-list></app-empty-list>
+                <button mat-flat-button color="primary" style="padding: 0 60px;"
+                    (click)="getCustomConnector('Refresh')">
+                    Refresh
+                </button>
+            </div>
+            <div class="card-wrapper" [ngClass]="{hideElement: customList.length == 0 || customLoading}">
+                <div class="card-sub-wrap" *ngFor="let item of customList; let row let i = index">
+                    <div>
+                        <button mat-icon-button color="primary" [matMenuTriggerFor]="menu"
+                            style="display: flex; margin-left: auto;">
+                            <i class="ph ph-dots-three-circle-vertical" style="font-size: 30px;"></i>
+                        </button>
+                        <div class="card-text" style="margin: 10px 0;">
+                            <span class="header-text">Identifier</span>
+                            <span class="inner-text">{{row.nameOfConnector}}</span>
+                        </div>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item>Delete</button>
+                        </mat-menu>
+                    </div>
+                    <div class="card-cont">
+                        <div class="card-text">
+                            <span class="header-text">Created At</span>
+                            <span class="inner-text">{{row.dateCreated| date}}</span>
+                        </div>
+                        <div class="card-text">
+                            <span class="header-text">Connector Name</span>
+                            <span class="inner-text">{{row.designatedConnectorName}}</span>
+                        </div>
+                        <div class="card-text">
+                            <span class="header-text">Service</span>
+                            <span class="inner-text">{{row.serviceOfConnector}}</span>
+                        </div>
+                        <div class="card-text">
+                            <span class="header-text">Status</span>
+                            <span class="inner-text"
+                                [ngClass]="{'approve':row.status == 'Completed' || 'Connected', 'pending':row.status == 'In Progress', 'reject':row.status == 'Failed'}">
+                                {{row.status}}
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <table [ngClass]="{hideElement: customList.length == 0 || customLoading}" mat-table [dataSource]="listData1"
+                class="full-width table mat-elevation-z8" aria-label="rows">
+
+                <ng-container matColumnDef="created_at">
+                    <th mat-header-cell *matHeaderCellDef>Created At</th>
+                    <td mat-cell *matCellDef="let row">
+                        {{row.dateCreated| date}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef>Status</th>
+                    <td mat-cell *matCellDef="let row">
+                        <span
+                            [ngClass]="{'approve':row.status == 'Completed' || 'Connected', 'pending':row.status == 'In Progress', 'reject':row.status == 'Failed'}">
+                            {{row.status}}
+                        </span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef>Connector Name</th>
+                    <td mat-cell *matCellDef="let row">
+                        <span style="text-transform: lowercase;">
+                            {{row.designatedConnectorName}}
+                        </span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="schema">
+                    <th mat-header-cell *matHeaderCellDef>Identifier</th>
+                    <td mat-cell *matCellDef="let row">
+                        <span>
+                            {{row.nameOfConnector}}
+                        </span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="service">
+                    <th mat-header-cell *matHeaderCellDef>Service</th>
+                    <td mat-cell *matCellDef="let row">
+                        {{row.serviceOfConnector}}
+                    </td>
+                </ng-container>
+
+                <!-- <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let row; let i = index" align="center">
+                        <button mat-icon-button [matMenuTriggerFor]="menu">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item>Delete</button>
+                        </mat-menu>
+                    </td>
+                </ng-container> -->
+
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns1; sticky :true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+            </table>
+
+
+        </div>
+        <mat-paginator #paginator style="margin: auto;" id="table-paginator"
+            [ngClass]="{hideElement: customList.length == 0 || customLoading}" showFirstLastButtons
+            [length]="customList.length" [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 50]">
+        </mat-paginator>
+    </div>
+</mat-drawer-container>

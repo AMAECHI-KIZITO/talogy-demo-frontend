@@ -1,0 +1,45 @@
+<div class="root">
+    <div class="body">
+        <div class="top-wrapper">
+            <div class="popup-wrap">
+                <span class="popup-header">Add New Organisation</span>
+            </div>
+            <i class="ph-duotone ph-x cancel" (click)="close()"></i>
+        </div>
+        <form [formGroup]="form">
+            <div class="mt-1">
+                <label for="altcat">Organization Name <sup style="color: red;">*</sup></label>
+                <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                    <input type="text" formControlName= "org" matInput placeholder="Enter Organization's Name">
+                </mat-form-field>
+            </div>
+            <div class="mt-1">
+                <label for="altcat">Domain <sup style="color: red;">*</sup></label>
+                <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                    <input type="text" formControlName= "link" matInput placeholder="Enter Domain e.g example.com">
+                </mat-form-field>
+            </div>
+
+            <div class="mt-1">
+                <mat-checkbox formControlName="registerWithMicrosoft" (change)="onCheckboxChange()">
+                  Register with Microsoft
+                </mat-checkbox>
+              </div>
+
+            <div class="mt-1" *ngIf="showTenantId">
+                <label for="altcat">Tenant ID </label>
+                <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                    <input type="text" formControlName= "tenant" matInput placeholder="Enter Valid Tenant ID">
+                </mat-form-field>
+            </div>
+           
+            <div class="submit-wrap">
+                <button mat-flat-button style="width: 100%;" color="primary" [disabled]="form.invalid || loading" (click)="submit()">
+                    <span class="btn-text" *ngIf="!loading">Add Organisation</span>
+                    <app-button-loader *ngIf="loading"></app-button-loader>
+                    
+                </button>
+            </div>
+        </form> 
+    </div>
+</div>

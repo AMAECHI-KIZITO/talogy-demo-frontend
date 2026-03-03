@@ -1,0 +1,157 @@
+<div class="root-wrap">
+    <div class="header-wrap">
+        <span class="header-name">Billing</span>
+    </div>
+    <!-- <div *ngIf="planLoading"
+        style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 20px auto; height: 60vh;">
+        <app-loader></app-loader>
+        <div style="font-size: 14px; margin-top: 10px; font-weight: 500; color: var(--primary-color);">
+            Just wait a moment...</div>
+    </div> -->
+
+    <div *ngIf="planLoading" style="margin-top: 20px;">
+        <ngx-skeleton-loader appearance="line" count="1" [theme]="{height: '7em'}"></ngx-skeleton-loader>
+
+        <div style="margin: auto; width: fit-content;">
+        <ngx-skeleton-loader appearance="line" count="1" [theme]="{height: '3em', width: '10em'}"></ngx-skeleton-loader>
+        </div>
+        <div class="flex-btw" style="gap: 10;">
+            <ngx-skeleton-loader appearance="line" count="3" [theme]="{width: '300px', height: '15em', margin: '10px'}"></ngx-skeleton-loader>
+        </div>
+    </div>
+
+    <div class="error-block" style="height: 60vh;" *ngIf="!planLoading && planError">
+        <app-empty-list></app-empty-list>
+        <button mat-flat-button color="primary" style="padding: 0 60px;" (click)="getPlan()">
+            Refresh
+        </button>
+    </div>
+
+    <div [ngClass]="{hideElement: planList?.length === 0 || planLoading}">
+        <div class="plan-cont">
+            <div class="plan-wrap">
+                <div class="plan-text">
+                    <span class="premium">{{activePlan?.subName}} {{activePlan?.isMonthlyPlanActive ? "(Monthly)" : activePlan?.isYearlyPlanActive ? "(Yearly)" : "(Active)"}} Plan</span>
+                    <span class="plan-info" *ngIf="activePlan != 'No Active Plan' ">· Includes up to
+                        {{activePlan?.subAddons[0]}} and {{activePlan?.subAddons[1]}} dashboards</span>
+                    <span class="plan-info" *ngIf="activePlan == 'No Active Plan' ">· Select from the list of plans
+                        below</span>
+                </div>
+                <div class="days">
+                    {{activeDays}} days remaining
+                </div>
+            </div>
+            <div class="card-wrap">
+                <i class="ph ph-info"></i>
+                <span style="margin-left: 5px;">
+                    Please note that paying for plans lower than your current active plan will be activated upon expiration of the current active plan.
+                </span>
+            </div>
+        </div>
+        <div class="mode-long">
+            <div [ngClass]="{modeactive: mode == 'monthly'}" (click)="changeMode('monthly')" class="mode-link">
+                <span style="cursor: pointer;">Monthly</span>
+            </div>
+
+            <div [ngClass]="{modeactive: mode == 'yearly'}" (click)="changeMode('yearly')" class="mode-link">
+                <span style="cursor: pointer;">Yearly</span>
+
+            </div>
+        </div>
+        
+            <div *ngIf="mode == 'monthly'" class="plan-list-wrap">
+                <div *ngFor="let item of planList"
+                    [ngClass]="{'amount-active' : item.isMonthlyPlanActive, 'amount-inactive': !item.isMonthlyPlanActive}">
+                    <div style="display: flex; flex-direction: column;">
+                        <span class="plan-name">{{item.subName}} Plan</span>
+
+                        <span *ngIf="item.subName !== 'Enterprise' "
+                            [ngClass]="{'plan-amount-active' : item.isMonthlyPlanActive, 'plan-amount-inactive': !item.isMonthlyPlanActive}">
+                            ${{ item.subAmountMonthly | number:'1.2-2' }}
+                            <sub class="mo">/mo</sub>
+                        </span>
+
+                        <span *ngIf="item.subName === 'Enterprise' "
+                            [ngClass]="{'plan-amount-active' : item.isMonthlyPlanActive, 'plan-amount-inactive': !item.isMonthlyPlanActive}">Custom
+                            Price</span>
+
+                        <div class="plan-summary" *ngFor="let list of item.subAddons">
+                            <i class="ph ph-check"></i>
+                            <span style="margin-left: 10px;">{{list}}</span>
+                        </div>
+                    </div>
+
+                    <div class="plan-footer" *ngIf="item.isMonthlyPlanActive">
+                        <span style="font-size: 12px;">This plan is active</span>
+                        <span style="font-size: 8px;">Expire in {{activeDays}} days</span>
+                    </div>
+                    <div style="padding: 0 20px;" *ngIf="!item.isMonthlyPlanActive">
+                        <button mat-flat-button color="primary" style="margin-top: 20px; width: 100%;" *ngIf="!item.isMonthlyUpgradable"
+                            (click)=" item.subName === 'Enterprise' ? contactUs(item) : postPay(item)">
+                            <span class="btn-text" style="font-size: 12px;"
+                                *ngIf="!payLoading || item.subId != setId">{{item.subName === 'Enterprise' ? "Contact Us" :
+                                "Select this plan" }}</span>
+                            <app-button-loader *ngIf="payLoading && item.subId === setId"></app-button-loader>
+                        </button>
+                        <button mat-flat-button color="primary" style="margin-top: 20px; width: 100%;" *ngIf="item.isMonthlyUpgradable"
+                            (click)=" item.subName === 'Enterprise' ? contactUs(item) : upgrade(item)">
+                            <span class="btn-text" style="font-size: 12px;"
+                                *ngIf="!payLoading || item.subId != setId">{{item.subName === 'Enterprise' ? "Contact Us" :
+                                "Upgrade plan" }}</span>
+                            <app-button-loader *ngIf="payLoading && item.subId === setId"></app-button-loader>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div *ngIf="mode == 'yearly'" class="plan-list-wrap">
+                <div *ngFor="let item of planList"
+                    [ngClass]="{'amount-active' : item.isYearlyPlanActive, 'amount-inactive': !item.isYearlyPlanActive}">
+                    <div style="display: flex; flex-direction: column;">
+                        <span class="plan-name">{{item.subName}} Plan</span>
+
+                        <span *ngIf="item.subName !== 'Enterprise' "
+                            [ngClass]="{'plan-amount-active' : item.isYearlyPlanActive, 'plan-amount-inactive': !item.isYearlyPlanActive}">
+                            ${{ item.subAmountYearly | number:'1.2-2' }}
+                            <sub class="mo">/year</sub>
+                        </span>
+
+                        <span *ngIf="item.subName === 'Enterprise' "
+                            [ngClass]="{'plan-amount-active' : item.isYearlyPlanActive, 'plan-amount-inactive': !item.isYearlyPlanActive}">Custom
+                            Price</span>
+
+                        <div class="plan-summary" *ngFor="let list of item.subAddons">
+                            <i class="ph ph-check"></i>
+                            <span style="margin-left: 10px;">{{list}}</span>
+                        </div>
+                    </div>
+
+                    <div class="plan-footer" *ngIf="item.isYearlyPlanActive">
+                        <span style="font-size: 12px;">This plan is active</span>
+                        <span style="font-size: 8px;">Expire in {{activeDays}} days</span>
+                    </div>
+                    <div style="padding: 0 20px;" *ngIf="!item.isYearlyPlanActive">
+                        <button mat-flat-button color="primary" style="margin-top: 20px; width: 100%;" *ngIf="!item.isYearlyUpgradable"
+                            (click)=" item.subName === 'Enterprise' ? contactUs(item) : postPay(item)">
+                            <span class="btn-text" style="font-size: 12px;"
+                                *ngIf="!payLoading || item.subId != setId">{{item.subName === 'Enterprise' ? "Contact Us" :
+                                "Select this plan" }}</span>
+                            <app-button-loader *ngIf="payLoading && item.subId === setId"></app-button-loader>
+                        </button>
+
+                        <button mat-flat-button color="primary" style="margin-top: 20px; width: 100%;" *ngIf="item.isYearlyUpgradable"
+                            (click)=" item.subName === 'Enterprise' ? contactUs(item) : upgrade(item)">
+                            <span class="btn-text" style="font-size: 12px;"
+                                *ngIf="!payLoading || item.subId != setId">{{item.subName === 'Enterprise' ? "Contact Us" :
+                                "Upgrade plan" }}</span>
+                            <app-button-loader *ngIf="payLoading && item.subId === setId"></app-button-loader>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+    </div>
+
+</div>

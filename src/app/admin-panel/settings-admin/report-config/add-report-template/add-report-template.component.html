@@ -1,0 +1,32 @@
+<div class="root">
+    <div class="body">
+        <div class="top-wrapper">
+            <div class="popup-wrap">
+                <span class="popup-header">Configure New Template Report</span>
+            </div>
+            <i class="ph-duotone ph-x cancel" (click)="close()"></i>
+        </div>
+        <form [formGroup]="form">
+            <div class="mt-1">
+                <label for="altcat">Report Template Name  <sup style="color: red;">*</sup></label>
+                <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                    <input type="text" formControlName= "name" matInput placeholder="Enter Template Name">
+                </mat-form-field>
+            </div>
+            <div class="mt-1">
+                <label for="altcat">Select dataSource <sup style="color: red;">*</sup></label>
+                <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                    <input type="text" formControlName= "datasource" matInput placeholder="">
+                </mat-form-field>
+            </div>
+           
+            <div class="submit-wrap">
+                <button mat-flat-button style="width: 100%;" color="primary" [disabled]="form.invalid || loading" (click)="submit()">
+                    <span class="btn-text" *ngIf="!loading">Create Template</span>
+                    <app-button-loader *ngIf="loading"></app-button-loader>
+                    
+                </button>
+            </div>
+        </form> 
+    </div>
+</div>

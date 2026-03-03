@@ -1,0 +1,138 @@
+@import '../../../assets/scss/mixin.scss';
+
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.top-head {
+    color: var(--n-grey-70, #4F566B);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: -0.21px;
+}
+
+.add {
+    color: #FFF;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-left: 5px;
+}
+
+.body-wrap {
+    display: flex;
+    padding: 20px;
+    flex-direction: column;
+    gap: 20px;
+    align-self: stretch;
+    border-radius: 10px;
+    border: 1px solid var(--n-grey-30, #D9DCE1);
+    background: #FFF;
+    min-height: 75vh;
+}
+
+::ng-deep .mat-form-field-wrapper {
+    padding-bottom: 0.5em;
+}
+
+input {
+    width: 100%;
+    border: none;
+    background-color: transparent;
+
+    &:focus-visible {
+        outline: none !important;
+    }
+}
+
+.grids {
+    display: grid;
+    grid-template-columns: 23.5% 23.5% 23.5% 23.5%;
+    gap: 20px;
+}
+
+.grids-two {
+    display: grid;
+    grid-template-columns: 49% 49%;
+    gap: 20px;
+}
+
+table {
+    width: 100%;
+    font-size: 12px;
+}
+
+th {
+    text-align: left;
+    border-bottom: 1px solid #D9DCE1;
+    padding: 8px 0;
+}
+
+td {
+    padding: 5px 0;
+}
+
+select {
+    border: none;
+    font-size: 10px;
+    background: transparent;
+    padding: 0;
+    outline: none !important;
+}
+
+.card {
+    padding: 10px 15px;
+    border-radius: 12px;
+    background: #f7fafc;
+
+    align-items: flex-start;
+    width: 100%;
+    height: 7vh;
+
+    &.two {
+        height: 22vh;
+        overflow: auto;
+    }
+
+    .label {
+        font-size: 11px;
+        font-weight: 500;
+    }
+
+    .value {
+        font-size: 20px;
+        padding: 10px 0;
+        font-weight: 600;
+    }
+}
+
+.canvas-height {
+    height: 17vh;
+}
+
+.hide {
+    display: none !important;
+}
+
+.view-c {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    .view{
+        cursor: pointer;
+    }
+}

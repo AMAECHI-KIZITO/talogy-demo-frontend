@@ -1,0 +1,89 @@
+<!-- <div *ngIf="loading"
+    style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 20px auto; height: 60vh;">
+    <app-loader></app-loader>
+    <div style="font-size: 14px; margin-top: 10px; font-weight: 500; color: var(--primary-color);">Just wait a moment...
+    </div>
+</div> -->
+
+<div *ngIf="loading">
+    <ngx-skeleton-loader appearance="line" count="2"
+        [theme]="{width: '100px', height: '30px', margin: '20px', float: 'right'}"></ngx-skeleton-loader>
+    <ngx-skeleton-loader appearance="line" count="1" [theme]="{height: '80vh'}"></ngx-skeleton-loader>
+</div>
+
+<div class="flex-center" style="height: 60vh;" *ngIf="!loading && listToken === {}">
+    <div class="empty-root">
+        <img src="assets/img/Feature_DashboardANDReportDesigner-removebg-preview.png" class="empty-state-image"
+            alt="empty state image">
+        &nbsp;
+        <div class="empty-state-header">Your Reports Will Be Displayed Here.</div>
+    </div>
+</div>
+
+<div class="error-block" style="height: 60vh;" *ngIf="!loading && error">
+    <app-empty-list></app-empty-list>
+    <button mat-flat-button color="primary" style="padding: 0 60px;" (click)="getToken()">
+        Refresh
+    </button>
+</div>
+
+<div class="wrap-cont" [ngClass]="{'hide': loading || error}">
+    <div class="flex-el" style="justify-content: right; gap: 20px;">
+        <button mat-flat-button *ngIf="showBtnPrev" class="btn-cont" color="primary" (click)="preview()">
+            <div style="display: flex; align-items: center; gap: 3px;">
+                <i class="ph-bold ph-arrows-out"></i>
+                <span style="font-size: 12px;">View FullScreen</span>
+            </div>
+        </button>
+
+        <button mat-flat-button *ngIf="!showBtnPrev" class="btn-cont" color="primary" (click)="noPrev()">
+            <div style="display: flex; align-items: center; gap: 3px;">
+                <i class="ph-bold ph-arrows-in"></i>
+                <span style="font-size: 12px;">Close</span>
+            </div>
+        </button>
+
+        <button mat-flat-button class="btn-cont" color="primary" (click)="shareReportEmail()" [disabled]="shareloading" *ngIf="reportData.type == 'PowerBI' ">
+            <div style="display: flex; align-items: center; gap: 3px;" *ngIf="!shareloading">
+                <i class="ph-bold ph-envelope"></i>
+                <span style="font-size: 12px;">Send to Email</span>
+            </div>
+            <app-button-loader *ngIf="shareloading"></app-button-loader>
+        </button>
+    </div>
+
+    <!-- <div class="time-banner" *ngIf="timer">This report will be refreshed in {{timer}}</div> -->
+
+    <div *ngIf="reportData.type == 'PowerBI' && !timerComplete">
+        <!-- <powerbi-report 
+            frameborder="0" 
+            allowFullScreen="true" 
+            [embedConfig]="reportConfig" 
+            [cssClassName]="reportClass"
+            [phasedEmbedding]="phasedEmbeddingFlag"
+            [eventHandlers]="eventHandlersMap">
+        </powerbi-report> -->
+        <div id="reportContainer" #reportContainer class="cover"></div>
+    </div>
+
+    <ng-container *ngIf="selectedReport">
+        <div class="right-chat" *ngIf="!isSideOpen && !reportLoading" (click)="openSide()">
+            <img src="assets/newbrandimg/chat.png" width="20" alt="" class="chat-img2">
+            <div>Query this Report</div>
+        </div>
+    </ng-container>
+
+    <div class="cover" *ngIf="reportData.type == 'Looker' ">
+        <iframe [src]="reportData.reporturl | safe" frameborder="0" width="100%" height="100%"></iframe>
+    </div>
+</div>
+
+<ng-container *ngIf="isSideOpen">
+    <div class="side-chat" style="padding: 10px;">
+        <div class="flex-end">
+            <i class="ph-bold ph-x ash-cancel" (click)="openSide()"></i>
+        </div>
+        <app-side-chat [reportData]="selectedReport" [open]="openChat" [chatLists]="chatList"
+            (saveList)="saveChatList($event)"></app-side-chat>
+    </div>
+</ng-container>

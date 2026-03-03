@@ -1,0 +1,61 @@
+@import '../../../assets/scss/mixin.scss';
+.root-wrap{
+    padding: 30px 20px;
+    display: flex;
+
+    @include for-menu-mobile{
+        display: block;
+        padding: 30px 0;
+    }
+}
+.left-wrap{
+    width: 15%;
+
+    @include for-menu-mobile{
+        width: auto;
+        display: flex;
+        flex-wrap: wrap;
+    }
+}
+.right-wrap{
+    width: 85%;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    margin-left: 20px;
+
+    @include for-menu-mobile{
+       width: 100%;
+       margin-left: 0px;
+    }
+}
+.menu-wrap{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover{
+        background-color: var(--hover-color);
+    }
+
+    @include for-menu-mobile{
+        &:hover{
+            background-color: rgba(0, 121, 192, 0.1);
+        }
+    }
+}
+.menu-name{
+    font-size: 14px;
+    margin-left: 10px;
+    color: var(--menu-bar-color);
+}
+.menu-icon{
+    color: var(--menu-bar-color) !important;
+}
+.active-list-item{
+    background: rgba(0, 121, 192, 0.1);
+}
+
+

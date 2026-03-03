@@ -1,0 +1,53 @@
+<div class="body">
+    <div class="top-wrapper">
+        <div class="popup-wrap">
+            <span class="popup-header">Contact Us</span>
+        </div>
+        <i class="ph-duotone ph-x cancel" (click)="close()"></i>
+    </div>
+    <form [formGroup]="form">
+        <div>
+            <label for="fullname">Full Name: <sup style="color: red;"> * </sup></label>
+            <mat-form-field style="font-size: small;" class="custom-form-field" appearance="outline">
+                <input type="text" formControlName="fullname" matInput placeholder="Enter your name">
+            </mat-form-field>
+        </div>
+        <div class="mt-1">
+            <label for="email">Email Address: <sup style="color: red;"> * </sup></label>
+            <mat-form-field style="font-size: small;" class="custom-form-field" appearance="outline">
+                <input type="email" formControlName="email" matInput placeholder="Company email">
+            </mat-form-field>
+        </div>
+        <div class="mt-1">
+            <label for="phone">Phone: <sup style="color: red;"> * </sup></label>
+            <mat-form-field style="font-size: small;" class="custom-form-field" appearance="outline">
+                <input type="text" formControlName="phone" matInput placeholder="Enter your phone number">
+            </mat-form-field>
+        </div>
+        <div class="mt-1">
+            <label for="companyname">Company Name: <sup style="color: red;"> * </sup></label>
+            <mat-form-field style="font-size: small;" class="custom-form-field" appearance="outline">
+                <input type="text" formControlName="companyname" matInput placeholder="Enter your Company's Name">
+            </mat-form-field>
+        </div>
+        <div class="flex-btw mt-1" style="gap: 10px;">
+            <div>
+                <label for="companysize">Company Size: <sup style="color: red;"> * </sup></label>
+                <mat-form-field style="font-size: small;" class="custom-form-field" appearance="outline">
+                    <input type="text" formControlName="companysize" matInput placeholder="Number of employees">
+                </mat-form-field>
+            </div>
+            <div>
+                <label for="companysector">Sector: <sup style="color: red;"> * </sup></label>
+                <mat-form-field style="font-size: small;" class="custom-form-field" appearance="outline">
+                    <input type="text" formControlName="companysector" matInput placeholder="Enter Sector">
+                </mat-form-field>
+            </div>
+        </div>
+        <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="submit()"
+            style="margin-top: 20px;">
+            <!-- <app-button-loader></app-button-loader> -->
+            <span class="btn-text">Submit</span>
+        </button>
+    </form>
+</div>

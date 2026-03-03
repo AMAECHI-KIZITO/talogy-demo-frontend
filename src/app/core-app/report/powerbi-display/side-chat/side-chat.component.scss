@@ -1,0 +1,191 @@
+.cover-chat {
+    position: relative;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    height: 95vh;
+}
+
+.empty-state {
+    font-size: 50px;
+    font-weight: 600;
+    text-align: center;
+    width: 100%;
+    color: #86a1b11a;
+
+    position: absolute;
+    top: 40%;
+}
+
+.text {
+    font-size: 12px;
+}
+
+.qut {
+    font-weight: 600;
+}
+
+.suggestion {
+    padding: 10px;
+    border-radius: 8px;
+    margin: 5px 0;
+    background-color: #e3e8ee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sendicon {
+    width: 20px;
+    cursor: pointer;
+    position: relative;
+    top: 5px;
+}
+
+form {
+    margin-top: 0 !important;
+}
+
+.msg-box {
+    max-height: 86vh;
+    width: 100%;
+}
+
+.message {
+    font-size: 12px;
+    // padding: 15px;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    width: 95%;
+    flex-direction: row-reverse;
+    position: relative;
+}
+
+.message-txt {
+    margin-right: 15px;
+    /* background: #0456ba; */
+    text-align: left;
+    padding: 0px 10px;
+    border-radius: 10px;
+    position: relative;
+    color: #636363;
+    white-space: pre-line;
+    // border: 1px solid #0457bc;
+    max-width: 100%;
+
+    .loader {
+        position: absolute;
+        left: -30px;
+    }
+}
+
+.reply {
+    border-radius: 10px 10px 10px 0px;
+    // background: white;
+    font-size: 12px;
+    // padding: 15px;
+    margin: 10px 0;
+    line-height: 1.8;
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    .fade {
+        background: rgba(134, 161, 177, 0.1);
+        padding: 10px;
+        border-radius: 12px;
+        font-family: "Proxima Nova", sans-serif !important;
+        white-space: break-spaces;
+    }
+
+    &:hover {
+        .copy {
+            display: flex;
+        }
+    }
+
+    .think {
+        position: absolute;
+        bottom: -8px;
+        font-size: 10px;
+        color: #adadad;
+        left: 20px;
+    }
+
+    .copy {
+        border: 1px solid #c6e6fc;
+        border-radius: 5px;
+        height: 30px;
+        width: 30px;
+        display: none;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+        margin-left: 5px;
+        color: #0457bc;
+        position: absolute;
+        right: 9px;
+        background: white;
+    }
+}
+
+.question {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.chat-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background: #c6e6fc6e;
+    color: var(--text-color);
+}
+
+.chat-img2 {
+    width: 40px;
+    height: 40px;
+    margin: 10px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    // background: #c6e6fc6e;
+    filter: drop-shadow(0px 4px 7px rgba(134, 161, 177, 0.3));
+    // color: var(--text-color);
+    background-color: white;
+}
+
+.acc1 {
+    padding: 10px;
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    position: relative;
+    // top: -25px;
+    background: #0457bc;
+    color: white;
+}
+
+::ng-deep .custom-scroll-bar::-webkit-scrollbar {
+    background: transparent !important;
+}
+
+::ng-deep .custom-scroll-bar::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px transparent !important;
+    background-color: transparent !important;
+}

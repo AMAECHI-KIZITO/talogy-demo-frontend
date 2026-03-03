@@ -1,0 +1,114 @@
+@import '../../../assets/scss/variable.scss';
+@import '../../../assets/scss/mixin.scss';
+
+.text-wrapper{
+    display: flex;
+    flex-direction: column;
+}
+:host ::ng-deep .mat-drawer-content {
+    height: 80vh !important;
+}
+
+.data-wrapper{
+    display: grid;
+    grid-template-columns: auto auto auto auto auto;
+    column-gap: 20px;
+    row-gap: 20px;
+    padding: 25px;
+    // height: 85vh;x
+
+    // @include for-tablet-portrait-up{
+    //     grid-template-columns: auto auto;
+    // }
+    
+    @include for-tablet-portrait-up-test{
+        grid-template-columns: auto auto auto;
+    }
+    @include for-phone-only{
+        grid-template-columns: auto;
+    }
+}
+.data{
+    position: relative;
+    display: flex;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+    background-color: var(--bg-color);
+
+    &:hover{
+        transform: scale(1.04);
+        transition: all .5s;
+    }
+}
+.data-img{
+    border: 0;
+    vertical-align: middle;
+    display: inline-block;
+    max-width: 100%;
+
+}
+.data-text{
+    background-color: transparent;
+    position: relative;
+    z-index: 2;
+    transition: color 0.2s;
+    /* color: #306bea; */
+    font-size: 14px;
+    /* font-weight: 500; */
+    text-decoration: none;
+    text-align: center;
+
+}
+::ng-deep .mat-dialog-container {
+    padding: 0 !important;
+}
+
+
+::ng-deep .mat-drawer-backdrop.mat-drawer-shown {
+    background-color: rgba(0, 0, 0, 0)!important;
+}
+
+
+.empty-state-image{
+    width: 200px;
+}
+.empty-root{
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.sync-icon{
+    font-size: 12px;
+    width: 12px;
+    height: 12px;
+    margin-right: 3px;
+    font-weight: 500;
+}
+.sync-text{
+    font-size: 12px;
+}
+
+::ng-deep .mat-raised-button {
+    font-weight: lighter !important;
+}
+.data-multiple{
+    position: relative;
+    display: flex;
+    width: 90px;
+    height: 90px;
+    margin-bottom: 10px;
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+}
+.data-wrapper-multiple{
+    padding: 25px;
+}
+

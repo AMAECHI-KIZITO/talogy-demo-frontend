@@ -1,0 +1,25 @@
+<div *ngIf="loading"
+    style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 20px auto; height: 100vh;">
+    <app-loader></app-loader>
+    <div style="font-size: 14px; margin-top: 10px; font-weight: 500; color: var(--primary-color);">Just wait a moment...</div>
+</div>
+<div class="flex-center" style="height: 60vh;" *ngIf="!loading && listToken === {}">
+    <div class="empty-root">
+        <img src="assets/img/Feature_DashboardANDReportDesigner-removebg-preview.png" class="empty-state-image"
+            alt="empty state image">
+        &nbsp;
+        <div class="empty-state-header">Your Reports Will Be Displayed Here.</div>
+    </div> 
+</div>
+<div class="root" *ngIf="!loading">
+    <!-- <iframe title="Pareto Products Report" width="100%" height="100%" src="https://app.powerbi.com/view?r=eyJrIjoiYWFjMzkwNTgtOTVhZS00MGIwLWFmZWItYWExNjVlMWU5NDQ0IiwidCI6IjQ2OGI5MzExLTFmZjctNDQyZC1iNjZjLTY2YTA3NjU5MGQ5ZCIsImMiOjh9" frameborder="0" allowFullScreen="true"></iframe> -->
+    <powerbi-report
+frameborder="0" 
+allowFullScreen="true"
+[embedConfig]="reportConfig" 
+[cssClassName]="reportClass" 
+[phasedEmbedding]="phasedEmbeddingFlag" 
+[eventHandlers]="eventHandlersMap">
+</powerbi-report>
+</div>
+
