@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { AdminPanelRoutingModule } from './admin-panel-routing.module';
 import { AccountManagementComponent } from './account-management/account-management.component';
 import { AdminPanelComponent } from './admin-panel.component';
+import { UserManagementComponent } from './user-management/user-management.component';
+import { InviteUserComponent } from './user-management/invite-user/invite-user.component';
 import { SharedModule } from '../shared/shared.module';
 import { ConnectorManagementComponent } from './connector-management/connector-management.component';
 import { ReportManagementComponent } from './report-management/report-management.component';
@@ -37,6 +39,8 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 @NgModule({
   declarations: [
     AdminPanelComponent,
+    UserManagementComponent,
+    InviteUserComponent,
     AccountManagementComponent,
     ConnectorManagementComponent,
     ReportManagementComponent,

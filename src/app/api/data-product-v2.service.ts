@@ -610,6 +610,13 @@ export class DataProductV2Service {
         )
     }
 
+    listSuperadminUsers(): Observable<any> {
+      return this.http.get<any>(this.baseUrlv2 + '/api/v1/superadmin/list-users/')
+        .pipe(
+          catchError(err => this.errorHandler(err))
+        )
+    }
+
     templateAccess(payload: templateAccessPayload, id: any): Observable<any> {
       let load = this.encrypt.encrypt(JSON.stringify(payload))
       let tempObj = {payload: load}

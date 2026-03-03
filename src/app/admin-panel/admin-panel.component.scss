@@ -174,6 +174,39 @@
   background: rgba(227, 232, 238, 0.35);
 }
 
+.sidebar-expansion {
+  background: transparent !important;
+  border: none !important;
+
+  ::ng-deep .mat-expansion-panel-header {
+    padding: 0;
+    height: auto !important;
+    background: transparent !important;
+
+    &:hover {
+      background: rgba(227, 232, 238, 0.35) !important;
+      border-radius: 3px;
+    }
+  }
+
+  ::ng-deep .mat-expansion-panel-body {
+    padding: 0 !important;
+  }
+}
+
+.expansion-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.child-link {
+  padding-left: 32px !important;
+}
+
 .toolbar_search {
   mat-form-field {
     width: 280px;

@@ -10,6 +10,7 @@ import { SettingsComponent } from '../core-app/settings/settings.component';
 import { SettingsAdminComponent } from './settings-admin/settings-admin.component';
 import { AnalyticsComponent } from './analytics/analytics.component';
 import { ReportWorkflowComponent } from './report-workflow/report-workflow.component';
+import { UserManagementComponent } from './user-management/user-management.component';
 
 const routes: Routes = [
   {
@@ -18,8 +19,13 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'account-management',
+        redirectTo: 'user-management',
         pathMatch: 'prefix'
+      },
+      {
+        path: 'user-management',
+        component: UserManagementComponent,
+        canActivate: [MaslGuard]
       },
       {
         path: 'account-management',

@@ -47,13 +47,15 @@ export class AdminPanelComponent implements OnInit {
   ngOnInit(): void {
 
     this.menuList = [
-      { name: "Account Management", icon: "ph-bold ph-users", link: "account-management" },
-      // { name: "Connector Management", icon: "ph-bold ph-plug", link: "connector-management" },
-      { name: "Reports Management", icon: "ph-bold ph-presentation-chart", link: "report-management" },
-      // {name: "New Report Workflow", icon: "ph-bold ph-tree-structure", link: "report-workflow"},
-      // { name: "Requests", icon: "ph-bold ph-git-pull-request", link: "request" },
-      // { name: "Analytics", icon: "ph-bold ph-squares-four", link: "analytics" },
-      // {name: "Settings", icon: "ph-bold ph-gear", link: "settings"},
+      { name: "User Management", icon: "ph-bold ph-users", link: "user-management" },
+      { name: "Group Management", icon: "ph-bold ph-users-three", link: "group-management" },
+      { name: "Report Management", icon: "ph-bold ph-presentation-chart", link: "report-management" },
+      {
+        name: "Audit Trail", icon: "ph-bold ph-clock-counter-clockwise", children: [
+          { name: "Admin Audit Trail", link: "admin-audit-trail" },
+          { name: "User Audit Trail", link: "user-audit-trail" }
+        ]
+      },
     ]
 
     this.firstPanelOpen = true
