@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -199,7 +199,7 @@ export class DataProductV2Service {
   getPowerbiToken(payload: powerbiToken): Observable<any> {
     let load = this.encrypt.encrypt(JSON.stringify(payload))
     let tempObj = {payload: load}
-    return this.http.post<powerbiToken>(this.baseUrlv2 + `/api/v1/orchestrators/?type=powerbiembedinfo`, tempObj)
+    return this.http.post<powerbiToken>(this.baseUrlv2 + `/api/v1/reports/generate-embed-token/`, tempObj)
       .pipe(
         catchError(err => this.errorHandler(err))
       )
@@ -493,7 +493,10 @@ export class DataProductV2Service {
     embedReport(payload: embedReport): Observable<any>{
       let load = this.encrypt.encrypt(JSON.stringify(payload))
       let tempObj = {payload: load};
-      return this.http.post<embedReport>(this.baseUrlv2 + `/api/v1/superadmin/reports/embed`, tempObj)
+      return this.http.post<embedReport>(this.baseUrlv2 + `/api/v1/superadmin/reports/embed/`, tempObj)
+        .pipe(
+          catchError(err => this.errorHandler(err))
+        )
     }
 
     //Pause connector 
@@ -605,6 +608,27 @@ export class DataProductV2Service {
       let load = this.encrypt.encrypt(JSON.stringify(payload))
       let tempObj = {payload: load}
       return this.http.post<inviteUserPayload>(this.baseUrlv2 + "/api/v1/superadmin/user-invite/", tempObj)
+        .pipe(
+          catchError(err => this.errorHandler(err))
+        )
+    }
+
+    listSuperadminUsers(): Observable<any> {
+      return this.http.get<any>(this.baseUrlv2 + '/api/v1/superadmin/list-users/')
+        .pipe(
+          catchError(err => this.errorHandler(err))
+        )
+    }
+
+    getAdminAuditTrail(): Observable<any> {
+      return this.http.get<any>(this.baseUrlv2 + '/api/v1/superadmin/admin-audit-trail/')
+        .pipe(
+          catchError(err => this.errorHandler(err))
+        )
+    }
+
+    getUsersAuditTrail(): Observable<any> {
+      return this.http.get<any>(this.baseUrlv2 + '/api/v1/superadmin/users-audit-trail/')
         .pipe(
           catchError(err => this.errorHandler(err))
         )
@@ -893,6 +917,92 @@ export class DataProductV2Service {
 
     retrieveGroupReports(groupid: string): Observable<any>{
       return this.http.get<any>(this.baseUrlv2+`/api/v1/organization/group/${groupid}/reports/`)
+      .pipe(
+        catchError(err => this.errorHandler(err))
+      )
+    }
+
+    //SUPERADMIN GROUP ENDPOINTS
+    superadminRetrieveAllGroups(): Observable<any>{
+      return this.http.get<any>(this.baseUrlv2+`/api/v1/superadmin/groups/groups`)
+      .pipe(
+        catchError(err => this.errorHandler(err))
+      )
+    }
+
+    superadminCreateGroup(obj: createGroup): Observable<any>{
+      let params = new HttpParams()
+        .set('groupName', obj.groupName || '')
+        .set('groupDescription', obj.groupDescription || '')
+      return this.http.get<any>(this.baseUrlv2+`/api/v1/superadmin/groups/create-group/`, {params})
+      .pipe(
+        catchError(err => this.errorHandler(err))
+      )
+    }
+
+    superadminRevokeUserReportAccess(reportId: string, payload: any): Observable<any>{
+      let load = this.encrypt.encrypt(JSON.stringify(payload))
+      let tempObj = {payload: load}
+      return this.http.patch<any>(this.baseUrlv2+`/api/v1/superadmin/reports/${reportId}/users/revoke/`, tempObj)
+      .pipe(
+        catchError(err => this.errorHandler(err))
+      )
+    }
+
+    superadminGrantUserReportAccess(reportId: string, payload: any): Observable<any>{
+      let load = this.encrypt.encrypt(JSON.stringify(payload))
+      let tempObj = {payload: load}
+      return this.http.patch<any>(this.baseUrlv2+`/api/v1/superadmin/reports/${reportId}/users/grant/`, tempObj)
+      .pipe(
+        catchError(err => this.errorHandler(err))
+      )
+    }
+
+    superadminInviteExternalUserToReport(payload: any): Observable<any>{
+      let load = this.encrypt.encrypt(JSON.stringify(payload))
+      let tempObj = {payload: load}
+      return this.http.post<any>(this.baseUrlv2+`/api/v1/superadmin/user-invite/`, tempObj)
+      .pipe(
+        catchError(err => this.errorHandler(err))
+      )
+    }
+
+    superadminGetReportGroupAccess(reportId: string): Observable<any>{
+      return this.http.get<any>(this.baseUrlv2+`/api/v1/superadmin/reports/${reportId}/group-members/`)
+      .pipe(
+        catchError(err => this.errorHandler(err))
+      )
+    }
+
+    superadminRevokeGroupReportAccess(reportId: string, payload: any): Observable<any>{
+      let load = this.encrypt.encrypt(JSON.stringify(payload))
+      let tempObj = {payload: load}
+      return this.http.patch<any>(this.baseUrlv2+`/api/v1/superadmin/reports/${reportId}/groups/revoke/`, tempObj)
+      .pipe(
+        catchError(err => this.errorHandler(err))
+      )
+    }
+
+    superadminGrantGroupReportAccess(reportId: string, payload: any): Observable<any>{
+      let load = this.encrypt.encrypt(JSON.stringify(payload))
+      let tempObj = {payload: load}
+      return this.http.patch<any>(this.baseUrlv2+`/api/v1/superadmin/reports/${reportId}/groups/grant/`, tempObj)
+      .pipe(
+        catchError(err => this.errorHandler(err))
+      )
+    }
+
+    superadminGetGroupMembers(groupId: string): Observable<any>{
+      return this.http.get<any>(this.baseUrlv2+`/api/v1/superadmin/groups/${groupId}/members`)
+      .pipe(
+        catchError(err => this.errorHandler(err))
+      )
+    }
+
+    superadminManageGroupMembership(payload: any): Observable<any>{
+      let load = this.encrypt.encrypt(JSON.stringify(payload))
+      let tempObj = {payload: load}
+      return this.http.post<any>(this.baseUrlv2+`/api/v1/superadmin/groups/manage-group-membership/`, tempObj)
       .pipe(
         catchError(err => this.errorHandler(err))
       )

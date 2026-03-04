@@ -1,0 +1,73 @@
+<div class="root">
+    <div class="body">
+        <div class="top-wrapper">
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+                <span class="popup-header">Manage Access</span>
+                <span style="font-size: 12px; color: var(--text-color);">
+                    Add or remove users from <strong>{{group.groupName || group.name}}</strong>
+                </span>
+            </div>
+            <i class="ph-duotone ph-x cancel" (click)="close()"></i>
+        </div>
+
+        <div class="search-section">
+            <label class="field-label">Search User by Email</label>
+            <div class="search-wrap">
+                <div class="admin-table-search">
+                    <div class="search-icon">
+                        <i class="ph ph-magnifying-glass"></i>
+                    </div>
+                    <input type="text" placeholder="Type user email..." [(ngModel)]="searchEmail"
+                        (ngModelChange)="onSearchChange()" style="font-size: small;">
+                    <app-loader *ngIf="loadingUsers" style="transform: scale(0.5);"></app-loader>
+                </div>
+
+                <div class="dropdown-results" *ngIf="filteredUsers.length > 0">
+                    <div class="dropdown-item" *ngFor="let user of filteredUsers" (click)="selectUser(user)">
+                        <i class="ph ph-user-circle" style="font-size: 18px;"></i>
+                        <span>{{user.useremail || user.email}}</span>
+                    </div>
+                    <div class="dropdown-item no-results" *ngIf="filteredUsers.length === 0 && searchEmail.length >= 2">
+                        No users found
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="selected-user-card" *ngIf="selectedUser">
+            <div class="user-info">
+                <div class="avatar">{{(selectedUser.useremail || selectedUser.email || 'U')[0].toUpperCase()}}</div>
+                <div class="user-details">
+                    <span class="user-email">{{selectedUser.useremail || selectedUser.email}}</span>
+                    <span class="user-status"
+                        [ngClass]="{'active': selectedUser.status === 'activated', 'inactive': selectedUser.status !== 'activated'}">
+                        {{selectedUser.status === 'activated' ? 'Active' : 'Inactive'}}
+                    </span>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button mat-flat-button color="primary" (click)="manageAccess('include')"
+                    [disabled]="loadingAction">
+                    <span *ngIf="!loadingAction">Add to Group</span>
+                    <span *ngIf="loadingAction">Processing...</span>
+                </button>
+                <button mat-stroked-button color="warn" (click)="manageAccess('remove')"
+                    [disabled]="loadingAction">
+                    <span *ngIf="!loadingAction">Remove from Group</span>
+                    <span *ngIf="loadingAction">Processing...</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="result-message success-msg" *ngIf="actionSuccess">
+            <i class="ph-bold ph-check-circle"></i>
+            <span>{{actionMessage}}</span>
+        </div>
+
+        <div class="result-message error-msg" *ngIf="actionError">
+            <i class="ph-bold ph-warning-circle"></i>
+            <span>{{actionMessage}}</span>
+        </div>
+    </div>
+</div>

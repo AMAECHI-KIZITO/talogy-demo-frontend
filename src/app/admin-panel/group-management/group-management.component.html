@@ -1,0 +1,83 @@
+<div class="root">
+    <div class="top-bar">
+        <span class="top-head">Group Management</span>
+    </div>
+
+    <div class="body-wrap">
+        <div class="admin-table-search">
+            <div class="search-icon">
+                <i class="ph ph-magnifying-glass"></i>
+            </div>
+            <input type="text" matInput placeholder="Search groups" [(ngModel)]="searchKey"
+                style="font-size: small;" (keyup)="applyFilter()">
+        </div>
+
+        <div *ngIf="loading"
+            style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 20px auto; height: 60vh;">
+            <app-loader></app-loader>
+            <div style="font-size: 14px; margin-top: 10px; font-weight: 500; color: var(--primary-color);">
+                Just wait a moment...</div>
+        </div>
+
+        <div class="error-block" style="height: 60vh;" *ngIf="!loading && error">
+            <app-empty-list></app-empty-list>
+            <button mat-flat-button color="primary" style="padding: 0 60px;" (click)="getGroups()">
+                Refresh
+            </button>
+        </div>
+
+        <div class="flex-center" style="height: 60vh;" *ngIf="!loading && !error && groupList.length === 0">
+            <div class="empty-root">
+                <div class="empty-state-header">No Groups Found</div>
+                <div class="empty-semi-text">No groups have been created yet</div>
+            </div>
+        </div>
+
+        <div class="table-wrapper custom-scroll-bar" style="max-height: 65vh;"
+            [ngClass]="{hideElement: groupList.length === 0 || loading || error}">
+            <table mat-table [dataSource]="listData" class="full-width table mat-elevation-z8" aria-label="rows">
+
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef>Group Name</th>
+                    <td mat-cell *matCellDef="let row">
+                        <span style="font-weight: 500;">{{row.groupName || row.name}}</span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="description">
+                    <th mat-header-cell *matHeaderCellDef>Description</th>
+                    <td mat-cell *matCellDef="let row">
+                        <span style="color: var(--text-color);">{{row.groupDescription || row.description || '—'}}</span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef>Action</th>
+                    <td mat-cell *matCellDef="let row">
+                        <button mat-icon-button [matMenuTriggerFor]="actionMenu">
+                            <i class="ph ph-dots-three-circle-vertical" style="font-size: 24px;"></i>
+                        </button>
+                        <mat-menu #actionMenu="matMenu">
+                            <button mat-menu-item (click)="viewMembers(row)">
+                                <div style="display: flex; align-items: center; color: var(--header-color);">
+                                    <i class="ph-bold ph-users"></i>
+                                    <span style="font-size: 12px; margin-left: 10px;">View Members</span>
+                                </div>
+                            </button>
+                            <button mat-menu-item (click)="manageAccess(row)">
+                                <div style="display: flex; align-items: center; color: var(--header-color);">
+                                    <i class="ph-bold ph-user-gear"></i>
+                                    <span style="font-size: 12px; margin-left: 10px;">Manage Access</span>
+                                </div>
+                            </button>
+                        </mat-menu>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
+        </div>
+    </div>
+</div>

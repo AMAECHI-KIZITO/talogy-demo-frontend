@@ -1,0 +1,64 @@
+<div class="root">
+    <div class="top-bar">
+        <span class="top-head">Admin Audit Trail</span>
+    </div>
+
+    <div class="body-wrap">
+        <div class="admin-table-search">
+            <i class="ph ph-magnifying-glass"></i>
+            <input type="text" matInput placeholder="Search by email or description" [(ngModel)]="searchKey"
+                style="font-size: small;" (keyup)="applyFilter()">
+        </div>
+
+        <div *ngIf="loading"
+            style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 60vh;">
+            <app-loader></app-loader>
+            <div style="font-size: 14px; margin-top: 10px; font-weight: 500; color: var(--primary-color);">
+                Just wait a moment...</div>
+        </div>
+
+        <div class="error-block" style="height: 60vh;" *ngIf="!loading && error">
+            <app-empty-list></app-empty-list>
+            <button mat-flat-button color="primary" style="padding: 0 60px;" (click)="getAuditTrail()">
+                Refresh
+            </button>
+        </div>
+
+        <div class="flex-center" style="height: 60vh;" *ngIf="!loading && !error && auditList.length === 0">
+            <div class="empty-root">
+                <div class="empty-state-header">No Audit Records Found</div>
+            </div>
+        </div>
+
+        <div class="table-wrapper custom-scroll-bar" style="max-height: 65vh;"
+            [ngClass]="{hideElement: auditList.length === 0 || loading || error}">
+            <table mat-table [dataSource]="listData" class="full-width table mat-elevation-z8" aria-label="rows">
+
+                <ng-container matColumnDef="email">
+                    <th mat-header-cell *matHeaderCellDef>User</th>
+                    <td mat-cell *matCellDef="let row">
+                        {{row.userInvolved?.useremail}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="description">
+                    <th mat-header-cell *matHeaderCellDef>Description</th>
+                    <td mat-cell *matCellDef="let row">
+                        {{row.description}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="timestamp">
+                    <th mat-header-cell *matHeaderCellDef>Timestamp</th>
+                    <td mat-cell *matCellDef="let row">
+                        {{row.timeStamp | date: 'medium'}}
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
+        </div>
+    </div>
+</div>

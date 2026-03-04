@@ -1,6 +1,5 @@
-import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -8,6 +7,9 @@ import { AppService } from 'src/app/app.service';
 import { adminReportPayload } from 'src/app/model/productModel';
 import { DeleteReportComponent } from './delete-report/delete-report.component';
 import { EmbedReportComponent } from './embed-report/embed-report.component';
+import { ManageUserAccessComponent } from './manage-user-access/manage-user-access.component';
+import { InviteExternalUserComponent } from './invite-external-user/invite-external-user.component';
+import { ManageGroupReportAccessComponent } from './manage-group-report-access/manage-group-report-access.component';
 import { alertModal } from 'src/app/services/ui.service';
 
 @Component({
@@ -17,294 +19,188 @@ import { alertModal } from 'src/app/services/ui.service';
 })
 export class ReportManagementComponent implements OnInit {
 
-  reportList: any;
-  reportError: boolean = false
-  loading: boolean = false
+  reportList: any[] = [];
+  reportError: boolean = false;
+  loading: boolean = false;
 
-  reportCount = 1
-  isNext : any;
+  orgList: any[] = [];
+  orgListFilter: any[] = [];
+  orgloading: boolean = false;
 
-  orgList: any = []
-  orgListFilter: any = []
-  orgError: boolean = false
-  orgloading: boolean = false
-
-  filter: FormGroup
-
-  pauseLoading: boolean = false
-  pauseError: boolean = false
-
-  filterLoading: boolean = false
-  filterError: boolean = false
-
-
+  filter: FormGroup;
+  statusLoadingId: string = '';
 
   searchKey: string = '';
-  myInnerHeight = window.innerHeight - 301;
-  displayedColumns: string[] = ['select','name','status', 'action'];
+  displayedColumns: string[] = ['name', 'type', 'status', 'platform', 'action'];
   listData: MatTableDataSource<any> | any;
-  @ViewChild(MatPaginator) paginator : any;
+  @ViewChild(MatPaginator) paginator: any;
 
-  selection = new SelectionModel<Element>(true, []);
-
-  constructor(private app: AppService, private fb: FormBuilder, private dialog: MatDialog) { 
-    this.filter = this.fb.group({
-      org: [""]
-    });
+  constructor(private app: AppService, private fb: FormBuilder, private dialog: MatDialog) {
+    this.filter = this.fb.group({ org: [''] });
   }
 
   ngOnInit(): void {
-    this.getReport()
-    this.getOrg()
+    this.getReport();
+    this.getOrg();
   }
 
-  filterReport(){
-    this.loading = true
-    let user = null
-    let client = this.filter.value.org.toLowerCase()
-
-    this.app.productService.filterReport(this.reportCount,user,client)
-    .subscribe({
-      next: (res) => {
-        if(res['status'] === true){
-          this.loading = false
-          this.reportError = false
-          this.reportList = res['data'].connectors
-          this.isNext = res['data'].isLastPage
-
-          this.filter.reset()
-
-          this.listData = new MatTableDataSource(this.reportList)
-          this.listData.paginator = this.paginator
-        }else {
-          this.loading = false
-          this.reportError = true
-          this.reportList = []
+  getReport() {
+    this.loading = true;
+    this.app.productService.getReports(1)
+      .subscribe({
+        next: (res) => {
+          if (res['status'] === true) {
+            this.loading = false;
+            this.reportError = false;
+            this.reportList = res.reports || [];
+            this.listData = new MatTableDataSource(this.reportList);
+            this.listData.paginator = this.paginator;
+          } else {
+            this.loading = false;
+            this.reportError = true;
+            this.reportList = [];
+          }
+        },
+        error: () => {
+          this.loading = false;
+          this.reportError = true;
+          this.reportList = [];
         }
-      },
-      error: (err) => {
-        this.loading = true
-        this.reportError = true 
-        this.reportList = []
-      }
-    })
-  }
-  
-
-  getReport(){
-    this.loading = true
-    this.app.productService.getReports(this.reportCount)
-    .subscribe({
-      next: (res) => {
-        if(res['status'] === true){
-          this.loading = false
-          this.reportError = false
-          this.reportList = res.reports.filter((e: any) => e.status != 'in progress')
-          // this.isNext = res['data'].isLastPage
-
-          this.listData = new MatTableDataSource(this.reportList)
-          this.listData.paginator = this.paginator
-        }else{
-          this.loading = false
-          this.reportError = true
-          this.reportList = []
-        }
-      },
-      error: (err) => {
-        this.loading = false
-        this.reportError = true 
-        this.reportList = []
-      }
-    })
+      });
   }
 
-
-  getOrg(){
-    this.orgloading = true
+  getOrg() {
+    this.orgloading = true;
     this.app.productService.getOrganisation()
-    .subscribe({
-      next: (res) => {
-        if(res['status'] === true){
-          this.orgloading = false
-          this.orgError = false
-          this.orgList = res['organizations']
-          this.orgListFilter = this.orgList
-        }else{
-          this.orgloading = false
-          this.orgError = true
-          this.orgList = []
+      .subscribe({
+        next: (res) => {
+          if (res['status'] === true) {
+            this.orgloading = false;
+            this.orgList = res['organizations'];
+            this.orgListFilter = this.orgList;
+          } else {
+            this.orgloading = false;
+            this.orgList = [];
+          }
+        },
+        error: () => {
+          this.orgloading = false;
+          this.orgList = [];
         }
-      },
-      error: (err) => {
-        this.orgloading = false
-        this.orgError = true 
-        this.orgList = []
-      }
-    })
-    
-
-   
+      });
   }
-  reset() {
-    this.onKeyOrg('')
+
+  applyFilters() {
+    this.listData.filter = this.searchKey.trim().toLowerCase();
   }
 
   onKeyOrg(value: string) {
     this.orgList = this.searchOrg(value);
+  }
 
+  reset() {
+    this.onKeyOrg('');
   }
 
   searchOrg(value: any) {
     let keyWord = value.trim().toLowerCase();
-    if (value == '') {
-      return this.orgListFilter
-    }
-    return this.orgListFilter.filter((option: any) => {
-      if (option.organizationName) {
-        return option.organizationName.toString().toLowerCase().startsWith(keyWord)
-      }
-    });
+    if (value === '') return this.orgListFilter;
+    return this.orgListFilter.filter((option: any) =>
+      option.organizationName?.toString().toLowerCase().startsWith(keyWord)
+    );
   }
 
-  nextReport(){
-    this.reportCount = this.reportCount + 1
-    this.getReport()
-  }
-  previousReport(){
-    this.reportCount = this.reportCount - 1
-    this.getReport()
-  }
-
-
-  applyFilters(){
-    this.listData.filter = this.searchKey.trim().toLowerCase()
-  }
-
-  masterToggle() {
-    this.isAllSelected() ?
-      this.selection.clear() :
-      this.listData.data.forEach((element:any) => this.selection.select(element));
-  }
-
-  truncateSentence(sentence: string, length: number): string {
-    if (sentence.length <= length) {
-      return sentence;
-    } else {
-      return sentence.substring(0, length) + '...';
-    }
-  }
-
-  getTimeFromTimestamp(timestamp: any) {
-    const dateObject = new Date(timestamp);
-    const hours = dateObject.getUTCHours();
-    const minutes = dateObject.getUTCMinutes();
-    const seconds = dateObject.getUTCSeconds();
-
-    const period = hours < 12 ? 'AM' : 'PM';
-
-    const twelveHourFormat = `${String(hours % 12 || 12).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')} ${period}`;
-
-    return twelveHourFormat;
-  }
-
-  getInitials(string:any) {
-    var names = string.split(" "),
-      initials = names[0].substring(0, 1).toUpperCase();
-
-    if (names.length > 1) {
-      initials += names[names.length - 1].substring(0, 1).toUpperCase();
-    }
-
-    return initials;
-  }
-
-  convertTimestampToDate(timestamp:any) {
-    const dateObject = new Date(timestamp);
-    const year = dateObject.getUTCFullYear() % 100; // Get the last two digits of the year
-    const month = dateObject.getUTCMonth() + 1; // Months are zero-indexed, so add 1
-    const day = dateObject.getUTCDate();
-  
-    // Format the date as M/D/YY
-    const formattedDate = `${month}/${day}/${year}`;
-  
-    return formattedDate;
-  }
-
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.listData.data.length;
-    return numSelected === numRows;
-
-  }
-  checkSelected(row:any) {
-    return this.selection.isSelected(row)
-  }
-  toggleRow(row:any) {
-    this.selection.isSelected(row) ? this.selection.deselect(row) : this.selection.select(row)
-  }
-
-  cloneReport(){
-    let dialogConfig = new MatDialogConfig()
+  embedReport() {
+    let dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
-    dialogConfig.width = "30%"
-
+    dialogConfig.width = '30%';
     this.dialog.open(EmbedReportComponent, dialogConfig)
-    .afterClosed().subscribe(res => {
-      if(res == 'cloned'){
-        this.getReport()
-      }
-    })
+      .afterClosed().subscribe(res => {
+        if (res === 'cloned') this.getReport();
+      });
   }
 
-  pauseReport(item:any){
-    this.pauseLoading = true
-    let payload = new adminReportPayload
-    payload.reportId = item._id
-    payload.desiredStatus = 'disable'
-  
+  manageUserAccess(row: any) {
+    let dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.panelClass = 'dialog-container';
+    dialogConfig.height = 'auto';
+    dialogConfig.width = '45vw';
+    dialogConfig.data = row;
+    this.dialog.open(ManageUserAccessComponent, dialogConfig);
+  }
+
+  inviteExternalUser(row: any) {
+    let dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.panelClass = 'dialog-container';
+    dialogConfig.height = 'auto';
+    dialogConfig.width = '38vw';
+    dialogConfig.data = row;
+    this.dialog.open(InviteExternalUserComponent, dialogConfig);
+  }
+
+  manageGroupAccess(row: any) {
+    let dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.panelClass = 'dialog-container';
+    dialogConfig.height = 'auto';
+    dialogConfig.width = '45vw';
+    dialogConfig.data = row;
+    this.dialog.open(ManageGroupReportAccessComponent, dialogConfig);
+  }
+
+  updateStatus(row: any) {
+    const desiredStatus = row.status === 'enabled' ? 'disable' : 'enable';
+    this.statusLoadingId = row._id;
+    let payload = new adminReportPayload();
+    payload.reportId = row._id;
+    payload.desiredStatus = desiredStatus;
+
     this.app.productService.updateStatusReportAdmin(payload)
-    .subscribe({
-      next: (res) => {
-        if(res['status'] == true){
-          this.pauseLoading = false
-          this.getReport()
+      .subscribe({
+        next: (res) => {
+          this.statusLoadingId = '';
+          if (res['status'] === true) {
+            this.getReport();
+          } else {
+            this.errorDialog(res['message']);
+          }
+        },
+        error: (err) => {
+          this.statusLoadingId = '';
+          this.errorDialog(err);
         }
-        else if(res['status'] == false) {
-          this.pauseLoading = false
-          this.pauseError = true
-          this.errorDialog(res['message'])
-        }
-      },
-      error: (err) => {
-        this.pauseLoading = false
-        this.errorDialog(err)
-      }
-    })
+      });
   }
 
   delete(row: any) {
-    let dialogConfig = new MatDialogConfig()
-
-    dialogConfig.panelClass = 'dialog-container'
-    dialogConfig.height = 'auto'
-    dialogConfig.data = row
-
+    let dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = 'dialog-container';
+    dialogConfig.height = 'auto';
+    dialogConfig.data = row;
     this.dialog.open(DeleteReportComponent, dialogConfig)
       .afterClosed().subscribe(res => {
-        if (res === 'deleted') {
-          this.getReport()
-        }
-      })
+        if (res === 'deleted') this.getReport();
+      });
   }
 
-  errorDialog(item:any){
+  getInitials(string: any) {
+    var names = string.split(' '),
+      initials = names[0].substring(0, 1).toUpperCase();
+    if (names.length > 1) {
+      initials += names[names.length - 1].substring(0, 1).toUpperCase();
+    }
+    return initials;
+  }
+
+  errorDialog(item: any) {
     let alert: alertModal = {
       details: item,
       message: 'Process Failed',
       type: 'ERROR',
       duration: 10000
-    }
-    this.app.ui.setAlertStatus(alert)
+    };
+    this.app.ui.setAlertStatus(alert);
   }
-
 }

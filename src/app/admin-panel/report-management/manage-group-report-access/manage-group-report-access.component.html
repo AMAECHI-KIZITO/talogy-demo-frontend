@@ -1,0 +1,84 @@
+<div class="root">
+    <div class="body">
+        <div class="top-wrapper">
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+                <span class="popup-header">Manage Group Access</span>
+                <span style="font-size: 12px; color: var(--text-color);">
+                    Report: <strong>{{report.reportname}}</strong>
+                </span>
+            </div>
+            <i class="ph-duotone ph-x cancel" (click)="close()"></i>
+        </div>
+
+        <!-- Groups with access -->
+        <div class="section">
+            <div class="section-title">Groups with Access</div>
+
+            <div *ngIf="loadingAccess" style="display: flex; align-items: center; gap: 8px; padding: 8px 0;">
+                <app-loader style="transform: scale(0.5);"></app-loader>
+                <span style="font-size: 12px; color: var(--primary-color);">Loading groups...</span>
+            </div>
+
+            <div class="empty-hint" *ngIf="!loadingAccess && groupAccessList.length === 0">
+                No groups currently have access to this report.
+            </div>
+
+            <div class="group-row" *ngFor="let group of groupAccessList">
+                <div class="group-info">
+                    <div class="group-avatar">
+                        <i class="ph-bold ph-users-three" style="font-size: 14px;"></i>
+                    </div>
+                    <span class="group-name">{{group.groupName || group.name || '—'}}</span>
+                </div>
+                <button mat-icon-button color="warn"
+                    [disabled]="revokingGroupId === (group._id || group.id)"
+                    (click)="revokeGroupAccess(group)" matTooltip="Revoke access">
+                    <i class="ph-bold ph-trash" style="font-size: 16px;"
+                        *ngIf="revokingGroupId !== (group._id || group.id)"></i>
+                    <app-button-loader
+                        *ngIf="revokingGroupId === (group._id || group.id)"></app-button-loader>
+                </button>
+            </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <!-- Add Group Section -->
+        <div class="section">
+            <div class="section-title">Add Group to Report</div>
+
+            <div class="search-wrap">
+                <div class="admin-table-search">
+                    <i class="ph ph-magnifying-glass search-icon"></i>
+                    <input type="text" placeholder="Search group by name..." [(ngModel)]="searchGroup"
+                        (ngModelChange)="onSearchChange()" style="font-size: 13px;">
+                    <app-loader *ngIf="loadingGroups" style="transform: scale(0.45); margin-left: auto;"></app-loader>
+                </div>
+                <div class="dropdown-results" *ngIf="filteredGroups.length > 0">
+                    <div class="dropdown-item" *ngFor="let group of filteredGroups" (click)="selectGroup(group)">
+                        <i class="ph ph-users-three" style="font-size: 16px;"></i>
+                        <span>{{group.groupName || group.name}}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="selected-group-card" *ngIf="selectedGroup">
+                <div class="group-info" style="flex: 1;">
+                    <div class="group-avatar">
+                        <i class="ph-bold ph-users-three" style="font-size: 14px;"></i>
+                    </div>
+                    <div>
+                        <span class="group-name">{{selectedGroup.groupName || selectedGroup.name}}</span>
+                        <span class="group-desc" *ngIf="selectedGroup.groupDescription">
+                            {{selectedGroup.groupDescription}}
+                        </span>
+                    </div>
+                </div>
+                <button mat-flat-button color="primary" (click)="grantGroupAccess()" [disabled]="grantLoading">
+                    <span *ngIf="!grantLoading">Grant Access</span>
+                    <app-button-loader *ngIf="grantLoading"></app-button-loader>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

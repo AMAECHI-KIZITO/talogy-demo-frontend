@@ -1,0 +1,12 @@
+@import '../../../../../assets/scss/variable.scss';
+@import '../../../../../assets/scss/mixin.scss';
+
+.body {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+form {
+    margin-top: 10px !important;
+}

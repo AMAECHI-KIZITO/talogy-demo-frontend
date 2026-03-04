@@ -1,0 +1,40 @@
+.root { padding: 0; }
+
+.body {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.top-wrapper {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.popup-header {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--header-color);
+}
+
+.cancel {
+    font-size: 20px;
+    cursor: pointer;
+    color: var(--text-color);
+    &:hover { color: red; }
+}
+
+label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-color);
+    display: block;
+    margin-bottom: 4px;
+}
+
+.submit-wrap {
+    margin-top: 12px;
+}

@@ -40,11 +40,11 @@ export class InviteuserComponent implements OnInit {
 
   submit(){
     let load: createGroup = {
-      groupDescription: this.form.get('description')?.value,
+      groupDescription: this.form.get('description')?.value || '',
       groupName: this.form.get('name')?.value
     }
     this.loading = true
-    this.app.productService.createOrganisationGroup(load)
+    this.app.productService.superadminCreateGroup(load)
       .subscribe({
         next: res => {
           this.loading = false

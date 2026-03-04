@@ -36,14 +36,28 @@
     </div>
     <div class="admin-body">
         <div class="left-body">
-            <mat-nav-list *ngFor="let item of menuList">
-                <a [routerLink]="item.link" class="link" [matTooltip]="item.name" routerLinkActive="active-list-item">
-                    <i [class]="item.icon" routerLinkActive="iconActive"></i>
-                    <span class="menu-name" routerLinkActive="nameActive">
-                        {{item.name}}
-                    </span>
-                </a>
-            </mat-nav-list>
+            <ng-container *ngFor="let item of menuList">
+                <mat-nav-list *ngIf="!item.children">
+                    <a [routerLink]="item.link" class="link" [matTooltip]="item.name"
+                        routerLinkActive="active-list-item">
+                        <i [class]="item.icon" routerLinkActive="iconActive"></i>
+                        <span class="menu-name" routerLinkActive="nameActive">{{item.name}}</span>
+                    </a>
+                </mat-nav-list>
+                <mat-expansion-panel *ngIf="item.children" class="sidebar-expansion mat-elevation-z0">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title class="expansion-title">
+                            <i [class]="item.icon"></i>
+                            <span class="menu-name">{{item.name}}</span>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-nav-list *ngFor="let child of item.children">
+                        <a [routerLink]="child.link" class="link child-link" routerLinkActive="active-list-item">
+                            <span class="menu-name">{{child.name}}</span>
+                        </a>
+                    </mat-nav-list>
+                </mat-expansion-panel>
+            </ng-container>
         </div>
         <div class="right-body">
             <router-outlet></router-outlet>

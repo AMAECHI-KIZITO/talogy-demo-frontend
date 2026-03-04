@@ -1,0 +1,41 @@
+<div class="root">
+    <div class="body">
+        <div class="top-wrapper">
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+                <span class="popup-header">Invite External User</span>
+                <span style="font-size: 12px; color: var(--text-color);">
+                    Granting access to: <strong>{{report.reportname}}</strong>
+                </span>
+            </div>
+            <i class="ph-duotone ph-x cancel" (click)="close()"></i>
+        </div>
+
+        <form [formGroup]="form">
+            <div class="mt-1">
+                <label>Full Name <sup style="color: red;">*</sup></label>
+                <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                    <input type="text" formControlName="inviteeName" matInput placeholder="Enter full name">
+                </mat-form-field>
+            </div>
+            <div class="mt-1">
+                <label>Email Address <sup style="color: red;">*</sup></label>
+                <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                    <input type="email" formControlName="inviteeEmail" matInput placeholder="Enter email address">
+                </mat-form-field>
+            </div>
+            <div class="mt-1">
+                <label>Access Duration (days) <span style="font-size: 11px; color: var(--text-color);">— optional</span></label>
+                <mat-form-field appearance="outline" style="font-size: small;" class="custom-form-field">
+                    <input type="number" formControlName="durationInDays" matInput placeholder="Leave blank for unlimited access" min="1">
+                </mat-form-field>
+            </div>
+            <div class="submit-wrap">
+                <button mat-flat-button style="width: 100%;" color="primary"
+                    [disabled]="form.invalid || loading" (click)="submit()">
+                    <span class="btn-text" *ngIf="!loading">Send Invite</span>
+                    <app-button-loader *ngIf="loading"></app-button-loader>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

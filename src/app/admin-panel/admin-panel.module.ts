@@ -4,6 +4,10 @@ import { CommonModule } from '@angular/common';
 import { AdminPanelRoutingModule } from './admin-panel-routing.module';
 import { AccountManagementComponent } from './account-management/account-management.component';
 import { AdminPanelComponent } from './admin-panel.component';
+import { UserManagementComponent } from './user-management/user-management.component';
+import { InviteUserComponent } from './user-management/invite-user/invite-user.component';
+import { AdminAuditTrailComponent } from './admin-audit-trail/admin-audit-trail.component';
+import { UserAuditTrailComponent } from './user-audit-trail/user-audit-trail.component';
 import { SharedModule } from '../shared/shared.module';
 import { ConnectorManagementComponent } from './connector-management/connector-management.component';
 import { ReportManagementComponent } from './report-management/report-management.component';
@@ -22,6 +26,9 @@ import { ReportConfigComponent } from './settings-admin/report-config/report-con
 import { AddReportTemplateComponent } from './settings-admin/report-config/add-report-template/add-report-template.component';
 
 import { EmbedReportComponent } from './report-management/embed-report/embed-report.component';
+import { ManageUserAccessComponent } from './report-management/manage-user-access/manage-user-access.component';
+import { InviteExternalUserComponent } from './report-management/invite-external-user/invite-external-user.component';
+import { ManageGroupReportAccessComponent } from './report-management/manage-group-report-access/manage-group-report-access.component';
 import { ReportTemplateAccessComponent } from './account-management/report-template-access/report-template-access.component';
 import { ManageModeComponent } from './account-management/manage-mode/manage-mode.component';
 import { DestinationSetupComponent } from './account-management/destination-setup/destination-setup.component';
@@ -32,11 +39,18 @@ import { DetailsComponent } from './analytics/details/details.component';
 import { ReportWorkflowComponent } from './report-workflow/report-workflow.component';
 import { ViewReportComponent } from './report-workflow/view-report/view-report.component';
 import { ClipboardModule } from '@angular/cdk/clipboard';
+import { GroupManagementComponent } from './group-management/group-management.component';
+import { ViewGroupMembersComponent } from './group-management/view-group-members/view-group-members.component';
+import { ManageGroupAccessComponent } from './group-management/manage-group-access/manage-group-access.component';
 
 
 @NgModule({
   declarations: [
     AdminPanelComponent,
+    UserManagementComponent,
+    InviteUserComponent,
+    AdminAuditTrailComponent,
+    UserAuditTrailComponent,
     AccountManagementComponent,
     ConnectorManagementComponent,
     ReportManagementComponent,
@@ -54,6 +68,9 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
     ReportConfigComponent,
     AddReportTemplateComponent,
     EmbedReportComponent,
+    ManageUserAccessComponent,
+    InviteExternalUserComponent,
+    ManageGroupReportAccessComponent,
     ReportTemplateAccessComponent,
     ManageModeComponent,
     DestinationSetupComponent,
@@ -61,7 +78,10 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
     AnalyticsComponent,
     DetailsComponent,
     ReportWorkflowComponent,
-    ViewReportComponent
+    ViewReportComponent,
+    GroupManagementComponent,
+    ViewGroupMembersComponent,
+    ManageGroupAccessComponent
   ],
   imports: [
     CommonModule,

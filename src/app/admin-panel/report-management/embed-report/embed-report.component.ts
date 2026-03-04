@@ -27,8 +27,6 @@ export class EmbedReportComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.fb.group({
       'name': ['', Validators.required],
-      // 'organization': ['', Validators.required],
-      'owner': ['', Validators.required],
       'type': ['', Validators.required],
       'workspace': ['', Validators.required],
       'report': ['', Validators.required],

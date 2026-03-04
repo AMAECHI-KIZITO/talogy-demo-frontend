@@ -10,6 +10,10 @@ import { SettingsComponent } from '../core-app/settings/settings.component';
 import { SettingsAdminComponent } from './settings-admin/settings-admin.component';
 import { AnalyticsComponent } from './analytics/analytics.component';
 import { ReportWorkflowComponent } from './report-workflow/report-workflow.component';
+import { UserManagementComponent } from './user-management/user-management.component';
+import { AdminAuditTrailComponent } from './admin-audit-trail/admin-audit-trail.component';
+import { UserAuditTrailComponent } from './user-audit-trail/user-audit-trail.component';
+import { GroupManagementComponent } from './group-management/group-management.component';
 
 const routes: Routes = [
   {
@@ -18,8 +22,28 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'account-management',
+        redirectTo: 'user-management',
         pathMatch: 'prefix'
+      },
+      {
+        path: 'user-management',
+        component: UserManagementComponent,
+        canActivate: [MaslGuard]
+      },
+      {
+        path: 'group-management',
+        component: GroupManagementComponent,
+        canActivate: [MaslGuard]
+      },
+      {
+        path: 'admin-audit-trail',
+        component: AdminAuditTrailComponent,
+        canActivate: [MaslGuard]
+      },
+      {
+        path: 'user-audit-trail',
+        component: UserAuditTrailComponent,
+        canActivate: [MaslGuard]
       },
       {
         path: 'account-management',
